@@ -26,7 +26,8 @@ try {
 
     $status = git status --porcelain
     if ([string]::IsNullOrWhiteSpace($status)) {
-        Write-UploadLog "No changes to upload."
+        git push $Remote $Branch
+        Write-UploadLog "No file changes. Checked for unpushed commits on $Remote/$Branch."
         exit 0
     }
 

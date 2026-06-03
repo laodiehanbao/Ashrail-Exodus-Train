@@ -15,7 +15,7 @@ $actionArgs = "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`" -RepoRoo
 $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $actionArgs
 $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) `
     -RepetitionInterval (New-TimeSpan -Minutes $IntervalMinutes) `
-    -RepetitionDuration ([TimeSpan]::MaxValue)
+    -RepetitionDuration (New-TimeSpan -Days 3650)
 $settings = New-ScheduledTaskSettingsSet `
     -AllowStartIfOnBatteries `
     -DontStopIfGoingOnBatteries `
