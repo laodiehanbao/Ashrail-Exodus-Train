@@ -16,22 +16,35 @@ function Write-UploadLog {
     Add-Content -Path (Join-Path $logDir "auto-upload.log") -Value "[$timestamp] $Message"
 }
 
+function Invoke-Git {
+    param([Parameter(ValueFromRemainingArguments = $true)][string[]]$GitArgs)
+
+    & git @GitArgs
+    if ($LASTEXITCODE -ne 0) {
+        throw "git $($GitArgs -join ' ') failed with exit code $LASTEXITCODE"
+    }
+}
+
 try {
     Set-Location $RepoRoot
 
-    $insideWorkTree = git rev-parse --is-inside-work-tree 2>$null
+    $insideWorkTree = & git rev-parse --is-inside-work-tree 2>$null
+    if ($LASTEXITCODE -ne 0) {
+        throw "git rev-parse failed with exit code $LASTEXITCODE"
+    }
+
     if ($insideWorkTree -ne "true") {
         throw "RepoRoot is not a git work tree: $RepoRoot"
     }
 
     $status = git status --porcelain
     if ([string]::IsNullOrWhiteSpace($status)) {
-        git push $Remote $Branch
+        Invoke-Git push $Remote $Branch
         Write-UploadLog "No file changes. Checked for unpushed commits on $Remote/$Branch."
         exit 0
     }
 
-    git add -A
+    Invoke-Git add -A
 
     $commitStatus = git status --porcelain
     if ([string]::IsNullOrWhiteSpace($commitStatus)) {
@@ -40,8 +53,8 @@ try {
     }
 
     $commitTime = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    git commit -m "Auto upload: $commitTime"
-    git push $Remote $Branch
+    Invoke-Git commit -m "Auto upload: $commitTime"
+    Invoke-Git push $Remote $Branch
 
     Write-UploadLog "Uploaded changes to $Remote/$Branch."
 }
