@@ -1,0 +1,63 @@
+{
+  "bindingSetId": "p0_cocos_node_bindings_default",
+  "sceneId": "scene_p0_exodus_train_main",
+  "layoutId": "p0_mobile_portrait_default",
+  "screens": [
+    {
+      "screenId": "main_hud",
+      "rootPath": "Canvas/P0/MainHud",
+      "bindings": [
+        { "bindingKey": "main_hud_frame", "slotId": "mainHud.frame", "kind": "frame", "nodePath": "Canvas/P0/MainHud/Frame" },
+        { "bindingKey": "main_hud_title", "slotId": "mainHud.title", "kind": "text", "panelId": "top_status", "nodePath": "Canvas/P0/MainHud/TopStatus/Title" },
+        { "bindingKey": "main_hud_status", "slotId": "mainHud.status", "kind": "text", "panelId": "top_status", "nodePath": "Canvas/P0/MainHud/TopStatus/StatusText" },
+        { "bindingKey": "main_hud_metrics", "slotId": "mainHud.metrics", "kind": "metricList", "panelId": "top_status", "nodePath": "Canvas/P0/MainHud/TopStatus/Metrics", "itemTemplatePath": "Canvas/P0/MainHud/TopStatus/Metrics/MetricItemTemplate" },
+        { "bindingKey": "main_hud_primary_action", "slotId": "mainHud.primaryAction", "kind": "action", "panelId": "bottom_actions", "componentId": "primary_button", "actionId": "ui_request_stage_start", "nodePath": "Canvas/P0/MainHud/BottomActions/StartButton" }
+      ]
+    },
+    {
+      "screenId": "loot_box",
+      "rootPath": "Canvas/P0/LootBox",
+      "bindings": [
+        { "bindingKey": "loot_box_frame", "slotId": "lootBox.frame", "kind": "frame", "nodePath": "Canvas/P0/LootBox/Frame" },
+        { "bindingKey": "loot_box_title", "slotId": "lootBox.title", "kind": "text", "panelId": "lootbox_focus", "nodePath": "Canvas/P0/LootBox/Focus/Title" },
+        { "bindingKey": "loot_box_name", "slotId": "lootBox.lootBoxName", "kind": "text", "panelId": "lootbox_focus", "nodePath": "Canvas/P0/LootBox/Focus/LootBoxName" },
+        { "bindingKey": "loot_box_count", "slotId": "lootBox.count", "kind": "text", "panelId": "lootbox_focus", "nodePath": "Canvas/P0/LootBox/Focus/CountText" },
+        { "bindingKey": "loot_box_cost", "slotId": "lootBox.cost", "kind": "text", "panelId": "lootbox_actions", "nodePath": "Canvas/P0/LootBox/Actions/CostText" },
+        { "bindingKey": "loot_box_metrics", "slotId": "lootBox.metrics", "kind": "metricList", "panelId": "lootbox_actions", "nodePath": "Canvas/P0/LootBox/Actions/Metrics", "itemTemplatePath": "Canvas/P0/LootBox/Actions/Metrics/MetricItemTemplate" },
+        { "bindingKey": "loot_box_open_action", "slotId": "lootBox.openAction", "kind": "action", "panelId": "lootbox_actions", "componentId": "primary_button", "actionId": "ui_request_lootbox_open", "nodePath": "Canvas/P0/LootBox/Actions/OpenButton" }
+      ]
+    },
+    {
+      "screenId": "reward_panel",
+      "rootPath": "Canvas/P0/RewardPanel",
+      "bindings": [
+        { "bindingKey": "reward_panel_frame", "slotId": "rewardPanel.frame", "kind": "frame", "panelId": "reward_modal", "componentId": "modal_panel", "nodePath": "Canvas/P0/RewardPanel/ModalFrame" },
+        { "bindingKey": "reward_panel_title", "slotId": "rewardPanel.title", "kind": "text", "panelId": "reward_modal", "nodePath": "Canvas/P0/RewardPanel/ModalFrame/Title" },
+        { "bindingKey": "reward_panel_items", "slotId": "rewardPanel.items", "kind": "rewardItemList", "panelId": "reward_modal", "componentId": "reward_card", "nodePath": "Canvas/P0/RewardPanel/ModalFrame/RewardList", "itemTemplatePath": "Canvas/P0/RewardPanel/ModalFrame/RewardList/RewardCardTemplate", "emptyStatePath": "Canvas/P0/RewardPanel/ModalFrame/RewardList/EmptyState" },
+        { "bindingKey": "reward_panel_claim_action", "slotId": "rewardPanel.claimAction", "kind": "action", "panelId": "reward_modal", "componentId": "primary_button", "actionId": "ui_request_reward_claim", "nodePath": "Canvas/P0/RewardPanel/ModalFrame/ClaimButton" }
+      ]
+    },
+    {
+      "screenId": "train_module",
+      "rootPath": "Canvas/P0/TrainModule",
+      "bindings": [
+        { "bindingKey": "train_module_frame", "slotId": "trainModule.frame", "kind": "frame", "nodePath": "Canvas/P0/TrainModule/Frame" },
+        { "bindingKey": "train_module_title", "slotId": "trainModule.title", "kind": "text", "panelId": "module_slots", "nodePath": "Canvas/P0/TrainModule/ModuleSlots/Title" },
+        { "bindingKey": "train_module_metrics", "slotId": "trainModule.metrics", "kind": "metricList", "panelId": "module_detail", "nodePath": "Canvas/P0/TrainModule/ModuleDetail/Metrics", "itemTemplatePath": "Canvas/P0/TrainModule/ModuleDetail/Metrics/MetricItemTemplate" },
+        { "bindingKey": "train_module_cards", "slotId": "trainModule.moduleCards", "kind": "moduleCardList", "panelId": "module_slots", "componentId": "module_slot", "actionId": "ui_request_train_module_upgrade", "nodePath": "Canvas/P0/TrainModule/ModuleSlots/CardList", "itemTemplatePath": "Canvas/P0/TrainModule/ModuleSlots/CardList/ModuleCardTemplate" }
+      ]
+    },
+    {
+      "screenId": "ad_reward",
+      "rootPath": "Canvas/P0/AdReward",
+      "bindings": [
+        { "bindingKey": "ad_reward_frame", "slotId": "adReward.frame", "kind": "frame", "panelId": "ad_reward_modal", "componentId": "modal_panel", "nodePath": "Canvas/P0/AdReward/ModalFrame" },
+        { "bindingKey": "ad_reward_title", "slotId": "adReward.title", "kind": "text", "panelId": "ad_reward_modal", "nodePath": "Canvas/P0/AdReward/ModalFrame/Title" },
+        { "bindingKey": "ad_reward_status", "slotId": "adReward.status", "kind": "text", "panelId": "ad_reward_modal", "nodePath": "Canvas/P0/AdReward/ModalFrame/StatusText" },
+        { "bindingKey": "ad_reward_metrics", "slotId": "adReward.metrics", "kind": "metricList", "panelId": "ad_reward_modal", "nodePath": "Canvas/P0/AdReward/ModalFrame/Metrics", "itemTemplatePath": "Canvas/P0/AdReward/ModalFrame/Metrics/MetricItemTemplate" },
+        { "bindingKey": "ad_reward_double_action", "slotId": "adReward.doubleAction", "kind": "action", "panelId": "ad_reward_modal", "componentId": "primary_button", "actionId": "ui_request_ad_reward_double", "nodePath": "Canvas/P0/AdReward/ModalFrame/DoubleButton" },
+        { "bindingKey": "ad_reward_skip_action", "slotId": "adReward.skipAction", "kind": "action", "panelId": "ad_reward_modal", "componentId": "secondary_button", "actionId": "ui_request_ad_reward_skip", "nodePath": "Canvas/P0/AdReward/ModalFrame/SkipButton" }
+      ]
+    }
+  ]
+}

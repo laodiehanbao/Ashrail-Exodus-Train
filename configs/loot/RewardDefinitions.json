@@ -1,0 +1,21 @@
+[
+  {
+    "id": "reward_equipment_rifle_rusty_001",
+    "items": [{ "type": "equipment", "id": "equipment_rifle_rusty_001", "amount": 1 }]
+  },
+  {
+    "id": "reward_module_fragment_cannon_basic",
+    "items": [{ "type": "module_fragment", "id": "module_cannon_basic_001", "amount": 5 }]
+  },
+  {
+    "id": "reward_coin_small",
+    "items": [{ "type": "resource", "id": "coin", "amount": 80 }]
+  },
+  {
+    "id": "reward_stage_clear_001",
+    "items": [
+      { "type": "resource", "id": "coin", "amount": 120 },
+      { "type": "loot_box", "id": "lootbox_supply_common", "amount": 1 }
+    ]
+  }
+]

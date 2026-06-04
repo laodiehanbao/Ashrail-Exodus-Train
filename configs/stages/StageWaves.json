@@ -1,0 +1,14 @@
+[
+  {
+    "id": "wave_stage_chapter_01_001",
+    "stageId": "stage_chapter_01_001",
+    "durationSeconds": 60,
+    "enemies": [{ "enemyId": "enemy_raider_basic_001", "count": 3, "hp": 80, "attack": 5 }]
+  },
+  {
+    "id": "wave_stage_chapter_01_002",
+    "stageId": "stage_chapter_01_002",
+    "durationSeconds": 60,
+    "enemies": [{ "enemyId": "enemy_husk_brute_001", "count": 2, "hp": 160, "attack": 9 }]
+  }
+]

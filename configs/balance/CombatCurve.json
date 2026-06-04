@@ -1,0 +1,4 @@
+[
+  { "stageOrder": 1, "enemyHpMultiplier": 1, "enemyAttackMultiplier": 1 },
+  { "stageOrder": 2, "enemyHpMultiplier": 1.35, "enemyAttackMultiplier": 1.2 }
+]

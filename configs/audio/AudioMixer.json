@@ -1,0 +1,36 @@
+{
+  "masterVolume": 1,
+  "maxTotalInstances": 16,
+  "buses": [
+    {
+      "bus": "music",
+      "volume": 0.5,
+      "muted": false,
+      "maxInstances": 1
+    },
+    {
+      "bus": "ambience",
+      "volume": 0.42,
+      "muted": false,
+      "maxInstances": 2
+    },
+    {
+      "bus": "sfx",
+      "volume": 0.86,
+      "muted": false,
+      "maxInstances": 10
+    },
+    {
+      "bus": "ui",
+      "volume": 0.78,
+      "muted": false,
+      "maxInstances": 6
+    },
+    {
+      "bus": "voice",
+      "volume": 0.74,
+      "muted": false,
+      "maxInstances": 2
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+export enum ErrorCode {
+  ConfigInvalid = 'config_invalid',
+  ConfigMissingReference = 'config_missing_reference',
+  InsufficientResource = 'insufficient_resource',
+  InsufficientItem = 'insufficient_item',
+  UnknownLootBox = 'unknown_loot_box',
+  UnknownStage = 'unknown_stage',
+  UnknownReward = 'unknown_reward',
+  UnknownTrainModule = 'unknown_train_module',
+  UiRequestRejected = 'ui_request_rejected',
+  AdUnavailable = 'ad_unavailable',
+  AdLimitReached = 'ad_limit_reached',
+  SaveUnavailable = 'save_unavailable',
+  SaveMigrationFailed = 'save_migration_failed',
+}

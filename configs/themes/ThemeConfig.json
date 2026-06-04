@@ -1,0 +1,9 @@
+[
+  {
+    "id": "theme_doom_train",
+    "displayNameKey": "theme.doom_train.name",
+    "primaryColor": "#b84a32",
+    "accentColor": "#e2c16f",
+    "backgroundColor": "#1c1f22"
+  }
+]

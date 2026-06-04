@@ -1,0 +1,16 @@
+[
+  {
+    "id": "equipment_rifle_rusty_001",
+    "displayNameKey": "equipment.rifle.rusty.name",
+    "rarity": "common",
+    "slot": "weapon",
+    "power": 12
+  },
+  {
+    "id": "equipment_cogwheel_reinforced_001",
+    "displayNameKey": "equipment.cogwheel.reinforced.name",
+    "rarity": "rare",
+    "slot": "engine",
+    "power": 30
+  }
+]

@@ -1,0 +1,64 @@
+{
+  "profileId": "voice_profile_radio_dispatcher_zh_p0",
+  "displayName": "Ashrail Radio Dispatcher Mandarin P0",
+  "primaryDirection": "Adult neutral Mandarin dispatcher, clear, restrained, slightly tired, low-mid tone, old train radio texture.",
+  "fallbackDirection": "Adult male low-mid Mandarin train announcer, dry and authoritative, still functional rather than cinematic.",
+  "selectedVoice": {
+    "voiceId": "SAz9YHcvj6GT2YYXdXww",
+    "name": "River - Relaxed, Neutral, Informative",
+    "category": "premade",
+    "selectionReason": "Neutral middle-aged calm voice was the closest available default voice to the approved dispatcher direction."
+  },
+  "searchKeywords": [
+    "calm",
+    "low",
+    "deep",
+    "radio",
+    "broadcast",
+    "announcer",
+    "narrator",
+    "serious",
+    "mature",
+    "command",
+    "Mandarin",
+    "Chinese"
+  ],
+  "rejectKeywords": [
+    "child",
+    "teen",
+    "asmr",
+    "whisper",
+    "sexy",
+    "scream",
+    "crying",
+    "trailer",
+    "villain",
+    "accented",
+    "comedic",
+    "dramatic"
+  ],
+  "auditionRules": [
+    "Mandarin pronunciation must remain clear after radio filtering.",
+    "Short alert lines must sound like system dispatch, not actor performance.",
+    "Avoid fear, seduction, comedy, trailer voice, and ad pressure.",
+    "Use one main voice for all P0 lines."
+  ],
+  "modelId": "eleven_multilingual_v2",
+  "languageCode": "zh",
+  "outputFormat": "mp3_44100_128",
+  "seed": 20260604,
+  "voiceSettings": {
+    "stability": 0.78,
+    "similarityBoost": 0.86,
+    "style": 0.06,
+    "useSpeakerBoost": true,
+    "speed": 0.91
+  },
+  "postProcess": {
+    "channels": 1,
+    "sampleRate": 44100,
+    "ffmpegFilter": "highpass=f=220,lowpass=f=3600,acompressor=threshold=-18dB:ratio=4:attack=8:release=80,volume=0.9",
+    "codec": "libvorbis",
+    "quality": 4
+  }
+}

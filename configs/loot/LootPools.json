@@ -1,0 +1,10 @@
+[
+  {
+    "id": "pool_supply_common_001",
+    "entries": [
+      { "rewardId": "reward_equipment_rifle_rusty_001", "weight": 55 },
+      { "rewardId": "reward_module_fragment_cannon_basic", "weight": 25 },
+      { "rewardId": "reward_coin_small", "weight": 20 }
+    ]
+  }
+]

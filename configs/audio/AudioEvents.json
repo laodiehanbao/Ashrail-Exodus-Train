@@ -1,0 +1,622 @@
+[
+  {
+    "eventId": "audio_ui_tap_metal",
+    "category": "ui",
+    "variants": [
+      {
+        "cueId": "sfx_ui_tap_metal_001",
+        "weight": 34
+      },
+      {
+        "cueId": "sfx_ui_tap_metal_002",
+        "weight": 26
+      },
+      {
+        "cueId": "sfx_ui_tap_metal_003",
+        "weight": 22
+      },
+      {
+        "cueId": "sfx_ui_tap_metal_004",
+        "weight": 18
+      }
+    ],
+    "cooldownMs": 35,
+    "maxPlaysPerWindow": 3,
+    "windowMs": 5000,
+    "priority": 70,
+    "isVoice": false,
+    "pitchVariance": {
+      "minSemitones": -0.8,
+      "maxSemitones": 0.8
+    },
+    "volumeVariance": {
+      "min": -0.03,
+      "max": 0.02
+    },
+    "panVariance": {
+      "min": 0,
+      "max": 0
+    },
+    "tags": [
+      "ui",
+      "tap",
+      "metal",
+      "p0p"
+    ]
+  },
+  {
+    "eventId": "audio_ui_confirm_steam",
+    "category": "ui",
+    "variants": [
+      {
+        "cueId": "sfx_ui_confirm_steam_001",
+        "weight": 45
+      },
+      {
+        "cueId": "sfx_ui_confirm_steam_002",
+        "weight": 30
+      },
+      {
+        "cueId": "sfx_ui_confirm_steam_003",
+        "weight": 25
+      }
+    ],
+    "cooldownMs": 90,
+    "maxPlaysPerWindow": 3,
+    "windowMs": 5000,
+    "priority": 72,
+    "isVoice": false,
+    "pitchVariance": {
+      "minSemitones": -0.4,
+      "maxSemitones": 0.4
+    },
+    "volumeVariance": {
+      "min": -0.03,
+      "max": 0.02
+    },
+    "panVariance": {
+      "min": 0,
+      "max": 0
+    },
+    "tags": [
+      "ui",
+      "confirm",
+      "steam",
+      "p0p"
+    ]
+  },
+  {
+    "eventId": "audio_lootbox_open_mech",
+    "category": "lootbox",
+    "variants": [
+      {
+        "cueId": "sfx_lootbox_open_mech_001",
+        "weight": 50
+      },
+      {
+        "cueId": "sfx_lootbox_open_mech_002",
+        "weight": 28
+      },
+      {
+        "cueId": "sfx_lootbox_open_mech_003",
+        "weight": 22
+      }
+    ],
+    "cooldownMs": 300,
+    "maxPlaysPerWindow": 3,
+    "windowMs": 5000,
+    "priority": 86,
+    "isVoice": false,
+    "pitchVariance": {
+      "minSemitones": -0.3,
+      "maxSemitones": 0.3
+    },
+    "volumeVariance": {
+      "min": -0.04,
+      "max": 0.02
+    },
+    "panVariance": {
+      "min": 0,
+      "max": 0
+    },
+    "tags": [
+      "lootbox",
+      "mechanical",
+      "open",
+      "p0p"
+    ]
+  },
+  {
+    "eventId": "audio_lootbox_reward_spark",
+    "category": "lootbox",
+    "variants": [
+      {
+        "cueId": "sfx_lootbox_reward_spark_001",
+        "weight": 32
+      },
+      {
+        "cueId": "sfx_lootbox_reward_spark_002",
+        "weight": 26
+      },
+      {
+        "cueId": "sfx_lootbox_reward_spark_003",
+        "weight": 22
+      },
+      {
+        "cueId": "sfx_lootbox_reward_spark_004",
+        "weight": 20
+      }
+    ],
+    "cooldownMs": 100,
+    "maxPlaysPerWindow": 3,
+    "windowMs": 5000,
+    "priority": 84,
+    "isVoice": false,
+    "pitchVariance": {
+      "minSemitones": -0.75,
+      "maxSemitones": 1
+    },
+    "volumeVariance": {
+      "min": -0.05,
+      "max": 0.04
+    },
+    "panVariance": {
+      "min": -0.08,
+      "max": 0.08
+    },
+    "tags": [
+      "lootbox",
+      "reward",
+      "spark",
+      "p0p"
+    ]
+  },
+  {
+    "eventId": "audio_combat_hit_iron",
+    "category": "combat",
+    "variants": [
+      {
+        "cueId": "sfx_combat_hit_iron_001",
+        "weight": 24
+      },
+      {
+        "cueId": "sfx_combat_hit_iron_002",
+        "weight": 22
+      },
+      {
+        "cueId": "sfx_combat_hit_iron_003",
+        "weight": 20
+      },
+      {
+        "cueId": "sfx_combat_hit_iron_004",
+        "weight": 18
+      },
+      {
+        "cueId": "sfx_combat_hit_iron_005",
+        "weight": 16
+      }
+    ],
+    "cooldownMs": 55,
+    "maxPlaysPerWindow": 8,
+    "windowMs": 1000,
+    "priority": 62,
+    "isVoice": false,
+    "pitchVariance": {
+      "minSemitones": -2,
+      "maxSemitones": 1.5
+    },
+    "volumeVariance": {
+      "min": -0.06,
+      "max": 0.04
+    },
+    "panVariance": {
+      "min": -0.12,
+      "max": 0.12
+    },
+    "tags": [
+      "combat",
+      "hit",
+      "iron",
+      "p0p"
+    ]
+  },
+  {
+    "eventId": "audio_combat_enemy_break",
+    "category": "combat",
+    "variants": [
+      {
+        "cueId": "sfx_combat_enemy_break_001",
+        "weight": 42
+      },
+      {
+        "cueId": "sfx_combat_enemy_break_002",
+        "weight": 33
+      },
+      {
+        "cueId": "sfx_combat_enemy_break_003",
+        "weight": 25
+      }
+    ],
+    "cooldownMs": 140,
+    "maxPlaysPerWindow": 8,
+    "windowMs": 1000,
+    "priority": 76,
+    "isVoice": false,
+    "pitchVariance": {
+      "minSemitones": -1.5,
+      "maxSemitones": 1
+    },
+    "volumeVariance": {
+      "min": -0.05,
+      "max": 0.03
+    },
+    "panVariance": {
+      "min": -0.15,
+      "max": 0.15
+    },
+    "tags": [
+      "combat",
+      "enemy",
+      "break",
+      "p0p"
+    ]
+  },
+  {
+    "eventId": "audio_train_module_upgrade",
+    "category": "train",
+    "variants": [
+      {
+        "cueId": "sfx_train_module_upgrade_001",
+        "weight": 50
+      },
+      {
+        "cueId": "sfx_train_module_upgrade_002",
+        "weight": 30
+      },
+      {
+        "cueId": "sfx_train_module_upgrade_003",
+        "weight": 20
+      }
+    ],
+    "cooldownMs": 420,
+    "maxPlaysPerWindow": 3,
+    "windowMs": 5000,
+    "priority": 88,
+    "isVoice": false,
+    "pitchVariance": {
+      "minSemitones": -0.25,
+      "maxSemitones": 0.25
+    },
+    "volumeVariance": {
+      "min": -0.04,
+      "max": 0.02
+    },
+    "panVariance": {
+      "min": 0,
+      "max": 0
+    },
+    "tags": [
+      "train",
+      "module",
+      "upgrade",
+      "p0p"
+    ]
+  },
+  {
+    "eventId": "audio_ad_reward_drop",
+    "category": "ad",
+    "variants": [
+      {
+        "cueId": "sfx_ad_reward_drop_001",
+        "weight": 65
+      },
+      {
+        "cueId": "sfx_ad_reward_drop_002",
+        "weight": 35
+      }
+    ],
+    "cooldownMs": 600,
+    "maxPlaysPerWindow": 3,
+    "windowMs": 5000,
+    "priority": 90,
+    "isVoice": false,
+    "pitchVariance": {
+      "minSemitones": -0.25,
+      "maxSemitones": 0.25
+    },
+    "volumeVariance": {
+      "min": -0.04,
+      "max": 0.03
+    },
+    "panVariance": {
+      "min": 0,
+      "max": 0
+    },
+    "tags": [
+      "ad",
+      "reward",
+      "drop",
+      "p0p"
+    ]
+  },
+  {
+    "eventId": "audio_stage_clear_whistle",
+    "category": "stage",
+    "variants": [
+      {
+        "cueId": "sfx_stage_clear_whistle_001",
+        "weight": 60
+      },
+      {
+        "cueId": "sfx_stage_clear_whistle_002",
+        "weight": 40
+      }
+    ],
+    "cooldownMs": 700,
+    "maxPlaysPerWindow": 3,
+    "windowMs": 5000,
+    "priority": 78,
+    "isVoice": false,
+    "pitchVariance": {
+      "minSemitones": -0.25,
+      "maxSemitones": 0.25
+    },
+    "volumeVariance": {
+      "min": -0.03,
+      "max": 0.02
+    },
+    "panVariance": {
+      "min": 0,
+      "max": 0
+    },
+    "tags": [
+      "stage",
+      "clear",
+      "whistle",
+      "placeholder",
+      "p0p"
+    ]
+  },
+  {
+    "eventId": "audio_train_loop_idle",
+    "category": "ambience",
+    "variants": [
+      {
+        "cueId": "sfx_train_loop_idle_001",
+        "weight": 55
+      },
+      {
+        "cueId": "sfx_train_loop_idle_002",
+        "weight": 45
+      }
+    ],
+    "cooldownMs": 0,
+    "maxPlaysPerWindow": 3,
+    "windowMs": 5000,
+    "priority": 30,
+    "isVoice": false,
+    "pitchVariance": {
+      "minSemitones": 0,
+      "maxSemitones": 0
+    },
+    "volumeVariance": {
+      "min": -0.02,
+      "max": 0.02
+    },
+    "panVariance": {
+      "min": 0,
+      "max": 0
+    },
+    "tags": [
+      "train",
+      "ambience",
+      "loop",
+      "placeholder",
+      "p0p"
+    ]
+  },
+  {
+    "eventId": "audio_voice_stage_depart",
+    "category": "voice",
+    "variants": [
+      {
+        "cueId": "vo_radio_stage_depart_zh_001",
+        "weight": 1
+      }
+    ],
+    "cooldownMs": 30000,
+    "maxPlaysPerWindow": 1,
+    "windowMs": 30000,
+    "priority": 82,
+    "isVoice": true,
+    "pitchVariance": {
+      "minSemitones": 0,
+      "maxSemitones": 0
+    },
+    "volumeVariance": {
+      "min": -0.02,
+      "max": 0.02
+    },
+    "panVariance": {
+      "min": 0,
+      "max": 0
+    },
+    "tags": [
+      "voice",
+      "elevenlabs",
+      "creator",
+      "zh",
+      "p0p"
+    ]
+  },
+  {
+    "eventId": "audio_voice_stage_clear",
+    "category": "voice",
+    "variants": [
+      {
+        "cueId": "vo_radio_stage_clear_zh_001",
+        "weight": 1
+      }
+    ],
+    "cooldownMs": 30000,
+    "maxPlaysPerWindow": 1,
+    "windowMs": 30000,
+    "priority": 82,
+    "isVoice": true,
+    "pitchVariance": {
+      "minSemitones": 0,
+      "maxSemitones": 0
+    },
+    "volumeVariance": {
+      "min": -0.02,
+      "max": 0.02
+    },
+    "panVariance": {
+      "min": 0,
+      "max": 0
+    },
+    "tags": [
+      "voice",
+      "elevenlabs",
+      "creator",
+      "zh",
+      "p0p"
+    ]
+  },
+  {
+    "eventId": "audio_voice_loot_rare",
+    "category": "voice",
+    "variants": [
+      {
+        "cueId": "vo_radio_loot_rare_zh_001",
+        "weight": 1
+      }
+    ],
+    "cooldownMs": 30000,
+    "maxPlaysPerWindow": 1,
+    "windowMs": 30000,
+    "priority": 82,
+    "isVoice": true,
+    "pitchVariance": {
+      "minSemitones": 0,
+      "maxSemitones": 0
+    },
+    "volumeVariance": {
+      "min": -0.02,
+      "max": 0.02
+    },
+    "panVariance": {
+      "min": 0,
+      "max": 0
+    },
+    "tags": [
+      "voice",
+      "elevenlabs",
+      "creator",
+      "zh",
+      "p0p"
+    ]
+  },
+  {
+    "eventId": "audio_voice_module_upgrade",
+    "category": "voice",
+    "variants": [
+      {
+        "cueId": "vo_radio_module_upgrade_zh_001",
+        "weight": 1
+      }
+    ],
+    "cooldownMs": 30000,
+    "maxPlaysPerWindow": 1,
+    "windowMs": 30000,
+    "priority": 82,
+    "isVoice": true,
+    "pitchVariance": {
+      "minSemitones": 0,
+      "maxSemitones": 0
+    },
+    "volumeVariance": {
+      "min": -0.02,
+      "max": 0.02
+    },
+    "panVariance": {
+      "min": 0,
+      "max": 0
+    },
+    "tags": [
+      "voice",
+      "elevenlabs",
+      "creator",
+      "zh",
+      "p0p"
+    ]
+  },
+  {
+    "eventId": "audio_voice_ad_reward",
+    "category": "voice",
+    "variants": [
+      {
+        "cueId": "vo_radio_ad_reward_zh_001",
+        "weight": 1
+      }
+    ],
+    "cooldownMs": 30000,
+    "maxPlaysPerWindow": 1,
+    "windowMs": 30000,
+    "priority": 82,
+    "isVoice": true,
+    "pitchVariance": {
+      "minSemitones": 0,
+      "maxSemitones": 0
+    },
+    "volumeVariance": {
+      "min": -0.02,
+      "max": 0.02
+    },
+    "panVariance": {
+      "min": 0,
+      "max": 0
+    },
+    "tags": [
+      "voice",
+      "elevenlabs",
+      "creator",
+      "zh",
+      "p0p"
+    ]
+  },
+  {
+    "eventId": "audio_voice_threat_warning",
+    "category": "voice",
+    "variants": [
+      {
+        "cueId": "vo_radio_threat_warning_zh_001",
+        "weight": 1
+      }
+    ],
+    "cooldownMs": 30000,
+    "maxPlaysPerWindow": 1,
+    "windowMs": 30000,
+    "priority": 82,
+    "isVoice": true,
+    "pitchVariance": {
+      "minSemitones": 0,
+      "maxSemitones": 0
+    },
+    "volumeVariance": {
+      "min": -0.02,
+      "max": 0.02
+    },
+    "panVariance": {
+      "min": 0,
+      "max": 0
+    },
+    "tags": [
+      "voice",
+      "elevenlabs",
+      "creator",
+      "zh",
+      "p0p"
+    ]
+  }
+]

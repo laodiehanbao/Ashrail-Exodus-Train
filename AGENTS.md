@@ -1,10 +1,26 @@
+# Project Generation Rules
+
+This file defines the project-level rules Codex must follow when working in this repository.
+
+Corresponding Chinese version: `AGENTS.zh-CN.md`. Keep both files synchronized when rules change.
+
+## Project
+
+- English name: Ashrail Exodus Train
+- Chinese name: 烬轨：流亡列车
+
+## Generation Rules
+
+- All code, content, design, and assets generated in this repository must follow this file.
+- After the project structure is established, prioritize consistency with existing files, naming, and style.
+- Generated content must fit the project title, overall atmosphere, and worldbuilding direction.
+- Do not overwrite user-authored content unless the user explicitly asks for it.
+- New rules should be specific, checkable, and easy to execute.
+
 # AGENTS.md
 
-This file constrains Codex / Claude Code / Cursor Agent / other code-generation agents when working on this project.
-
-Chinese maintained version: `AGENTS.zh-CN.md`. Keep both files synchronized when rules change.
-
-The goal is not to write a demo. The goal is to generate a mature mini-game project that can be expanded long-term, reskinned, tuned through data, connected to ads, and gradually merged into a larger UE5 game world.
+> This file constrains Codex / Claude Code / Cursor Agent / other code-generation agents when working on this project.
+> The goal is not to "write a demo", but to generate a mature mini-game project that can be expanded long-term, reskinned, tuned through data, connected to ads, and gradually merged into a larger UE5 game world.
 
 ---
 
@@ -21,105 +37,86 @@ It targets Douyin mini-games:
 
 ---
 
-## 1. General Agent Principles
+## 1. Project Positioning
 
-All AI code agents must follow these principles.
+Project name: 烬轨：流亡列车
+English name: Ashrail Exodus Train
 
-### 1.1 Read the Project Before Writing Code
+Project type:
 
-Before making any change, first inspect:
+```text
+Douyin mini-game
+2.5D lightweight auto combat
+Loot-box growth
+Idle rewards
+Modular train development
+Ad monetization
+Data-driven reskin framework
+```
 
-- Current directory structure.
-- Key README / AGENTS / DESIGN / TODO files.
-- Existing module naming.
-- Existing data tables, configuration files, and asset directories.
-- Existing code style.
+Initial launch target:
 
-Do not blindly create many files without understanding the existing structure.
-
-### 1.2 Do Not Write One-Off Demo Code
-
-Unless the task explicitly asks for a temporary validation, never:
-
-- Put all logic into one Actor / Blueprint / Manager.
-- Use large amounts of hard-coded values.
-- Write business logic directly inside UI.
-- Handle ads, drops, saves, or growth directly in character classes.
-- Copy-paste repeated logic.
-- Bypass architecture just to make a feature run.
-
-### 1.3 Interface First, Implementation Second
-
-Anything that may later change theme, gameplay, platform, or balance must be isolated through interfaces or a data layer.
-
-Always prioritize:
-
-- DataAsset / DataTable / JSON configuration.
-- Interface.
-- Component.
-- Subsystem.
-- Event / Delegate.
-- Clear Base Class.
-- Replaceable implementation.
-
-### 1.4 Generated Content Must Remain Extensible
-
-When implementing any new feature, consider:
-
-- Will new train carriages be added later?
-- Will new equipment rarities be added later?
-- Could the theme be changed to cultivation, cyberpunk, workplace, pirates, magic, or something else?
-- Will ads, payment, events, or seasons be integrated later?
-- Could this migrate into a larger UE5 3D project later?
-
-If the answer is "possibly", do not hard-code it.
+```text
+Quickly complete the core loop
+Adapt to the Douyin mini-game runtime environment
+Keep package size, loading, frame rate, ads, and saves stable
+Avoid one-off demo architecture
+Reserve future capacity for reskins, events, seasons, and long-term expansion
+```
 
 ---
 
-## 2. Core Experience
+## 2. Current Technical Architecture
 
-### 2.1 Player Fantasy
+### 2.1 Default Tech Stack
 
-The player controls a train constantly moving through an apocalyptic wasteland.
+```text
+Cocos Creator 3.8 LTS
+TypeScript
+Douyin mini-game build target
+Canvas / WebGL rendering
+JSON / CSV / TS Config data-driven setup
+Platform capabilities isolated through Service layer
+```
 
-The train is the base, the weapon, and the carrier of character growth.
+### 2.2 Platform Capabilities
 
-Through:
+All Douyin platform capabilities must be wrapped through interfaces. They must not be called directly from gameplay systems, UI components, or data models.
 
-- Opening boxes.
-- Scavenging junk.
-- Repelling zombie hordes / monsters / raiders.
-- Upgrading carriages.
-- Unlocking modules.
-- Combining equipment.
-- Watching ads to double rewards.
+Platform capabilities include:
 
-The player turns a broken train into a mobile apocalypse fortress.
+```text
+Ads
+Login
+User information
+Saves
+Sharing
+Payment reservation
+Analytics
+Leaderboard reservation
+Vibration
+Network status
+Version information
+```
 
-### 2.2 Target Satisfying Moments
+### 2.3 Project Boundaries
 
-When generating gameplay, agents must design around these satisfying moments:
+The main project should only generate code, assets, configuration, and documentation required by the current tech stack.
 
-1. **Power surges**: Numbers jump quickly and equipment is replaced often.
-2. **Loot-box anticipation**: Every box opening has color, sound, flash, affixes, and power changes.
-3. **Low cognitive load decisions**: The player mainly taps "equip / upgrade / combine / watch ad to double".
-4. **Phased pressure**: Zombie hordes, fuel shortage, carriage damage, and approaching bosses.
-5. **Comeback contrast**: From scrap junk to steel beast.
-6. **Light story, strong atmosphere**: Worldbuilding appears through short lines, events, and item descriptions, not long exposition.
-7. **Ads feel natural**: Ads must be framed as supply airdrops / mysterious merchants / emergency repairs / double loot.
+Do not generate unrelated client main-project directories, runtime structures, asset organization schemes, or platform-specific implementations that do not belong to the current tech stack.
 
 ---
 
 ## 3. Core Gameplay Loop
 
-All features should serve this loop.
+All systems must serve this loop:
 
 ```text
-Enter stage / idle cruise
+Enter cruise / stage
         ↓
-Encounter event / enemy / chest / ruin
+Encounter enemy / event / chest / ruin
         ↓
-Combat or automatic settlement
+Auto combat or light-interaction settlement
         ↓
 Gain resources / equipment / module fragments
         ↓
@@ -127,645 +124,420 @@ Open boxes / combine / upgrade / equip
         ↓
 Power increases / train strengthens / appearance changes
         ↓
-Challenge higher stages / unlock new carriages / new systems
+Challenge higher phases / unlock new carriages / new systems
         ↓
-Progression bottleneck appears
+Resource bottleneck or combat pressure appears
         ↓
-Ad doubling / temporary buffs / continued growth
+Ad doubling / temporary buff / offline rewards / continued growth
 ```
 
-Any new system that cannot fit into this loop must be added cautiously.
+If a new system cannot enter this loop, it must not be prioritized.
 
 ---
 
-## 4. Architecture Overview
+## 4. Directory Structure
 
-The project must be organized by these layers.
+### 4.1 Recommended Directory
 
 ```text
-Presentation Layer    UI, animation, audio, VFX, camera, floating text
-Gameplay Layer        Combat, loot boxes, train modules, enemies, events
-Progression Layer     Levels, equipment, resources, unlocks, stage goals
-Data Layer            DataAsset, DataTable, configuration, numeric curves
-Platform Layer        Ads, saves, login, analytics, payment reservation
-Core Layer            Event bus, utilities, common components, interfaces
+/project-root
+  /assets
+    /audio
+    /effects
+    /fonts
+    /icons
+    /prefabs
+    /scenes
+    /spine
+    /textures
+    /ui
+  /src
+    /app
+    /core
+    /data
+    /domain
+    /gameplay
+    /presentation
+    /platform
+    /shared
+    /tools
+  /configs
+    /balance
+    /loot
+    /stages
+    /themes
+    /ads
+  /docs
+    AGENTS.md
+    DESIGN_CORE_LOOP.md
+    DESIGN_NUMERIC_CURVES.md
+    DESIGN_LOOT_SYSTEM.md
+    DESIGN_TRAIN_MODULES.md
+    DESIGN_AD_PLACEMENTS.md
+    TECH_ARCHITECTURE.md
+    PERFORMANCE_BUDGET.md
+    PACKAGE_SPLIT_RULES.md
+    TODO_ROADMAP.md
+    CHANGELOG.md
+  /tests
+    /simulations
+    /unit
+    /integration
 ```
 
-Presentation Layer must not directly modify Data Layer.
+### 4.2 `src` Layers
 
-UI must not directly decide drops, combat, or ad rewards.
+```text
+app             Startup, global initialization, scene composition
+core            Event bus, lifecycle, logging, utilities, base containers
+data            Config loading, schema validation, data repositories, remote config reservation
+domain          Pure business models: player, resources, equipment, train, stages, rewards
+gameplay        Gameplay systems: combat, loot boxes, upgrades, stages, events, offline rewards
+presentation    UI, animation, floating text, audio, camera, presentation control
+platform        Ads, saves, login, sharing, analytics, platform API adapters
+shared          Common types, constants, enums, error codes
+tools           Numeric simulation, config validation, package checks, debug tools
+```
 
-Platform Layer must not pollute gameplay core in reverse.
+### 4.3 Directory Hard Constraints
+
+The following directories or names are forbidden:
+
+```text
+new
+old
+temp
+test123
+manager
+manager2
+final
+final2
+all
+misc
+backup
+copy
+随便放
+```
+
+Before adding a file, first determine which layer it belongs to. If the ownership is unclear, add or update design documentation first instead of creating a random directory.
 
 ---
 
-## 5. Recommended Directory Structure
+## 5. Naming Conventions
 
-### 5.1 UE5 Project Structure
-
-```text
-/Source
-  /DoomTrain
-    /Core
-      DTTypes.h
-      DTGameplayTags.h
-      DTLogChannels.h
-      DTAssetManager.h
-    /Interfaces
-      DTInteractableInterface.h
-      DTDamageableInterface.h
-      DTRewardSourceInterface.h
-      DTUpgradeableInterface.h
-    /Components
-      DTHealthComponent.h
-      DTCombatStatsComponent.h
-      DTInventoryComponent.h
-      DTTrainSocketComponent.h
-      DTRewardComponent.h
-    /Data
-      DTTrainModuleDataAsset.h
-      DTEquipmentDataAsset.h
-      DTEnemyDataAsset.h
-      DTStageDataAsset.h
-      DTRewardTableDataAsset.h
-      DTAdPlacementDataAsset.h
-    /Train
-      DTTrainActor.h
-      DTTrainCarriageBase.h
-      DTBuildableModuleBase.h
-      DTTrainModuleManagerComponent.h
-    /Combat
-      DTCombatResolver.h
-      DTEnemyBase.h
-      DTProjectileBase.h
-      DTWaveDirectorComponent.h
-    /Loot
-      DTLootBoxSystem.h
-      DTLootGenerator.h
-      DTRewardInstance.h
-    /Progression
-      DTPlayerProgressSubsystem.h
-      DTStageProgressSubsystem.h
-      DTUpgradeSystem.h
-    /Events
-      DTWorldEventSystem.h
-      DTEncounterDirector.h
-    /UI
-      DTMainHUD.h
-      DTLootBoxWidget.h
-      DTTrainUpgradeWidget.h
-    /Platform
-      DTAdServiceInterface.h
-      DTMockAdService.h
-      DTSaveGameSubsystem.h
-      DTAnalyticsService.h
-```
-
-### 5.2 Content Structure
+### 5.1 TypeScript File Naming
 
 ```text
-/Content/DoomTrain
-  /Blueprints
-    /Train
-    /Enemies
-    /Modules
-    /UI
-  /Data
-    /TrainModules
-    /Equipment
-    /Enemies
-    /Stages
-    /Rewards
-    /Ads
-    /Balance
-  /Art
-    /Characters
-    /Train
-    /Environment
-    /VFX
-    /UI
-  /Animation
-    /Train
-    /Enemies
-    /UI
-  /Audio
-    /SFX
-    /Music
-  /Maps
-    L_Prototype
-    L_MainLoop
-    L_CombatTest
+PascalCase.ts       Classes, systems, services, controllers
+camelCase.ts        Pure utility functions
+*.types.ts          Type definitions
+*.schema.ts         Config schemas
+*.config.ts         Static config entry points
+*.constants.ts      Constants
+*.events.ts         Event definitions
+*.test.ts           Tests
+*.sim.ts            Simulation scripts
 ```
 
----
-
-## 6. Naming Conventions
-
-### 6.1 C++ Naming
-
-| Type | Prefix | Example |
-|---|---:|---|
-| Actor | A | `ADTTrainActor` |
-| UObject | U | `UDTLootGenerator` |
-| Component | U | `UDTHealthComponent` |
-| Interface | I / U | `IDTRewardSourceInterface` |
-| Struct | F | `FDTRewardEntry` |
-| Enum | E | `EDTEquipmentRarity` |
-| Widget | U | `UDTLootBoxWidget` |
-
-### 6.2 Blueprint Naming
-
-| Type | Prefix | Example |
-|---|---:|---|
-| Blueprint Actor | BP_ | `BP_TrainActor` |
-| Widget Blueprint | WBP_ | `WBP_LootBoxPanel` |
-| DataAsset | DA_ | `DA_Module_Cannon_Lv01` |
-| DataTable | DT_ | `DT_EquipmentPool_Common` |
-| Material | M_ | `M_TrainRustyMetal` |
-| Material Instance | MI_ | `MI_TrainRustyMetal_01` |
-| Niagara | NS_ | `NS_LootBox_OpenFlash` |
-| Animation | AN_ | `AN_Enemy_Zombie_Attack` |
-
----
-
-## 7. Data-Driven Rules
-
-### 7.1 Content That Must Not Be Hard-Coded
-
-The following must not be hard-coded:
-
-- Equipment names.
-- Equipment rarities.
-- Drop probabilities.
-- Enemy HP.
-- Enemy attack.
-- Stage waves.
-- Stage goals.
-- Ad reward multipliers.
-- Chest prices.
-- Upgrade costs.
-- Train module unlock conditions.
-- Skin/theme text.
-- UI display copy.
-
-These must live in:
-
-- DataAsset.
-- DataTable.
-- JSON.
-- CSV.
-- Hot-updateable configuration.
-- Balance sheets.
-
-### 7.2 Core Data Types
-
-The following data assets must be reserved.
-
-```cpp
-UCLASS(BlueprintType)
-class UDTTrainModuleDataAsset : public UPrimaryDataAsset
-{
-    GENERATED_BODY()
-
-public:
-    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-    FName ModuleId;
-
-    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-    FText DisplayName;
-
-    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-    FText Description;
-
-    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-    EDTTrainModuleType ModuleType;
-
-    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-    int32 UnlockStage;
-
-    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-    float BasePower;
-
-    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-    TMap<FName, float> StatModifiers;
-};
-```
-
-### 7.3 Numeric Tables Must Be Layered
-
-Numeric configuration must be split at least into:
+Examples:
 
 ```text
-BaseCurve      Base curve: levels, stages, enemy strength
-EconomyCurve   Economy curve: coins, materials, fuel, upgrade costs
-DropCurve      Drop curve: rarity probabilities, equipment pools, chest returns
-AdCurve        Ad curve: ad reward multipliers, daily limits, trigger timing
-StageCurve     Stage curve: chapter goals, bosses, bottleneck design
+TrainModuleSystem.ts
+LootBoxSystem.ts
+RewardService.ts
+AdService.types.ts
+LootBox.schema.ts
+StageBalance.config.ts
+combatPower.sim.ts
 ```
 
-Do not put all values into one table.
-
----
-
-## 8. Reskin Framework
-
-The underlying project must be reskinnable into other themes.
-
-### 8.1 Theme / Skin Data
-
-Use Theme / Skin configuration to isolate presentation.
+### 5.2 Class and Interface Naming
 
 ```text
-ThemeId: DoomTrain
-DisplayName: 末日列车
-CoreVehicleName: 列车
-CurrencyName: 废铁
-PremiumCurrencyName: 能源核心
-LootBoxName: 补给箱
-EnemyGroupName: 尸潮
-AdRewardName: 空投补给
+IAdService
+ISaveService
+IAnalyticsService
+LootBoxSystem
+LootGenerator
+RewardService
+TrainModuleSystem
+CombatResolver
+StageProgressService
+PlayerProgressRepository
 ```
 
-Future replacement example:
+### 5.3 ID Naming
+
+All business IDs must use stable strings. Do not use display text as IDs.
 
 ```text
-ThemeId: Cultivation
-CoreVehicleName: 洞府
-CurrencyName: 灵石
-LootBoxName: 机缘宝匣
-EnemyGroupName: 妖潮
-AdRewardName: 天降机缘
-```
-
-Therefore, code must not directly write fixed copy such as "train", "zombie horde", or "supply box".
-
-Read such text from Theme configuration.
-
-### 8.2 Reskin Boundaries
-
-Reskinnable content:
-
-- Names.
-- Copy.
-- UI skins.
-- Character models.
-- Enemy models.
-- Equipment icons.
-- Resource names.
-- Audio.
-- VFX.
-- Story event text.
-
-Core systems that should not be casually reskinned:
-
-- Growth curves.
-- Loot-box pacing.
-- Ad pacing.
-- Reward settlement.
-- Train module system abstraction.
-- Combat settlement interfaces.
-
----
-
-## 9. Train Module System
-
-### 9.1 Core Abstraction
-
-The train consists of multiple carriages and modules.
-
-```text
-TrainActor
-  ├─ Carriage_Head
-  ├─ Carriage_Cargo
-  ├─ Carriage_Weapon
-  ├─ Carriage_Engine
-  └─ Carriage_Defense
-        ├─ Socket_Front
-        ├─ Socket_Top
-        └─ Socket_Back
-```
-
-Each module must be an independent object and must not be hard-coded directly into the Train Actor.
-
-### 9.2 Recommended Classes
-
-```text
-ADTTrainActor
-ADTTrainCarriageBase
-ADTBuildableModuleBase
-UDTTrainSocketComponent
-UDTTrainModuleManagerComponent
-UDTTrainModuleDataAsset
-```
-
-### 9.3 Module Types
-
-Initially support at least:
-
-```text
-Weapon       Weapon modules: machine gun, cannon, railgun, flamethrower
-Defense      Defense modules: armor plate, shield, repair bot
-Economy      Economy modules: recycler, furnace, warehouse
-Engine       Engine modules: engine, fuel furnace, thruster
-Utility      Utility modules: radar, lucky antenna, ad airdrop beacon
-Decoration   Cosmetic modules: flags, signs, paint jobs
-```
-
-### 9.4 Module Interface
-
-Modules must support:
-
-```text
-Install
-Uninstall
-Upgrade
-GetPowerScore
-GetStatModifiers
-OnCombatStart
-OnCombatTick
-OnCombatEnd
-OnStageStart
-OnStageEnd
-```
-
-Modules must not exist only in the UI or visual layer.
-
----
-
-## 10. Loot-Box System
-
-### 10.1 Loot-Box Flow
-
-```text
-Request box opening
-  ↓
-Check keys / currency / free attempts
-  ↓
-Read loot-box data
-  ↓
-Generate drop results
-  ↓
-Play opening animation
-  ↓
-Show rewards
-  ↓
-Compare power improvement
-  ↓
-One-tap equip / dismantle / combine
-  ↓
-Trigger ad doubling or extra box opening
-```
-
-### 10.2 Loot-Box System Must Be Split
-
-```text
-UDTLootBoxSystem        Entry point and flow control
-UDTLootGenerator        Drop generation
-UDTRewardComponent      Reward granting
-UDTInventoryComponent   Inventory receiving
-UDTLootBoxWidget        UI display
-UDTAdServiceInterface   Ad doubling
-```
-
-### 10.3 Drop Rules
-
-Drops must support:
-
-- Weighted random.
-- Pity / guarantee.
-- Stage unlock.
-- Rarity pools.
-- Role/function pools.
-- Duplicate conversion.
-- Extra ad rewards.
-- Reserved event pools.
-- Special beginner pools.
-- Debug fixed drops.
-
----
-
-## 11. Combat System
-
-### 11.1 Initial Combat Form
-
-The initial version can use lightweight auto combat.
-
-```text
-Train moves forward automatically
-  ↓
-Enemies appear from the right / above / ruins
-  ↓
-Weapon modules attack automatically
-  ↓
-Player taps skills / picks supplies / triggers ad buffs
-  ↓
-Wave defeated
-  ↓
-Rewards settle
-```
-
-### 11.2 Combat Implementation Principles
-
-The initial implementation may be lightweight, but extension interfaces must remain.
-
-Initially allowed:
-
-- Auto targeting.
-- Simple collision.
-- Health components.
-- Attack intervals.
-- Wave spawning.
-- Numeric settlement.
-
-Must reserve:
-
-- Enemy AI.
-- Boss skills.
-- Carriage part damage.
-- Weapon projectiles.
-- Elemental damage.
-- Status effects.
-- Stage events.
-- World-map migration.
-
-### 11.3 Not Allowed
-
-Do not implement combat as:
-
-```text
-UI button click → directly grant coins → directly upgrade
-```
-
-Even as a mini-game, system boundaries among combat, rewards, and growth must be preserved.
-
----
-
-## 12. Stage Goal Design
-
-Stages must have clear goals, not just infinite numeric growth.
-
-### 12.1 Stage Segments
-
-```text
-Stage 1-10      Broken-train survival: fast equipment replacement and frequent upgrades
-Stage 11-30     Stable cruise: unlock carriages and start module combinations
-Stage 31-60     Horde pressure: bosses, repairs, and fuel pressure appear
-Stage 61-100    Fortress formation: multi-module synergy and stronger ad rewards
-Stage 101+      Endless expedition: leaderboard, seasons, events, skins
-```
-
-### 12.2 Each Stage Must Include At Least
-
-```text
-Goal description
-Enemy strength
-Reward pool
-Unlock content
-Ad trigger points
-Visual changes
-Boss or special event
-Bottleneck design
+module_cannon_basic_001
+lootbox_supply_common
+stage_chapter_01_005
+equipment_rifle_rusty_001
+ad_reward_stage_clear_double
+theme_doom_train
 ```
 
 ---
 
-## 13. Numeric Inflation Rules
+## 6. Declare First, Implement Second
 
-### 13.1 Numeric Experience Goal
+### 6.1 TypeScript Rules
 
-Values should feel satisfying without becoming completely uncontrolled.
-
-Recommended pacing:
+Before implementing any core system, first create:
 
 ```text
-First 5 minutes: one clear improvement every 10-20 seconds
-First 30 minutes: unlock something new every 1-3 minutes
-Day 1: at least 3 major power jumps
-Day 3: build choices start appearing
-Day 7: long-term systems or season goals open
+Type definitions
+Interface definitions
+Config schema
+Event definitions
+Input/output structures
+Error codes
 ```
 
-### 13.2 Power Calculation Principles
-
-Power can be exaggerated, but must remain explainable.
+Recommended order:
 
 ```text
-PowerScore = BaseStats
-           + EquipmentPower
-           + TrainModulePower
-           + UpgradePower
-           + CollectionBonus
-           + TemporaryBuff
+1. *.types.ts
+2. *.schema.ts
+3. *.events.ts
+4. Interface
+5. System / Service / Controller
+6. UI / View / Animation
+7. Test / Simulation
+8. Docs
 ```
 
-UI may show simplified power, but internals must preserve the components.
+Do not start business logic directly from a UI button.
 
-### 13.3 Ad Bottlenecks
+### 6.2 C++ / Native Module Rules
 
-Ad points must appear naturally:
+If C++, native extensions, or a separate large project are added later, they must follow:
 
 ```text
-After reward settlement: watch ad ×2
-On failure revive: watch ad to repair train
-After free box: watch ad to open one more
-Almost enough resources for upgrade: watch ad to fill the gap
-Before boss: watch ad for temporary fire support
-Returning from idle: watch ad to claim offline income ×2
+Write .h / .hpp first
+Then write .cpp
+Define interfaces and data structures first
+Then write concrete implementations
 ```
 
-Do not force ads in a way that breaks the core experience.
-
-Ad logic must be isolated through `UDTAdServiceInterface` or an equivalent interface.
+Do not pile up implementation files first and backfill interfaces afterward.
 
 ---
 
-## 14. Animation and Presentation Rules
+## 7. Layered Dependency Rules
 
-### 14.1 Animation Priority
-
-Even a mini-game must have layered presentation.
-
-Prioritize:
-
-1. Loot-box flash.
-2. Equipment rarity colors.
-3. Power-increase floating text.
-4. Train shake.
-5. Hit feedback.
-6. Enemy death burst.
-7. Carriage upgrade visual changes.
-8. Ad reward presentation as airdrop / radio / merchant.
-
-### 14.2 Animation Implementation
-
-Choose based on available assets:
+### 7.1 Allowed Dependency Direction
 
 ```text
-UI animation: UMG Animation / Tween / Timeline
-Character animation: Skeletal Mesh / Sprite Flipbook / PaperZD
-Train animation: component movement, shake, lights, particles, material parameters
-Attack animation: Niagara, Projectile, Hit Flash, Camera Shake
-Loot-box animation: Widget Animation + Niagara + Sound Cue
+presentation → gameplay → domain
+presentation → platform interface
+app → all layers for composition only
+gameplay → data / domain / platform interface
+platform implementation → platform interface
 ```
 
-### 14.3 Presentation Must Not Pollute Logic
+### 7.2 Forbidden Dependency Direction
 
-After animation finishes, it may only notify the business layer through events.
+```text
+domain must not depend on UI
+domain must not depend on platform APIs
+gameplay must not directly call tt APIs
+UI must not directly modify saves
+UI must not directly calculate drops
+UI must not directly decide combat outcomes
+Ad implementation must not pollute gameplay layer
+Presentation animation must not directly grant rewards
+```
+
+### 7.3 Event Communication
+
+Cross-system communication should prefer events or explicit Service calls.
 
 Recommended:
 
 ```text
-PlayLootBoxAnimation(RewardData)
-OnLootBoxAnimationFinished.Broadcast(RewardData)
+RewardGrantedEvent
+PowerChangedEvent
+LootBoxOpenedEvent
+AdRewardCompletedEvent
+StageClearedEvent
+TrainModuleUpgradedEvent
 ```
 
-Forbidden:
-
-```text
-Animation blueprint directly grants rewards to the player
-```
+Do not import concrete implementation classes everywhere and create circular dependencies.
 
 ---
 
-## 15. UI Rules
+## 8. Data-Driven Rules
 
-### 15.1 UI Only Handles Display and Input
+### 8.1 No Hard-Coding
 
-UI may:
-
-- Display data.
-- Play animation.
-- Receive clicks.
-- Send requests.
-- Listen to events.
-- Show results.
-
-UI must not:
-
-- Calculate drops.
-- Decide combat outcomes.
-- Modify core saves directly.
-- Write ad logic directly.
-- Hard-code economy values.
-
-### 15.2 UI Data Binding
-
-UI must get data through ViewModel / Presenter / Widget Controller.
-
-Recommended:
+The following content must not be hard-coded:
 
 ```text
-UDTMainHUDViewModel
-UDTLootBoxViewModel
-UDTTrainUpgradeViewModel
-UDTRewardPopupViewModel
+Equipment names
+Equipment rarities
+Drop probabilities
+Enemy HP
+Enemy attack
+Stage waves
+Stage goals
+Ad reward multipliers
+Chest prices
+Upgrade costs
+Train carriage/module unlock conditions
+Skin/theme text
+UI display copy
 ```
+
+They must live in:
+
+```text
+JSON
+CSV
+TS Config
+Remote config reservation
+Numeric tables
+Theme tables
+```
+
+### 8.2 Config Must Be Validated
+
+All configs must have a schema or validation function.
+
+When config loading fails:
+
+```text
+Output a clear error
+Prevent entering an invalid state
+Use safe defaults or abort startup
+Do not fail silently
+```
+
+### 8.3 Numeric Tables Must Be Layered
+
+```text
+BaseCurve       Base curve: levels, stages, enemy strength
+EconomyCurve    Economy curve: coins, materials, fuel, upgrade costs
+DropCurve       Drop curve: rarity probabilities, equipment pools, chest returns
+AdCurve         Ad curve: ad reward multipliers, daily limits, trigger timing
+StageCurve      Stage curve: chapter goals, bosses, bottleneck design
+ThemeConfig     Reskin config: names, copy, assets, colors, audio
+```
+
+Do not put all numeric values into one giant table.
 
 ---
 
-## 16. Save Rules
+## 9. Core System Splits
 
-### 16.1 Save Contents
+### 9.1 Loot-Box System
+
+Must be split into:
+
+```text
+LootBoxSystem       Loot-box flow entry point
+LootGenerator       Drop generation
+RewardService       Reward granting
+InventoryService    Inventory receiving
+AdService           Ad bonus
+LootBoxView         UI display
+LootBoxAnimator     Loot-box presentation
+```
+
+UI must not generate drop results.
+
+### 9.2 Combat System
+
+Must be split into:
+
+```text
+CombatResolver      Combat settlement
+EnemySpawner        Enemy spawning
+WaveDirector        Wave control
+DamageCalculator    Damage calculation
+TrainCombatModel    Train combat state
+CombatView          Combat presentation
+```
+
+Initial combat may be simplified, but system boundaries must remain clean.
+
+### 9.3 Train Module System
+
+Must be split into:
+
+```text
+TrainModel              Train business data
+TrainModuleSystem       Module install, uninstall, upgrade
+TrainModuleRepository   Module config loading
+TrainView               Train presentation
+TrainSocketView         Module socket presentation
+```
+
+Modules must not exist only in UI or textures.
+
+### 9.4 Ad System
+
+Must be split into:
+
+```text
+IAdService
+MockAdService
+DouyinAdService
+AdPlacementConfig
+AdRewardService
+AdLimitService
+```
+
+Ad failure, cancellation, no-fill, and timeout must all be handled.
+
+### 9.5 Save System
+
+Must be split into:
+
+```text
+ISaveService
+LocalSaveService
+DouyinSaveService
+SaveVersionMigrator
+PlayerProgressRepository
+```
+
+Saves must have a version number and migration logic.
+
+---
+
+## 10. Douyin Mini-Game Platform Rules
+
+### 10.1 Platform API Rules
+
+Platform APIs are only allowed in:
+
+```text
+/src/platform
+```
+
+Other layers may only depend on interfaces.
+
+### 10.2 Ad Rules
+
+Ad placements must be configurable:
+
+```text
+placementId
+triggerScene
+rewardType
+rewardMultiplier
+dailyLimit
+cooldownSeconds
+fallbackReward
+```
+
+Ads must not be forced in a way that breaks the main loop.
+
+### 10.3 Save Rules
 
 At least save:
 
@@ -777,209 +549,311 @@ Train module state
 Equipment inventory
 Unlocked systems
 Ad count records
-Offline income timestamp
+Offline reward timestamp
 Tutorial progress
-Selected theme skin
+Theme skin selection
+Save version number
 ```
 
-### 16.2 Save Principles
+### 10.4 Weak-Network Rules
 
 Must support:
 
-- Version number.
-- Default values.
-- Migration.
-- Backward compatibility.
-- Local mock.
-- Reserved future cloud-save support.
-
-Do not bind save format to UI.
-
----
-
-## 17. Platform and Ad Interfaces
-
-### 17.1 Ad Service Interface
-
-All ad calls must go through an interface.
-
-```cpp
-class IDTAdServiceInterface
-{
-public:
-    virtual bool IsRewardedAdReady(FName PlacementId) const = 0;
-    virtual void ShowRewardedAd(FName PlacementId, FOnAdRewardGranted Callback) = 0;
-};
-```
-
-### 17.2 Placement Configuration
-
-Ad placements must be configurable.
-
 ```text
-PlacementId
-DisplayName
-TriggerScene
-RewardType
-RewardMultiplier
-DailyLimit
-CooldownSeconds
-FailFallbackReward
-```
-
-### 17.3 Mock Implementation
-
-Development must have a MockAdService.
-
-Do not block gameplay development just because the real platform SDK is unavailable.
-
----
-
-## 18. AI Agent Workflow
-
-For every task, the agent must follow this workflow.
-
-### 18.1 Analysis Stage
-
-First answer internally:
-
-```text
-Which layer does this feature belong to?
-Is there an existing similar module?
-Does it need data configuration?
-Does it affect saves?
-Does it affect UI?
-Does it affect animation?
-Does it affect ads?
-Does it need tests?
-```
-
-### 18.2 Implementation Stage
-
-Proceed in order:
-
-```text
-1. Modify or add data structures
-2. Add interfaces or components
-3. Implement core logic
-4. Connect UI / presentation
-5. Connect saves / events
-6. Add tests or debug entry points
-7. Update documentation
-```
-
-Do not start by hard-coding logic in UI.
-
-### 18.3 Output Stage
-
-After every completion, explain:
-
-```text
-Which files changed
-Which systems were added
-How to test
-Follow-up TODOs
-Any technical debt
-Any intentional simplifications
+Safe degradation when ads are unavailable
+Use local default config when remote config fails
+Do not corrupt saves during network exceptions
+Reward settlement must be idempotent
 ```
 
 ---
 
-## 19. Code Quality Hard Constraints
+## 11. Package Size and Asset Rules
 
-### 19.1 Single-File Limits
+### 11.1 Main Package Principles
 
-Except for data tables and generated content, ordinary code files should generally stay within:
+The main package should only contain:
 
 ```text
-Single .h file: no more than 300 lines
-Single .cpp file: no more than 600 lines
-Single Widget: must not own more than 1 core system
-Single Actor: must not own more than 1 primary responsibility
+Startup code
+First-screen UI
+First playable segment
+Base fonts
+Base audio
+Core config
+Required atlases
 ```
 
-Split files when limits are exceeded.
+### 11.2 Subpackages and Remote Assets
 
-### 19.2 Function Limits
-
-Functions must be short and clear.
+The following should preferably go into subpackages or remote assets:
 
 ```text
-Single function should generally stay under 80 lines
+Later chapters
+Event assets
+Skin assets
+Long audio
+Large images
+High-frame-rate animation
+Promotional material
+Non-day-one gameplay assets
+```
+
+### 11.3 Asset Naming
+
+```text
+tex_train_head_rust_001.png
+icon_equipment_rifle_common_001.png
+sfx_lootbox_open_001.mp3
+spine_enemy_zombie_basic_001
+prefab_train_module_cannon_basic
+```
+
+### 11.4 Forbidden Asset Behavior
+
+Forbidden:
+
+```text
+Uncompressed large images directly in the main package
+Long audio directly in the main package
+Repeatedly importing the same asset
+Keeping png, jpg, and psd copies of the same image as formal runtime assets
+Submitting source project files as runtime assets
+Submitting recordings, screenshots, temporary archives into the repository
+```
+
+---
+
+## 12. Git and `.gitignore` Rules
+
+### 12.1 Must Ignore
+
+`.gitignore` must cover:
+
+```text
+node_modules/
+build/
+dist/
+out/
+temp/
+.tmp/
+logs/
+.cache/
+.DS_Store
+*.log
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.keystore
+```
+
+### 12.2 Common Cocos Ignore Items
+
+```text
+library/
+local/
+temp/
+build/
+profiles/
+```
+
+If the actual generated directories differ by engine version, supplement them according to the real project.
+
+### 12.3 Heavy File Rules
+
+The following files should not enter a normal Git repository by default:
+
+```text
+.psd
+.blend
+.fbx
+.wav
+.mp4
+.mov
+.zip
+.rar
+.7z
+Large source project files
+Batch screenshots
+Screen recordings
+AI generation process files
+```
+
+If they must be kept, at least one condition must be met:
+
+```text
+Use Git LFS
+Place them in an external asset repository
+Place them in cloud storage and record the link in docs
+Compress them to a controlled size
+Convert them to runtime-required formats
+```
+
+### 12.4 Repeated Upload Limit
+
+Do not repeatedly upload the same batch of heavy files in a short time.
+
+Do not repeatedly upload:
+
+```text
+node_modules
+build artifacts
+library cache
+dist artifacts
+uncompressed large image packs
+long audio packs
+recording packs
+duplicate zip packs
+```
+
+Before uploading, check:
+
+```text
+Whether it already exists in the repository
+Whether it is only build cache
+Whether it can be regenerated by installing dependencies
+Whether it should go through Git LFS
+Whether it should go into an external asset repository
+Whether it will slow down Codex reading and searching
+```
+
+---
+
+## 13. Code Quality Hard Constraints
+
+### 13.1 Single-File Limits
+
+```text
+Ordinary .ts files should generally stay under 300 lines
+Complex systems over 300 lines must be split
+A single UI component must not own multiple core systems
+A single Service should own only one business domain
+A single function should generally stay under 80 lines
 Complex conditions must be split into named functions
-No nesting deeper than 5 levels
-No large copy-pasted blocks
+Do not nest deeper than 5 levels
 ```
 
-### 19.3 Logging and Debugging
+### 13.2 No God Object
 
-Use unified log categories.
+Forbidden:
 
-```cpp
-UE_LOG(LogDoomTrainLoot, Log, TEXT("Generated reward: %s"), *RewardId.ToString());
+```text
+GameManager controls all systems
+MainScene contains all logic
+PlayerController handles ads, saves, drops, and combat
+UI Button directly modifies resources and saves
+One file contains a dozen systems
 ```
 
-Do not keep meaningless logs long-term:
+### 13.3 Logging Rules
 
-```cpp
-UE_LOG(LogTemp, Warning, TEXT("111"));
+Use the unified logging module.
+
+Recommended:
+
+```text
+Log.info('loot', 'Generated reward', data)
+Log.warn('ad', 'Rewarded ad unavailable', context)
+Log.error('save', 'Save migration failed', error)
+```
+
+Do not keep long-term:
+
+```text
+console.log('111')
+console.log('test')
+alert debugging
+Uncategorized log spam
 ```
 
 ---
 
-## 20. Blueprint Usage Rules
+## 14. Presentation Layer Rules
 
-### 20.1 What Blueprint Is Good For
+### 14.1 Presentation Priority
 
-Blueprint may handle:
-
-- Visual assembly.
-- Animation events.
-- Simple interactions.
-- Debug panels.
-- Asset references.
-- VFX playback.
-- Level placement.
-
-### 20.2 What Blueprint Should Not Own
-
-Blueprint should not own:
-
-- Core drop algorithms.
-- Main combat loop.
-- Save format.
-- Complex economy systems.
-- Ad platform adaptation.
-- Heavy numeric calculation.
-
-### 20.3 C++ and BP Responsibilities
+Prioritize:
 
 ```text
-C++: rules, data, systems, interfaces, saves, complex logic
-BP: presentation, assets, composition, animation, tuning, level instances
+Loot-box flash
+Equipment rarity colors
+Power-increase floating text
+Train shake
+Hit feedback
+Enemy death burst
+Carriage upgrade visual changes
+Ad reward airdrop presentation
+```
+
+### 14.2 Presentation Must Not Pollute Logic
+
+Animation may only play presentation and emit events.
+
+Recommended:
+
+```text
+playLootBoxAnimation(rewardPreview)
+onLootBoxAnimationFinished.emit(result)
+```
+
+Forbidden:
+
+```text
+Animation callback directly modifies saves
+Animation script directly generates drops
+Animation script directly calls ads
 ```
 
 ---
 
-## 21. Testing and Verification
+## 15. UI Rules
 
-### 21.1 Debug Entry Points Required
-
-Every core system must be testable independently.
+UI may:
 
 ```text
-Loot-box test: fixed box ID, open 100 times, output rarity distribution
+Display data
+Play animation
+Receive clicks
+Send requests
+Listen to events
+Show results
+```
+
+UI may not:
+
+```text
+Calculate drops
+Decide combat outcomes
+Modify core saves
+Write ad logic directly
+Hard-code economy values
+Bypass Services to modify business models
+```
+
+UI must obtain data through ViewModel / Presenter / Controller.
+
+---
+
+## 16. Testing and Simulation
+
+### 16.1 Every Core System Must Be Testable
+
+```text
+Loot-box test: fixed box ID, open 1000 times, output rarity distribution
 Combat test: specified enemies and modules, simulate 60 seconds of DPS
-Economy test: simulate player resource growth for first 30 minutes
-Ad test: mock ad success / failure / cancellation
-Save test: save, load, version migration
+Economy test: simulate resource growth for the first 30 minutes
+Ad test: success / failure / cancellation / no-fill
+Save test: save, load, version migration, exception recovery
+Package test: check main package and asset sizes
 ```
 
-### 21.2 Numeric Simulation
+### 16.2 Numeric Systems Must Have Simulations
 
-When a task involves numeric curves, the agent should prioritize generating simulation scripts or test functions.
+When numeric curves are involved, prioritize generating simulation scripts.
 
-Recommended output:
+Output at least:
 
 ```text
 Power per minute
@@ -992,28 +866,56 @@ Resource gaps
 
 ---
 
-## 22. Documentation Rules
+## 17. Agent Workflow
 
-The project must maintain these documents.
+### 17.1 Before Modifying
+
+Agent must first inspect:
 
 ```text
-/Docs
-  DESIGN_CORE_LOOP.md          Core loop
-  DESIGN_TRAIN_MODULES.md      Train modules
-  DESIGN_LOOT_SYSTEM.md        Loot-box system
-  DESIGN_NUMERIC_CURVES.md     Numeric curves
-  DESIGN_AD_PLACEMENTS.md      Ad placements
-  DESIGN_ANIMATION_GUIDE.md    Animation presentation
-  TECH_ARCHITECTURE.md         Technical architecture
-  TODO_ROADMAP.md              Roadmap
-  CHANGELOG.md                 Change log
+Current directory structure
+Existing system naming
+Existing config files
+Existing interfaces
+Existing docs
+Whether a similar implementation already exists
 ```
 
-After every major feature change, update the related documents.
+Do not blindly create duplicate systems.
+
+### 17.2 Implementation Order
+
+```text
+1. Type definitions
+2. Config schema
+3. Interfaces
+4. Core logic
+5. Platform adapters
+6. UI / presentation
+7. Saves / events
+8. Tests / simulations
+9. Documentation updates
+```
+
+Do not start by hard-coding from UI or scene scripts.
+
+### 17.3 Output Requirements
+
+Every completed task must explain:
+
+```text
+Completed work
+Modified files
+New systems
+Test method
+Risks
+Follow-up TODOs
+Whether temporary implementations exist
+```
 
 ---
 
-## 23. Forbidden Behaviors
+## 18. Forbidden Behaviors
 
 Agents must never:
 
@@ -1022,50 +924,53 @@ Write a GodManager for convenience
 Hard-code rewards just to make things run
 Modify player saves directly for UI convenience
 Grant rewards directly from animation for convenience
-Put SDK code into the gameplay layer for ad convenience
+Put platform APIs into gameplay layer for ad convenience
 Pollute production code for testing convenience
-Put all classes together to reduce files
+Put all classes together to reduce file count
 Copy an entire project for reskinning convenience
-Only stack exponentials without staged design for values
+Only stack exponentials without staged numeric design
 Treat TODO as final implementation for speed
+Generate duplicate directories
+Generate unowned files
+Submit build cache
+Submit large temporary assets
+Repeatedly upload the same batch of heavy files in a short time
 ```
 
-If this must be done temporarily:
-
-1. Mark it as `TEMP_PROTOTYPE`.
-2. Explain why.
-3. Explain the replacement plan.
-4. Add it to TODO.
-5. Do not treat temporary code as final code.
-
----
-
-## 24. Allowed Temporary Simplifications
-
-During prototype stage, it is acceptable to:
+If temporary simplification is required, it must be marked:
 
 ```text
-Use mock ads
-Use placeholder models
-Use simple enemy AI
-Use data tables instead of backend configuration
-Use local saves
-Use simplified combat formulas
-Use fake leaderboards
-Use debug buttons to trigger loot boxes
+TEMP_PROTOTYPE
+Reason
+Replacement plan
+Cleanup timing
+TODO record
 ```
-
-But formal interfaces must remain.
 
 ---
 
-## 25. Version Roadmap
+## 19. Allowed Prototype Simplifications
 
-### 25.1 Prototype Version
+During prototype stage, the following are allowed:
 
-Goal: complete the core loop.
+```text
+Mock ads
+Placeholder art
+Simple enemy AI
+Local config instead of remote config
+Local saves
+Simplified combat formulas
+Fake leaderboards
+Debug buttons to trigger loot boxes
+```
 
-Must include:
+Formal interfaces must remain.
+
+---
+
+## 20. Version Goals
+
+### 20.1 Prototype
 
 ```text
 Train display
@@ -1080,11 +985,7 @@ Local saves
 Basic UI
 ```
 
-### 25.2 Vertical Slice Version
-
-Goal: produce a complete short experience that can be shown.
-
-Must include:
+### 20.2 Vertical Slice
 
 ```text
 3-5 enemy types
@@ -1099,11 +1000,7 @@ Stage goals
 Failure and revive
 ```
 
-### 25.3 Soft Launch Version
-
-Goal: ready for acquisition testing.
-
-Must include:
+### 20.3 Soft Launch
 
 ```text
 First 30-60 minutes of numeric curves
@@ -1112,23 +1009,19 @@ Complete ad placements
 Analytics
 Performance optimization
 Tutorial
-Offline income
+Offline rewards
 Daily rewards
 Basic events
 ```
 
-### 25.4 Scalable Version
-
-Goal: support repeated reskinning and long-term expansion.
-
-Must include:
+### 20.4 Scalable
 
 ```text
 Theme configuration
 Skin asset packages
 Event configuration
 Season configuration
-Reserved remote configuration
+Remote config reservation
 Multiple equipment pools
 Multiple chapters
 Multiple ad strategies
@@ -1137,168 +1030,23 @@ Data simulation tools
 
 ---
 
-## 26. Agent Task Template
-
-When the user asks to "implement a feature", the agent should interpret the task through this template.
-
-```text
-Task name:
-System:
-Target experience:
-Related data:
-Related classes:
-Related UI:
-Related animation:
-Related save data:
-Related ads:
-Test method:
-Future extension points:
-```
-
-Do not only output code without explaining architectural impact.
-
----
-
-## 27. Example: Add a Cannon Carriage Module
-
-The agent should not only create one BP.
-
-Correct approach:
-
-```text
-1. Add DA_Module_Cannon_Lv01
-2. Confirm Weapon type in TrainModuleType
-3. Use ADTBuildableModuleBase or a subclass
-4. Add data fields such as FireInterval / Damage / Range
-5. Connect UDTTrainModuleManagerComponent
-6. Connect combat event OnCombatTick
-7. Connect UI display
-8. Connect upgrade cost table
-9. Add test map or debug command
-10. Update DESIGN_TRAIN_MODULES.md
-```
-
----
-
-## 28. Example: Add a Loot Box
-
-Correct approach:
-
-```text
-1. Add LootBox DataAsset
-2. Configure drop pool
-3. Configure pity rules
-4. Configure extra ad rewards
-5. Configure opening animation theme
-6. Register through UDTLootBoxSystem
-7. UI only reads display data
-8. DTLootGenerator generates results
-9. RewardComponent grants rewards
-10. Run 1000 simulations to verify probabilities
-```
-
----
-
-## 29. Example: Add Ad Double Rewards
-
-Correct approach:
-
-```text
-1. Add AdPlacement configuration
-2. Request ads through UDTAdServiceInterface
-3. In mock environment, return success directly or simulate failure
-4. Grant extra reward after ad success
-5. Do not break original reward when ad fails
-6. Record daily counts
-7. UI displays naturally themed copy
-8. Update DESIGN_AD_PLACEMENTS.md
-```
-
----
-
-## 30. Code Generation Output Requirements
-
-When generating code, agents should provide complete files whenever possible, not scattered fragments.
-
-For larger changes, split into batches:
-
-```text
-Batch 1: Data structures and interfaces
-Batch 2: Core systems
-Batch 3: UI and presentation
-Batch 4: Tests and documentation
-```
-
-Final replies must include:
-
-```text
-Completed work
-Modified files
-Test method
-Risks
-Suggested next steps
-```
-
----
-
-## 31. Special Requirements for Codex
-
-When executing tasks, Codex must:
-
-1. Read `AGENTS.md` first.
-2. Search for existing related systems first.
-3. Avoid creating duplicate systems with the same name.
-4. Never delete user files without permission.
-5. Avoid large unrelated refactors.
-6. Keep the project compilable before and after changes.
-7. Ensure all new classes follow naming conventions.
-8. Add comments explaining the intent of all core logic.
-9. Mark all temporary implementations.
-10. Update TODO or documentation after each completion.
-
----
-
-## 32. Final Completion Criteria
+## 21. Final Acceptance Criteria
 
 A feature is complete only if it satisfies:
 
 ```text
-Feature runs
+Runs correctly
 Structure is clear
 Data is tunable
 Presentation is replaceable
 Logic is testable
-Saves stay clean
+Saves are safe
 Ads are isolated
 UI does not overreach
+Directories are clean
+Package size is controlled
+Docs are synchronized
 Future expansion is possible
-Documentation is recorded
 ```
 
 If it only "looks usable" but cannot be maintained later, it is not complete.
-
----
-
-## 33. Project Spirit
-
-This project is not a disposable mini-game demo.
-
-It is an underlying experiment field for repeated reskinning, fast launch testing, accumulating reusable system assets, and gradually transitioning into a larger UE5 apocalyptic train game.
-
-Every line of code should serve:
-
-```text
-Satisfying feel
-Retention
-Ad monetization
-Extensibility
-Reskinning
-Maintainability
-Migration
-```
-
-Do not write a toy project.
-
-Do not write temporary messy architecture.
-
-Do not block the future.

@@ -1,0 +1,50 @@
+[
+  {
+    "voiceCueId": "vo_radio_stage_depart_zh_001",
+    "text": "列车启动，进入废轨区。",
+    "eventId": "audio_voice_stage_depart",
+    "trigger": "stage_depart",
+    "cooldownMs": 30000,
+    "targetMaxBytes": 45000
+  },
+  {
+    "voiceCueId": "vo_radio_stage_clear_zh_001",
+    "text": "威胁清除，物资入库。",
+    "eventId": "audio_voice_stage_clear",
+    "trigger": "stage_clear",
+    "cooldownMs": 30000,
+    "targetMaxBytes": 45000
+  },
+  {
+    "voiceCueId": "vo_radio_loot_rare_zh_001",
+    "text": "发现高价值货箱。",
+    "eventId": "audio_voice_loot_rare",
+    "trigger": "rare_reward",
+    "cooldownMs": 30000,
+    "targetMaxBytes": 45000
+  },
+  {
+    "voiceCueId": "vo_radio_module_upgrade_zh_001",
+    "text": "模块接入，功率上升。",
+    "eventId": "audio_voice_module_upgrade",
+    "trigger": "module_upgrade",
+    "cooldownMs": 30000,
+    "targetMaxBytes": 45000
+  },
+  {
+    "voiceCueId": "vo_radio_ad_reward_zh_001",
+    "text": "补给空投已抵达。",
+    "eventId": "audio_voice_ad_reward",
+    "trigger": "ad_reward_success",
+    "cooldownMs": 30000,
+    "targetMaxBytes": 45000
+  },
+  {
+    "voiceCueId": "vo_radio_threat_warning_zh_001",
+    "text": "前方热源接近，准备撞击。",
+    "eventId": "audio_voice_threat_warning",
+    "trigger": "elite_wave_warning",
+    "cooldownMs": 30000,
+    "targetMaxBytes": 45000
+  }
+]

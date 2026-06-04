@@ -1,0 +1,721 @@
+[
+  {
+    "cueId": "sfx_ui_tap_metal_001",
+    "assetPath": "assets/audio/ui/sfx_ui_tap_metal_001.ogg",
+    "bus": "ui",
+    "volume": 0.72,
+    "loop": false,
+    "priority": 70,
+    "cooldownMs": 35,
+    "maxInstances": 3,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 12000,
+    "tags": [
+      "ui",
+      "tap",
+      "metal",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_ui_tap_metal_002",
+    "assetPath": "assets/audio/ui/sfx_ui_tap_metal_002.ogg",
+    "bus": "ui",
+    "volume": 0.72,
+    "loop": false,
+    "priority": 70,
+    "cooldownMs": 35,
+    "maxInstances": 3,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 12000,
+    "tags": [
+      "ui",
+      "tap",
+      "metal",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_ui_tap_metal_003",
+    "assetPath": "assets/audio/ui/sfx_ui_tap_metal_003.ogg",
+    "bus": "ui",
+    "volume": 0.72,
+    "loop": false,
+    "priority": 70,
+    "cooldownMs": 35,
+    "maxInstances": 3,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 12000,
+    "tags": [
+      "ui",
+      "tap",
+      "metal",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_ui_tap_metal_004",
+    "assetPath": "assets/audio/ui/sfx_ui_tap_metal_004.ogg",
+    "bus": "ui",
+    "volume": 0.72,
+    "loop": false,
+    "priority": 70,
+    "cooldownMs": 35,
+    "maxInstances": 3,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 12000,
+    "tags": [
+      "ui",
+      "tap",
+      "metal",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_ui_confirm_steam_001",
+    "assetPath": "assets/audio/ui/sfx_ui_confirm_steam_001.ogg",
+    "bus": "ui",
+    "volume": 0.76,
+    "loop": false,
+    "priority": 72,
+    "cooldownMs": 90,
+    "maxInstances": 2,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 16000,
+    "tags": [
+      "ui",
+      "confirm",
+      "steam",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_ui_confirm_steam_002",
+    "assetPath": "assets/audio/ui/sfx_ui_confirm_steam_002.ogg",
+    "bus": "ui",
+    "volume": 0.76,
+    "loop": false,
+    "priority": 72,
+    "cooldownMs": 90,
+    "maxInstances": 2,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 16000,
+    "tags": [
+      "ui",
+      "confirm",
+      "steam",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_ui_confirm_steam_003",
+    "assetPath": "assets/audio/ui/sfx_ui_confirm_steam_003.ogg",
+    "bus": "ui",
+    "volume": 0.76,
+    "loop": false,
+    "priority": 72,
+    "cooldownMs": 90,
+    "maxInstances": 2,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 16000,
+    "tags": [
+      "ui",
+      "confirm",
+      "steam",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_lootbox_open_mech_001",
+    "assetPath": "assets/audio/sfx/sfx_lootbox_open_mech_001.ogg",
+    "bus": "sfx",
+    "volume": 0.82,
+    "loop": false,
+    "priority": 86,
+    "cooldownMs": 300,
+    "maxInstances": 1,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 35000,
+    "tags": [
+      "lootbox",
+      "mechanical",
+      "open",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_lootbox_open_mech_002",
+    "assetPath": "assets/audio/sfx/sfx_lootbox_open_mech_002.ogg",
+    "bus": "sfx",
+    "volume": 0.82,
+    "loop": false,
+    "priority": 86,
+    "cooldownMs": 300,
+    "maxInstances": 1,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 35000,
+    "tags": [
+      "lootbox",
+      "mechanical",
+      "open",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_lootbox_open_mech_003",
+    "assetPath": "assets/audio/sfx/sfx_lootbox_open_mech_003.ogg",
+    "bus": "sfx",
+    "volume": 0.82,
+    "loop": false,
+    "priority": 86,
+    "cooldownMs": 300,
+    "maxInstances": 1,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 35000,
+    "tags": [
+      "lootbox",
+      "mechanical",
+      "open",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_lootbox_reward_spark_001",
+    "assetPath": "assets/audio/sfx/sfx_lootbox_reward_spark_001.ogg",
+    "bus": "sfx",
+    "volume": 0.78,
+    "loop": false,
+    "priority": 84,
+    "cooldownMs": 100,
+    "maxInstances": 3,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 24000,
+    "tags": [
+      "lootbox",
+      "reward",
+      "spark",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_lootbox_reward_spark_002",
+    "assetPath": "assets/audio/sfx/sfx_lootbox_reward_spark_002.ogg",
+    "bus": "sfx",
+    "volume": 0.78,
+    "loop": false,
+    "priority": 84,
+    "cooldownMs": 100,
+    "maxInstances": 3,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 24000,
+    "tags": [
+      "lootbox",
+      "reward",
+      "spark",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_lootbox_reward_spark_003",
+    "assetPath": "assets/audio/sfx/sfx_lootbox_reward_spark_003.ogg",
+    "bus": "sfx",
+    "volume": 0.78,
+    "loop": false,
+    "priority": 84,
+    "cooldownMs": 100,
+    "maxInstances": 3,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 24000,
+    "tags": [
+      "lootbox",
+      "reward",
+      "spark",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_lootbox_reward_spark_004",
+    "assetPath": "assets/audio/sfx/sfx_lootbox_reward_spark_004.ogg",
+    "bus": "sfx",
+    "volume": 0.78,
+    "loop": false,
+    "priority": 84,
+    "cooldownMs": 100,
+    "maxInstances": 3,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 24000,
+    "tags": [
+      "lootbox",
+      "reward",
+      "spark",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_combat_hit_iron_001",
+    "assetPath": "assets/audio/sfx/sfx_combat_hit_iron_001.ogg",
+    "bus": "sfx",
+    "volume": 0.68,
+    "loop": false,
+    "priority": 62,
+    "cooldownMs": 55,
+    "maxInstances": 5,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 14000,
+    "tags": [
+      "combat",
+      "hit",
+      "iron",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_combat_hit_iron_002",
+    "assetPath": "assets/audio/sfx/sfx_combat_hit_iron_002.ogg",
+    "bus": "sfx",
+    "volume": 0.68,
+    "loop": false,
+    "priority": 62,
+    "cooldownMs": 55,
+    "maxInstances": 5,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 14000,
+    "tags": [
+      "combat",
+      "hit",
+      "iron",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_combat_hit_iron_003",
+    "assetPath": "assets/audio/sfx/sfx_combat_hit_iron_003.ogg",
+    "bus": "sfx",
+    "volume": 0.68,
+    "loop": false,
+    "priority": 62,
+    "cooldownMs": 55,
+    "maxInstances": 5,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 14000,
+    "tags": [
+      "combat",
+      "hit",
+      "iron",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_combat_hit_iron_004",
+    "assetPath": "assets/audio/sfx/sfx_combat_hit_iron_004.ogg",
+    "bus": "sfx",
+    "volume": 0.68,
+    "loop": false,
+    "priority": 62,
+    "cooldownMs": 55,
+    "maxInstances": 5,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 14000,
+    "tags": [
+      "combat",
+      "hit",
+      "iron",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_combat_hit_iron_005",
+    "assetPath": "assets/audio/sfx/sfx_combat_hit_iron_005.ogg",
+    "bus": "sfx",
+    "volume": 0.68,
+    "loop": false,
+    "priority": 62,
+    "cooldownMs": 55,
+    "maxInstances": 5,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 14000,
+    "tags": [
+      "combat",
+      "hit",
+      "iron",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_combat_enemy_break_001",
+    "assetPath": "assets/audio/sfx/sfx_combat_enemy_break_001.ogg",
+    "bus": "sfx",
+    "volume": 0.74,
+    "loop": false,
+    "priority": 76,
+    "cooldownMs": 140,
+    "maxInstances": 3,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 28000,
+    "tags": [
+      "combat",
+      "enemy",
+      "break",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_combat_enemy_break_002",
+    "assetPath": "assets/audio/sfx/sfx_combat_enemy_break_002.ogg",
+    "bus": "sfx",
+    "volume": 0.74,
+    "loop": false,
+    "priority": 76,
+    "cooldownMs": 140,
+    "maxInstances": 3,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 28000,
+    "tags": [
+      "combat",
+      "enemy",
+      "break",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_combat_enemy_break_003",
+    "assetPath": "assets/audio/sfx/sfx_combat_enemy_break_003.ogg",
+    "bus": "sfx",
+    "volume": 0.74,
+    "loop": false,
+    "priority": 76,
+    "cooldownMs": 140,
+    "maxInstances": 3,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 28000,
+    "tags": [
+      "combat",
+      "enemy",
+      "break",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_train_module_upgrade_001",
+    "assetPath": "assets/audio/sfx/sfx_train_module_upgrade_001.ogg",
+    "bus": "sfx",
+    "volume": 0.8,
+    "loop": false,
+    "priority": 88,
+    "cooldownMs": 420,
+    "maxInstances": 1,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 38000,
+    "tags": [
+      "train",
+      "module",
+      "upgrade",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_train_module_upgrade_002",
+    "assetPath": "assets/audio/sfx/sfx_train_module_upgrade_002.ogg",
+    "bus": "sfx",
+    "volume": 0.8,
+    "loop": false,
+    "priority": 88,
+    "cooldownMs": 420,
+    "maxInstances": 1,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 38000,
+    "tags": [
+      "train",
+      "module",
+      "upgrade",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_train_module_upgrade_003",
+    "assetPath": "assets/audio/sfx/sfx_train_module_upgrade_003.ogg",
+    "bus": "sfx",
+    "volume": 0.8,
+    "loop": false,
+    "priority": 88,
+    "cooldownMs": 420,
+    "maxInstances": 1,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 38000,
+    "tags": [
+      "train",
+      "module",
+      "upgrade",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_ad_reward_drop_001",
+    "assetPath": "assets/audio/sfx/sfx_ad_reward_drop_001.ogg",
+    "bus": "sfx",
+    "volume": 0.82,
+    "loop": false,
+    "priority": 90,
+    "cooldownMs": 600,
+    "maxInstances": 1,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 36000,
+    "tags": [
+      "ad",
+      "reward",
+      "drop",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_ad_reward_drop_002",
+    "assetPath": "assets/audio/sfx/sfx_ad_reward_drop_002.ogg",
+    "bus": "sfx",
+    "volume": 0.82,
+    "loop": false,
+    "priority": 90,
+    "cooldownMs": 600,
+    "maxInstances": 1,
+    "packageTag": "main",
+    "status": "release-ready",
+    "targetMaxBytes": 36000,
+    "tags": [
+      "ad",
+      "reward",
+      "drop",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_stage_clear_whistle_001",
+    "assetPath": "assets/audio/placeholders/sfx_stage_clear_whistle_001.ogg",
+    "bus": "sfx",
+    "volume": 0.7,
+    "loop": false,
+    "priority": 78,
+    "cooldownMs": 700,
+    "maxInstances": 1,
+    "packageTag": "placeholder",
+    "status": "placeholder",
+    "targetMaxBytes": 32000,
+    "tags": [
+      "stage",
+      "clear",
+      "whistle",
+      "placeholder",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_stage_clear_whistle_002",
+    "assetPath": "assets/audio/placeholders/sfx_stage_clear_whistle_002.ogg",
+    "bus": "sfx",
+    "volume": 0.7,
+    "loop": false,
+    "priority": 78,
+    "cooldownMs": 700,
+    "maxInstances": 1,
+    "packageTag": "placeholder",
+    "status": "placeholder",
+    "targetMaxBytes": 32000,
+    "tags": [
+      "stage",
+      "clear",
+      "whistle",
+      "placeholder",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_train_loop_idle_001",
+    "assetPath": "assets/audio/placeholders/sfx_train_loop_idle_001.ogg",
+    "bus": "ambience",
+    "volume": 0.42,
+    "loop": true,
+    "priority": 30,
+    "cooldownMs": 0,
+    "maxInstances": 1,
+    "packageTag": "placeholder",
+    "status": "placeholder",
+    "targetMaxBytes": 80000,
+    "tags": [
+      "train",
+      "ambience",
+      "loop",
+      "placeholder",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "sfx_train_loop_idle_002",
+    "assetPath": "assets/audio/placeholders/sfx_train_loop_idle_002.ogg",
+    "bus": "ambience",
+    "volume": 0.42,
+    "loop": true,
+    "priority": 30,
+    "cooldownMs": 0,
+    "maxInstances": 1,
+    "packageTag": "placeholder",
+    "status": "placeholder",
+    "targetMaxBytes": 80000,
+    "tags": [
+      "train",
+      "ambience",
+      "loop",
+      "placeholder",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "vo_radio_stage_depart_zh_001",
+    "assetPath": "assets/audio/voice/vo_radio_stage_depart_zh_001.ogg",
+    "bus": "voice",
+    "volume": 0.72,
+    "loop": false,
+    "priority": 82,
+    "cooldownMs": 30000,
+    "maxInstances": 1,
+    "packageTag": "remote",
+    "status": "release-ready",
+    "targetMaxBytes": 45000,
+    "fallbackCueId": "sfx_train_loop_idle_001",
+    "tags": [
+      "voice",
+      "elevenlabs",
+      "creator",
+      "zh",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "vo_radio_stage_clear_zh_001",
+    "assetPath": "assets/audio/voice/vo_radio_stage_clear_zh_001.ogg",
+    "bus": "voice",
+    "volume": 0.72,
+    "loop": false,
+    "priority": 82,
+    "cooldownMs": 30000,
+    "maxInstances": 1,
+    "packageTag": "remote",
+    "status": "release-ready",
+    "targetMaxBytes": 45000,
+    "fallbackCueId": "sfx_stage_clear_whistle_001",
+    "tags": [
+      "voice",
+      "elevenlabs",
+      "creator",
+      "zh",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "vo_radio_loot_rare_zh_001",
+    "assetPath": "assets/audio/voice/vo_radio_loot_rare_zh_001.ogg",
+    "bus": "voice",
+    "volume": 0.72,
+    "loop": false,
+    "priority": 82,
+    "cooldownMs": 30000,
+    "maxInstances": 1,
+    "packageTag": "remote",
+    "status": "release-ready",
+    "targetMaxBytes": 45000,
+    "fallbackCueId": "sfx_lootbox_reward_spark_001",
+    "tags": [
+      "voice",
+      "elevenlabs",
+      "creator",
+      "zh",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "vo_radio_module_upgrade_zh_001",
+    "assetPath": "assets/audio/voice/vo_radio_module_upgrade_zh_001.ogg",
+    "bus": "voice",
+    "volume": 0.72,
+    "loop": false,
+    "priority": 82,
+    "cooldownMs": 30000,
+    "maxInstances": 1,
+    "packageTag": "remote",
+    "status": "release-ready",
+    "targetMaxBytes": 45000,
+    "fallbackCueId": "sfx_train_module_upgrade_001",
+    "tags": [
+      "voice",
+      "elevenlabs",
+      "creator",
+      "zh",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "vo_radio_ad_reward_zh_001",
+    "assetPath": "assets/audio/voice/vo_radio_ad_reward_zh_001.ogg",
+    "bus": "voice",
+    "volume": 0.72,
+    "loop": false,
+    "priority": 82,
+    "cooldownMs": 30000,
+    "maxInstances": 1,
+    "packageTag": "remote",
+    "status": "release-ready",
+    "targetMaxBytes": 45000,
+    "fallbackCueId": "sfx_ad_reward_drop_001",
+    "tags": [
+      "voice",
+      "elevenlabs",
+      "creator",
+      "zh",
+      "p0p"
+    ]
+  },
+  {
+    "cueId": "vo_radio_threat_warning_zh_001",
+    "assetPath": "assets/audio/voice/vo_radio_threat_warning_zh_001.ogg",
+    "bus": "voice",
+    "volume": 0.72,
+    "loop": false,
+    "priority": 82,
+    "cooldownMs": 30000,
+    "maxInstances": 1,
+    "packageTag": "remote",
+    "status": "release-ready",
+    "targetMaxBytes": 45000,
+    "fallbackCueId": "sfx_combat_enemy_break_001",
+    "tags": [
+      "voice",
+      "elevenlabs",
+      "creator",
+      "zh",
+      "p0p"
+    ]
+  }
+]

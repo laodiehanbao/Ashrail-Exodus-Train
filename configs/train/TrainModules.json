@@ -1,0 +1,13 @@
+[
+  {
+    "id": "module_cannon_basic_001",
+    "displayNameKey": "train.module.cannon.basic.name",
+    "slot": "roof_weapon",
+    "maxLevel": 3,
+    "levels": [
+      { "level": 1, "power": 18, "upgradeCost": [{ "type": "module_fragment", "id": "module_cannon_basic_001", "amount": 5 }] },
+      { "level": 2, "power": 30, "upgradeCost": [{ "type": "module_fragment", "id": "module_cannon_basic_001", "amount": 10 }] },
+      { "level": 3, "power": 45, "upgradeCost": [{ "type": "module_fragment", "id": "module_cannon_basic_001", "amount": 20 }] }
+    ]
+  }
+]

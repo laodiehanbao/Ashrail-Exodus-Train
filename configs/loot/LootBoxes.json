@@ -1,0 +1,10 @@
+[
+  {
+    "id": "lootbox_supply_common",
+    "displayNameKey": "lootbox.supply.common.name",
+    "poolId": "pool_supply_common_001",
+    "openCost": [{ "resourceId": "coin", "amount": 100 }],
+    "adPlacementId": "ad_reward_lootbox_double",
+    "guaranteedRules": []
+  }
+]

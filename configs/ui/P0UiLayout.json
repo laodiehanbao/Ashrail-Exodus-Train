@@ -1,0 +1,73 @@
+{
+  "layoutId": "p0_mobile_portrait_default",
+  "designWidth": 720,
+  "designHeight": 1280,
+  "safeArea": {
+    "top": 48,
+    "right": 24,
+    "bottom": 36,
+    "left": 24
+  },
+  "colorTokens": [
+    { "token": "coal_black", "hex": "#151311" },
+    { "token": "rail_iron", "hex": "#2B2925" },
+    { "token": "steel_white", "hex": "#E7E1D5" },
+    { "token": "ash_gray", "hex": "#777167" },
+    { "token": "ember_orange", "hex": "#FF8A1D" },
+    { "token": "warning_yellow", "hex": "#E8B84B" },
+    { "token": "signal_cyan", "hex": "#43C7D7" },
+    { "token": "epic_violet", "hex": "#8B5CF6" },
+    { "token": "reward_gold", "hex": "#F7C948" },
+    { "token": "danger_red", "hex": "#D94A38" }
+  ],
+  "componentSkins": [
+    { "componentId": "primary_button", "assetId": "ui_primary_button_ember", "minWidth": 220, "minHeight": 76 },
+    { "componentId": "secondary_button", "assetId": "ui_secondary_button_iron", "minWidth": 188, "minHeight": 68 },
+    { "componentId": "icon_button", "assetId": "ui_icon_button_square", "minWidth": 72, "minHeight": 72 },
+    { "componentId": "modal_panel", "assetId": "ui_modal_panel_iron", "minWidth": 560, "minHeight": 360 },
+    { "componentId": "reward_card", "assetId": "ui_reward_card_common", "minWidth": 144, "minHeight": 184 },
+    { "componentId": "progress_bar", "assetId": "ui_progress_bar_ember", "minWidth": 320, "minHeight": 36 },
+    { "componentId": "module_slot", "assetId": "ui_module_slot_iron", "minWidth": 136, "minHeight": 136 }
+  ],
+  "screens": [
+    {
+      "screenId": "main_hud",
+      "backgroundAssetId": "tex_bg_stage_wasteland_rail_001",
+      "panels": [
+        { "panelId": "top_status", "x": 24, "y": 48, "width": 672, "height": 132 },
+        { "panelId": "combat_stage", "x": 24, "y": 196, "width": 672, "height": 540 },
+        { "panelId": "bottom_actions", "x": 24, "y": 1080, "width": 672, "height": 164 }
+      ]
+    },
+    {
+      "screenId": "loot_box",
+      "backgroundAssetId": "tex_bg_lootbox_cargo_bay_001",
+      "panels": [
+        { "panelId": "lootbox_focus", "x": 48, "y": 180, "width": 624, "height": 620 },
+        { "panelId": "lootbox_actions", "x": 48, "y": 940, "width": 624, "height": 216 }
+      ]
+    },
+    {
+      "screenId": "reward_panel",
+      "backgroundAssetId": "tex_bg_lootbox_cargo_bay_001",
+      "panels": [
+        { "panelId": "reward_modal", "x": 56, "y": 240, "width": 608, "height": 760 }
+      ]
+    },
+    {
+      "screenId": "train_module",
+      "backgroundAssetId": "tex_bg_train_garage_upgrade_001",
+      "panels": [
+        { "panelId": "module_slots", "x": 32, "y": 176, "width": 656, "height": 580 },
+        { "panelId": "module_detail", "x": 32, "y": 804, "width": 656, "height": 344 }
+      ]
+    },
+    {
+      "screenId": "ad_reward",
+      "backgroundAssetId": "tex_bg_stage_wasteland_rail_001",
+      "panels": [
+        { "panelId": "ad_reward_modal", "x": 64, "y": 286, "width": 592, "height": 596 }
+      ]
+    }
+  ]
+}

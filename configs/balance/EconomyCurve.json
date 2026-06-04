@@ -1,0 +1,5 @@
+[
+  { "minute": 0, "coinPerMinute": 40, "moduleFragmentPerMinute": 1 },
+  { "minute": 10, "coinPerMinute": 55, "moduleFragmentPerMinute": 1 },
+  { "minute": 20, "coinPerMinute": 70, "moduleFragmentPerMinute": 2 }
+]

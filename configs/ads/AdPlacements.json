@@ -1,0 +1,20 @@
+[
+  {
+    "placementId": "ad_reward_stage_clear_double",
+    "triggerScene": "stage_clear",
+    "rewardType": "double_reward",
+    "rewardMultiplier": 2,
+    "dailyLimit": 10,
+    "cooldownSeconds": 60,
+    "fallbackReward": [{ "type": "resource", "id": "coin", "amount": 20 }]
+  },
+  {
+    "placementId": "ad_reward_lootbox_double",
+    "triggerScene": "lootbox_open",
+    "rewardType": "double_reward",
+    "rewardMultiplier": 2,
+    "dailyLimit": 8,
+    "cooldownSeconds": 45,
+    "fallbackReward": [{ "type": "resource", "id": "coin", "amount": 10 }]
+  }
+]

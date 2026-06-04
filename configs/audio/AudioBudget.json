@@ -1,0 +1,12 @@
+{
+  "targetMainPackageBytes": 1572864,
+  "hardMainPackageBytes": 2097152,
+  "generatedP0TargetBytes": 393216,
+  "maxRuntimeSfxBytes": 81920,
+  "maxRuntimeLoopBytes": 81920,
+  "maxVariantsPerEvent": 5,
+  "maxVoiceCues": 12,
+  "maxVoiceBytes": 327680,
+  "allowedRuntimeExtensions": [".ogg"],
+  "allowRuntimeWav": false
+}

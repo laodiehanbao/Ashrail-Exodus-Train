@@ -1,0 +1,24 @@
+{
+  "name": "ashrail-exodus-train",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "tsx tests/unit/runAllTests.ts",
+    "demo": "tsx src/app/runPrototypeCli.ts",
+    "sim:loot": "tsx tests/simulations/lootDistribution.sim.ts",
+    "sim:combat": "tsx tests/simulations/combatPower.sim.ts",
+    "sim:economy": "tsx tests/simulations/economyFirst30Min.sim.ts",
+    "sim:ads": "tsx tests/simulations/adFrequency.sim.ts",
+    "validate:configs": "tsx src/tools/validateConfigs.ts",
+    "generate:audio:p0": "tsx src/tools/generateP0AudioAssets.ts",
+    "generate:voice:elevenlabs": "tsx src/tools/generateElevenLabsVoiceAssets.ts",
+    "validate:audio": "tsx src/tools/validateAudioAssets.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.2",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}

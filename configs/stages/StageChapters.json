@@ -1,0 +1,20 @@
+[
+  {
+    "id": "stage_chapter_01_001",
+    "chapter": 1,
+    "order": 1,
+    "displayNameKey": "stage.chapter01.001.name",
+    "waveId": "wave_stage_chapter_01_001",
+    "clearRewardId": "reward_stage_clear_001",
+    "requiredPower": 0
+  },
+  {
+    "id": "stage_chapter_01_002",
+    "chapter": 1,
+    "order": 2,
+    "displayNameKey": "stage.chapter01.002.name",
+    "waveId": "wave_stage_chapter_01_002",
+    "clearRewardId": "reward_stage_clear_001",
+    "requiredPower": 35
+  }
+]
