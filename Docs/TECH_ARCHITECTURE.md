@@ -88,10 +88,34 @@ Rules:
 - Disabled buttons must not emit UI requests, but gameplay/app services still perform final validation.
 - `GameApp.runPrototypeLoop()` is a CLI/demo helper and must not be wired to UI buttons.
 - Real Creator components implement binding interfaces later; current `src/presentation/ui/cocos` files intentionally do not import `cc`.
-- `P0UiNodeBindings.json` is a no-`cc` manifest. It validates screen coverage, required slots, action IDs, panel/component references, and stable Cocos node paths. It does not prove a real Creator scene contains those nodes.
+- `P0UiNodeBindings.json` is a no-`cc` manifest. It validates screen coverage, required slots, action IDs, panel/component references, and stable Cocos node paths. The generated scene `assets/scenes/scene_p0_exodus_train_main.scene` is the current real Creator node tree for that manifest.
 - `P0CocosUiBindingFactory` converts the validated manifest into `P0CocosUiBinding` through a no-`cc` host. Host failures return `Result` errors and must not create gameplay behavior.
 - `P0CocosUiRuntime` wires `IP0UiPresenter`, `P0CocosUiPresenter`, and `P0CocosUiBinding`. It serializes fire-and-forget Cocos clicks, renders only accepted update states, exposes request failures to tests, and uses an injected clock.
 - `P0CocosUiRuntime` must not import `src/app`, gameplay services, platform adapters, saves, Douyin APIs, or `cc`. App composition decides which `IP0UiPresenter` implementation it receives.
+- `src/presentation/ui/cocos/creator` is the only presentation subfolder allowed to import Cocos Creator `cc`. It contains real Creator binding components and a manifest host, but still must not import app, gameplay, platform, or save implementations.
+- Creator 3.8 requires every script file in `src/presentation/ui/cocos/creator` to define at most one `extends Component` class. Shared helpers must stay in non-Component utility files, and barrel files must not re-export multiple Creator Component classes into the Cocos mirror.
+- `src/app/cocos/P0CocosCreatorBootstrap.ts` is the current Creator scene composition component. It reads assigned `JsonAsset` configs, creates `GameApp`, routes requests through `P0UiRequestRouter`, and mounts the real Cocos UI runtime.
+
+## Cocos Creator Asset Flow
+
+The main repository remains the source of truth. The temporary Creator project is a generated mirror.
+
+```text
+npm run sync:cocos
+  -> copies src to Cocos assets/scripts/src
+  -> strips relative .js import suffixes only in the Cocos mirror
+  -> copies configs and runtime asset folders
+  -> writes stable .meta files for JSON/TypeScript assets
+
+npm run generate:cocos:p0-scene
+  -> writes assets/scenes/scene_p0_exodus_train_main.scene
+  -> binds P0CocosCreatorBootstrap, AssetRegistry, 19 JsonAssets, and all P0 UI node paths
+  -> fails if a manifest node/template path is missing
+```
+
+`CocosCreatorAssetRegistryComponent` stores color tokens as `colorTokensJson` in the generated scene instead of custom entry classes, because Creator 3.8 warns on primitive property types inside entry classes. String defaults should be inferred with empty property options, string arrays should use `CCString`, and numeric Inspector fields should use `CCInteger` or `CCFloat`. Sprite frames remain explicit `SpriteFrame[]` plus stable `spriteFrameAssetIds[]` for later runtime art binding.
+
+Do not copy `library/`, `temp/`, `profiles/`, `.creator/`, or build cache from Cocos Creator back into this repository. After generation, refresh the Cocos Creator asset panel and save the scene once to confirm AssetDB imports the scene without missing script or missing JsonAsset references.
 
 ## 第一阶段模块拆分
 

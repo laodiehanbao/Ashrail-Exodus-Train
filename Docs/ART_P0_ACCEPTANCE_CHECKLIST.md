@@ -80,8 +80,12 @@ new_prompt_generation, new_background, new_character_sheet, new_icon_sheet, conc
 - [x] No-`cc` P0 node binding manifest for all required presenter slots.
 - [x] No-`cc` manifest-to-`P0CocosUiBinding` factory and host contract.
 - [x] No-`cc` P0 Cocos UI runtime for mount, refresh, serialized UI requests, and accepted-state rendering.
-- [ ] Cocos Creator prefab/node binding for main cruise/combat HUD.
-- [ ] Cocos Creator prefab/node binding for loot box opening screen.
-- [ ] Cocos Creator prefab/node binding for reward settlement popup.
-- [ ] Cocos Creator prefab/node binding for train module upgrade screen.
-- [ ] Cocos Creator prefab/node binding for ad double reward popup.
+- [x] Real Cocos Creator TypeScript binding components and app bootstrap script.
+- [x] Generated Cocos Creator scene node binding for main cruise/combat HUD.
+- [x] Generated Cocos Creator scene node binding for loot box opening screen.
+- [x] Generated Cocos Creator scene node binding for reward settlement popup.
+- [x] Generated Cocos Creator scene node binding for train module upgrade screen.
+- [x] Generated Cocos Creator scene node binding for ad double reward popup.
+- [x] Creator TS bindings split to one `Component` per script file.
+- [x] Generated scene AssetRegistry uses `colorTokensJson` instead of custom entry classes.
+- [ ] Cocos Creator AssetDB refresh/open/save confirmation for `scene_p0_exodus_train_main.scene`.

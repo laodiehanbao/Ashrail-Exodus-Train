@@ -55,10 +55,11 @@ P0 UI code is split into three layers:
 - `src/gameplay/*Availability.ts`: pure read-only availability queries for loot box, train module, and ad reward states.
 - `src/presentation/viewmodels`: display-state mapping from config, snapshot, and gameplay availability into renderable UI state.
 - `src/presentation/ui`: thin views that render state and emit `ui_request_*` interaction requests only.
-- `src/presentation/ui/cocos`: Cocos-ready binding contracts, no-`cc` manifest binding factory, runtime, and presenter code. These files do not import `cc`; Creator components implement the host/binding interfaces later.
+- `src/presentation/ui/cocos`: Cocos-ready binding contracts, no-`cc` manifest binding factory, runtime, and presenter code. The `creator` subfolder contains the only real `cc` binding components allowed in presentation.
+- `src/app/cocos`: Creator scene composition components that may import `cc` and app systems to mount the UI runtime.
 - `src/app/P0UiRequestRouter.ts`: the only current UI request router allowed to call gameplay systems.
 
-The current implementation is Cocos-ready TypeScript state/request, a binding-presenter, a no-`cc` runtime, a machine-validated node binding manifest, and a no-`cc` factory that turns the manifest into `P0CocosUiBinding` through a host interface. It is not yet a Cocos Creator prefab or scene asset.
+The current implementation is Cocos-ready TypeScript state/request, a binding-presenter, a no-`cc` runtime, a machine-validated node binding manifest, a no-`cc` factory, real Cocos Creator binding components, an app-layer Creator bootstrap, and a generated P0 Creator scene asset at `assets/scenes/scene_p0_exodus_train_main.scene`.
 
 ## P0 Node Binding Manifest
 
@@ -109,6 +110,22 @@ The runtime must not:
 - create node bindings from the manifest; that remains the factory/host responsibility.
 - treat failed requests as accepted gameplay state.
 
+## Real Cocos Creator Components
+
+`src/presentation/ui/cocos/creator` provides real Cocos Creator components:
+
+- frame, text, action, metric list, reward list, and train module card list bindings.
+- asset registry for stable `assetId` to `SpriteFrame` and color token mapping.
+- manifest host that resolves validated `nodePath` and `itemTemplatePath` values against a real Cocos `Node` tree.
+
+`src/app/cocos/P0CocosCreatorBootstrap.ts` provides the current scene entry component. The generated scene assigns:
+
+- `uiRoot`: `Canvas`.
+- `configAssets`: the 19 JSON assets required by the P0 bootstrap.
+- `assetRegistry`: a generated `CocosCreatorAssetRegistryComponent` with P0 color tokens.
+
+The scene is produced by `npm run sync:cocos` plus `npm run generate:cocos:p0-scene`. After generation, refresh the Cocos Creator asset panel and save the scene once so AssetDB can confirm there are no missing scripts or missing JSON references.
+
 ## P0 Engineering Acceptance
 
 - UI copy and layout must pass `npm run validate:configs`.
@@ -117,6 +134,8 @@ The runtime must not:
 - P0 node bindings must cover every required slot declared by `P0_UI_NODE_BINDING_SLOT_SPECS`.
 - P0 binding factory must turn the manifest into `P0CocosUiBinding` through a no-`cc` host and fail clearly when a slot/node is missing.
 - P0 Cocos runtime must mount state, serialize click requests, render accepted updates, expose failures, and stay no-`cc`.
+- Real Cocos Creator components must remain restricted to `src/presentation/ui/cocos/creator` and app composition under `src/app/cocos`.
+- `assets/scenes/scene_p0_exodus_train_main.scene` must contain all paths from `configs/ui/P0UiNodeBindings.json` and 19 bootstrap `JsonAsset` references.
 - UI copy must cover screen labels, button labels, resource names, loot box names, equipment names, train module names, and reward fragment text.
 - Presentation views may not grant rewards, spend resources, write saves, call ads, or call Douyin APIs.
 - Presentation views may only emit stable `ui_request_*` action IDs and stable ID payloads.

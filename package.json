@@ -14,7 +14,9 @@
     "validate:configs": "tsx src/tools/validateConfigs.ts",
     "generate:audio:p0": "tsx src/tools/generateP0AudioAssets.ts",
     "generate:voice:elevenlabs": "tsx src/tools/generateElevenLabsVoiceAssets.ts",
-    "validate:audio": "tsx src/tools/validateAudioAssets.ts"
+    "validate:audio": "tsx src/tools/validateAudioAssets.ts",
+    "sync:cocos": "tsx src/tools/syncCocosCreatorProject.ts",
+    "generate:cocos:p0-scene": "tsx src/tools/generateP0CocosScene.ts"
   },
   "devDependencies": {
     "@types/node": "^24.10.2",
