@@ -14,6 +14,12 @@ export interface CocosMeta {
   userData: Record<string, unknown>;
 }
 
+interface CocosSubMeta {
+  importer?: string;
+  uuid?: string;
+  name?: string;
+}
+
 export function ensureDirectory(path: string): void {
   mkdirSync(path, { recursive: true });
 }
@@ -123,10 +129,129 @@ export function writeTypeScriptAssetMeta(projectRoot: string, assetRelativePath:
   } satisfies CocosMeta);
 }
 
+export function writeImageAssetMeta(projectRoot: string, assetRelativePath: string, width: number, height: number): void {
+  const uuid = stableUuid(`cocos-image:${assetRelativePath}`);
+  const textureUuid = `${uuid}@6c48a`;
+  const spriteFrameUuid = `${uuid}@f9941`;
+  const metaPath = join(projectRoot, assetRelativePath.replaceAll('/', '\\')) + '.meta';
+  writeJsonFile(metaPath, {
+    ver: '1.0.27',
+    importer: 'image',
+    imported: true,
+    uuid,
+    files: ['.json', `.${assetRelativePath.split('.').at(-1) ?? 'png'}`],
+    subMetas: {
+      '6c48a': {
+        importer: 'texture',
+        uuid: textureUuid,
+        displayName: assetRelativePath.split('/').at(-1)?.replace(/\.[^.]+$/, '') ?? assetRelativePath,
+        id: '6c48a',
+        name: 'texture',
+        userData: {
+          wrapModeS: 'clamp-to-edge',
+          wrapModeT: 'clamp-to-edge',
+          imageUuidOrDatabaseUri: uuid,
+          isUuid: true,
+          visible: false,
+          minfilter: 'linear',
+          magfilter: 'linear',
+          mipfilter: 'none',
+          anisotropy: 0,
+        },
+        ver: '1.0.22',
+        imported: true,
+        files: ['.json'],
+        subMetas: {},
+      },
+      f9941: {
+        importer: 'sprite-frame',
+        uuid: spriteFrameUuid,
+        displayName: assetRelativePath.split('/').at(-1)?.replace(/\.[^.]+$/, '') ?? assetRelativePath,
+        id: 'f9941',
+        name: 'spriteFrame',
+        userData: createSpriteFrameUserData(width, height, textureUuid),
+        ver: '1.0.12',
+        imported: true,
+        files: ['.json'],
+        subMetas: {},
+      },
+    },
+    userData: {
+      type: 'sprite-frame',
+      fixAlphaTransparencyArtifacts: false,
+      hasAlpha: false,
+      redirect: textureUuid,
+    },
+  } satisfies CocosMeta);
+}
+
 export function readAssetMetaUuid(projectRoot: string, assetRelativePath: string): string {
   const metaPath = join(projectRoot, assetRelativePath.replaceAll('/', '\\')) + '.meta';
   const meta = readJsonFile<CocosMeta>(metaPath);
   return meta.uuid;
+}
+
+function createSpriteFrameUserData(width: number, height: number, textureUuid: string): Record<string, unknown> {
+  const halfWidth = width / 2;
+  const halfHeight = height / 2;
+  return {
+    trimThreshold: 1,
+    rotated: false,
+    offsetX: 0,
+    offsetY: 0,
+    trimX: 0,
+    trimY: 0,
+    width,
+    height,
+    rawWidth: width,
+    rawHeight: height,
+    borderTop: 0,
+    borderBottom: 0,
+    borderLeft: 0,
+    borderRight: 0,
+    packable: true,
+    pixelsToUnit: 100,
+    pivotX: 0.5,
+    pivotY: 0.5,
+    meshType: 0,
+    vertices: {
+      rawPosition: [
+        -halfWidth,
+        -halfHeight,
+        0,
+        halfWidth,
+        -halfHeight,
+        0,
+        -halfWidth,
+        halfHeight,
+        0,
+        halfWidth,
+        halfHeight,
+        0,
+      ],
+      indexes: [0, 1, 2, 2, 1, 3],
+      uv: [0, height, width, height, 0, 0, width, 0],
+      nuv: [0, 0, 1, 0, 0, 1, 1, 1],
+      minPos: [-halfWidth, -halfHeight, 0],
+      maxPos: [halfWidth, halfHeight, 0],
+    },
+    isUuid: true,
+    imageUuidOrDatabaseUri: textureUuid,
+    atlasUuid: '',
+    trimType: 'auto',
+  };
+}
+
+export function readSpriteFrameMetaUuid(projectRoot: string, assetRelativePath: string): string {
+  const metaPath = join(projectRoot, assetRelativePath.replaceAll('/', '\\')) + '.meta';
+  const meta = readJsonFile<CocosMeta>(metaPath);
+  const spriteFrame = Object.values(meta.subMetas)
+    .map((value) => value as CocosSubMeta)
+    .find((value) => value.importer === 'sprite-frame' || value.name === 'spriteFrame');
+  if (!spriteFrame?.uuid) {
+    throw new Error(`Missing Cocos sprite-frame subMeta: ${metaPath}`);
+  }
+  return spriteFrame.uuid;
 }
 
 export function stableUuid(seed: string): string {

@@ -42,6 +42,26 @@ export interface UiComponentSkinConfig {
   minHeight: number;
 }
 
+export type UiVisualAssetKind = 'spriteFrame';
+export type UiVisualAssetUsage = 'screen_background' | 'ui_skin' | 'actor_sheet' | 'concept';
+export type UiVisualAssetPackageTag = 'main' | 'subpackage' | 'remote' | 'prototype';
+
+export interface UiVisualAssetConfig {
+  assetId: string;
+  assetPath: string;
+  kind: UiVisualAssetKind;
+  usage: UiVisualAssetUsage;
+  packageTag: UiVisualAssetPackageTag;
+  width: number;
+  height: number;
+  targetMaxBytes: number;
+}
+
+export interface UiVisualAssetSetConfig {
+  assetSetId: string;
+  assets: UiVisualAssetConfig[];
+}
+
 export interface UiPanelLayoutConfig {
   panelId: string;
   x: number;

@@ -7,6 +7,14 @@ import type { UiInteractionRequest } from '../shared/ui/P0Ui.types.js';
 import type { GameApp } from './GameApp.js';
 
 const STAGE_CLEAR_DOUBLE_AD_PLACEMENT_ID = 'ad_reward_stage_clear_double';
+const ACCEPTED_REQUEST_AUDIO_EVENTS: Partial<Record<UiInteractionRequest['actionId'], string>> = {
+  ui_request_stage_start: 'audio_stage_clear_whistle',
+  ui_request_lootbox_open: 'audio_lootbox_open_mech',
+  ui_request_reward_claim: 'audio_ui_confirm_steam',
+  ui_request_train_module_upgrade: 'audio_train_module_upgrade',
+  ui_request_ad_reward_double: 'audio_ad_reward_drop',
+  ui_request_ad_reward_skip: 'audio_ui_confirm_steam',
+};
 
 interface PendingStageReward {
   stageId: string;
@@ -65,7 +73,7 @@ export class P0UiRequestRouter implements IP0UiPresenter {
 
     if (!stageResult.value.reward) {
       this.latestReward = null;
-      return this.updated(request.actionId, nowMs);
+      return this.updated(request.actionId, nowMs, ACCEPTED_REQUEST_AUDIO_EVENTS[request.actionId]);
     }
 
     this.pendingStageReward = {
@@ -74,7 +82,7 @@ export class P0UiRequestRouter implements IP0UiPresenter {
       reward: stageResult.value.reward,
     };
     this.latestReward = stageResult.value.reward;
-    return this.updated(request.actionId, nowMs);
+    return this.updated(request.actionId, nowMs, ACCEPTED_REQUEST_AUDIO_EVENTS[request.actionId]);
   }
 
   private handleLootBoxOpen(
@@ -93,7 +101,7 @@ export class P0UiRequestRouter implements IP0UiPresenter {
     if (!opened.ok) return opened;
 
     this.latestReward = opened.value.granted.reward;
-    return this.updated(request.actionId, nowMs);
+    return this.updated(request.actionId, nowMs, ACCEPTED_REQUEST_AUDIO_EVENTS[request.actionId]);
   }
 
   private handleRewardClaim(
@@ -106,7 +114,7 @@ export class P0UiRequestRouter implements IP0UiPresenter {
 
     if (this.latestReward?.sourceId === request.payload.sourceId) {
       this.latestReward = null;
-      return this.updated(request.actionId, nowMs);
+      return this.updated(request.actionId, nowMs, ACCEPTED_REQUEST_AUDIO_EVENTS[request.actionId]);
     }
 
     return this.reject(`No displayed reward matches ${request.payload.sourceId}`, request);
@@ -118,7 +126,7 @@ export class P0UiRequestRouter implements IP0UiPresenter {
   ): Result<P0UiPresenterUpdate> {
     const upgraded = this.app.trainModuleSystem.upgrade(request.payload.moduleId);
     if (!upgraded.ok) return upgraded;
-    return this.updated(request.actionId, nowMs);
+    return this.updated(request.actionId, nowMs, ACCEPTED_REQUEST_AUDIO_EVENTS[request.actionId]);
   }
 
   private async handleAdRewardDouble(
@@ -144,7 +152,7 @@ export class P0UiRequestRouter implements IP0UiPresenter {
       reward: doubled.value.reward,
     };
     this.latestReward = doubled.value.reward;
-    return this.updated(request.actionId, nowMs);
+    return this.updated(request.actionId, nowMs, ACCEPTED_REQUEST_AUDIO_EVENTS[request.actionId]);
   }
 
   private handleAdRewardSkip(
@@ -177,10 +185,17 @@ export class P0UiRequestRouter implements IP0UiPresenter {
     this.app.setCurrentStageId(pending.nextStageId);
     this.pendingStageReward = null;
     this.latestReward = null;
-    return this.updated(acceptedRequest, nowMs);
+    return this.updated(acceptedRequest, nowMs, ACCEPTED_REQUEST_AUDIO_EVENTS[acceptedRequest]);
   }
 
-  private updated(acceptedRequest: UiInteractionRequest['actionId'], nowMs: number): Result<P0UiPresenterUpdate> {
+  private updated(
+    acceptedRequest: UiInteractionRequest['actionId'],
+    nowMs: number,
+    audioEventId?: string,
+  ): Result<P0UiPresenterUpdate> {
+    if (audioEventId) {
+      this.app.audioService.playEvent(audioEventId, nowMs);
+    }
     return ok({
       acceptedRequest,
       state: this.getState(nowMs),

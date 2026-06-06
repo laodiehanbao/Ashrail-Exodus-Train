@@ -9,6 +9,7 @@ import {
   vec4,
   type NodeOptions,
   type SceneBuildContext,
+  type SceneObject,
 } from './cocosSceneSerialization.types.js';
 
 export function createSceneContext(): SceneBuildContext {
@@ -125,7 +126,12 @@ export function createWidgetComponent(context: SceneBuildContext, nodeId: number
   });
 }
 
-export function createSpriteComponent(context: SceneBuildContext, nodeId: number, tint = color(43, 41, 37, 220)): number {
+export function createSpriteComponent(
+  context: SceneBuildContext,
+  nodeId: number,
+  tint = color(43, 41, 37, 220),
+  spriteFrameUuid?: string,
+): number {
   return addNodeComponent(context, nodeId, {
     __type__: 'cc.Sprite',
     _name: '',
@@ -138,7 +144,7 @@ export function createSpriteComponent(context: SceneBuildContext, nodeId: number
     _srcBlendFactor: 2,
     _dstBlendFactor: 4,
     _color: tint,
-    _spriteFrame: null,
+    _spriteFrame: spriteFrameUuid ? spriteFrameRef(spriteFrameUuid) : null,
     _type: 0,
     _fillType: 0,
     _sizeMode: 0,
@@ -149,6 +155,20 @@ export function createSpriteComponent(context: SceneBuildContext, nodeId: number
     _useGrayscale: false,
     _id: shortId(`component:sprite:${nodeId}`),
   });
+}
+
+export function spriteFrameRef(uuid: string): SceneObject {
+  return {
+    __uuid__: uuid,
+    __expectedType__: 'cc.SpriteFrame',
+  };
+}
+
+export function audioClipRef(uuid: string): SceneObject {
+  return {
+    __uuid__: uuid,
+    __expectedType__: 'cc.AudioClip',
+  };
 }
 
 export function createLabelComponent(context: SceneBuildContext, nodeId: number, text: string, fontSize = 28): number {

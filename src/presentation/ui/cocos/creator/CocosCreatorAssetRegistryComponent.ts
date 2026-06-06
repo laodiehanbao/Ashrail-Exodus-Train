@@ -1,4 +1,4 @@
-import { _decorator, CCString, Color, Component, SpriteFrame } from 'cc';
+import { _decorator, AudioClip, CCString, Color, Component, SpriteFrame } from 'cc';
 
 const { ccclass, property } = _decorator;
 
@@ -15,6 +15,12 @@ export class CocosCreatorAssetRegistryComponent extends Component {
   @property({ type: [SpriteFrame] })
   spriteFrames: SpriteFrame[] = [];
 
+  @property({ type: [CCString] })
+  audioClipCueIds: string[] = [];
+
+  @property({ type: [AudioClip] })
+  audioClips: AudioClip[] = [];
+
   @property({ multiline: true })
   colorTokensJson = '[]';
 
@@ -23,6 +29,11 @@ export class CocosCreatorAssetRegistryComponent extends Component {
   resolveSpriteFrame(assetId: string): SpriteFrame | null {
     const index = this.spriteFrameAssetIds.findIndex((entryAssetId) => entryAssetId === assetId);
     return index >= 0 ? this.spriteFrames[index] ?? null : null;
+  }
+
+  resolveAudioClip(cueId: string): AudioClip | null {
+    const index = this.audioClipCueIds.findIndex((entryCueId) => entryCueId === cueId);
+    return index >= 0 ? this.audioClips[index] ?? null : null;
   }
 
   resolveColor(token: string | undefined): Color | null {

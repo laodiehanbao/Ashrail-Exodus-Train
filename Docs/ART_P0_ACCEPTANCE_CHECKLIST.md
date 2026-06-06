@@ -23,9 +23,9 @@ new_prompt_generation, new_background, new_character_sheet, new_icon_sheet, conc
 - [ ] P0 contact sheets have selected cells for train, enemies, icons, UI, FX, and backgrounds.
 - [ ] Selected cells are cropped into runtime paths.
 - [ ] Runtime sprites/icons have transparent backgrounds where needed.
-- [ ] Backgrounds are resized/compressed for first package use.
-- [ ] Runtime assets have stable `assetId` entries in `ART_ASSET_ID_MAP.md`.
-- [ ] Every runtime visual maps to a screen or gameplay/config ID.
+- [x] Backgrounds are resized/compressed for first package use.
+- [x] Runtime assets have stable `assetId` entries in `ART_ASSET_ID_MAP.md`.
+- [x] Every integrated runtime visual maps to a screen or gameplay/config ID.
 - [ ] No generated contact sheet is referenced directly by a Cocos prefab, UI config, or gameplay config.
 
 ## Readability
@@ -88,4 +88,5 @@ new_prompt_generation, new_background, new_character_sheet, new_icon_sheet, conc
 - [x] Generated Cocos Creator scene node binding for ad double reward popup.
 - [x] Creator TS bindings split to one `Component` per script file.
 - [x] Generated scene AssetRegistry uses `colorTokensJson` instead of custom entry classes.
+- [x] Generated scene AssetRegistry includes P0 background SpriteFrames from `P0VisualAssets.json`.
 - [ ] Cocos Creator AssetDB refresh/open/save confirmation for `scene_p0_exodus_train_main.scene`.

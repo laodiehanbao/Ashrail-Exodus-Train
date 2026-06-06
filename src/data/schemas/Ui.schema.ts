@@ -10,31 +10,44 @@ import type {
   UiPanelLayoutConfig,
   UiSafeAreaConfig,
   UiScreenLayoutConfig,
+  UiVisualAssetConfig,
+  UiVisualAssetKind,
+  UiVisualAssetPackageTag,
+  UiVisualAssetSetConfig,
+  UiVisualAssetUsage,
 } from '../../shared/ui/P0Ui.types.js';
 import { P0_UI_SCREEN_IDS } from '../../shared/ui/P0Ui.types.js';
 import { asArray, asRecord, readArray, readNumber, readString, validationError } from './commonValidation.js';
 
 const SCREEN_IDS: readonly P0UiScreenId[] = P0_UI_SCREEN_IDS;
+const VISUAL_ASSET_KINDS = new Set<UiVisualAssetKind>(['spriteFrame']);
+const VISUAL_ASSET_USAGES = new Set<UiVisualAssetUsage>(['screen_background', 'ui_skin', 'actor_sheet', 'concept']);
+const VISUAL_ASSET_PACKAGE_TAGS = new Set<UiVisualAssetPackageTag>(['main', 'subpackage', 'remote', 'prototype']);
 
 export interface UiConfigSources {
   uiCopy: unknown;
   uiLayout: unknown;
+  uiVisualAssets: unknown;
 }
 
 export interface UiConfigRegistry {
   uiCopy: UiCopyConfig;
   uiLayout: UiLayoutConfig;
+  uiVisualAssets: UiVisualAssetSetConfig;
 }
 
 export function validateUiConfigSources(sources: UiConfigSources): Result<UiConfigRegistry> {
   const uiCopy = validateUiCopy(sources.uiCopy);
   const uiLayout = validateUiLayout(sources.uiLayout);
+  const uiVisualAssets = validateUiVisualAssets(sources.uiVisualAssets);
   if (!uiCopy.ok) return uiCopy;
   if (!uiLayout.ok) return uiLayout;
+  if (!uiVisualAssets.ok) return uiVisualAssets;
 
   return ok({
     uiCopy: uiCopy.value,
     uiLayout: uiLayout.value,
+    uiVisualAssets: uiVisualAssets.value,
   });
 }
 
@@ -102,6 +115,71 @@ export function validateUiLayout(input: unknown): Result<UiLayoutConfig> {
     colorTokens: colorTokens.value,
     componentSkins: componentSkins.value,
     screens: screens.value,
+  });
+}
+
+export function validateUiVisualAssets(input: unknown): Result<UiVisualAssetSetConfig> {
+  const record = asRecord(input, 'UiVisualAssets');
+  if (!record.ok) return record;
+
+  const assetSetId = readString(record.value, 'assetSetId');
+  const assets = readArray(record.value, 'assets');
+  if (!assetSetId.ok || !assets.ok) {
+    return validationError<UiVisualAssetSetConfig>(assetSetId, assets);
+  }
+
+  const ids = new Set<string>();
+  const parsed: UiVisualAssetConfig[] = [];
+  for (const item of assets.value) {
+    const asset = parseVisualAsset(item);
+    if (!asset.ok) return asset;
+    if (ids.has(asset.value.assetId)) {
+      return fail(ErrorCode.ConfigInvalid, `Duplicate UI visual asset ${asset.value.assetId}`, item);
+    }
+    ids.add(asset.value.assetId);
+    parsed.push(asset.value);
+  }
+
+  return ok({ assetSetId: assetSetId.value, assets: parsed });
+}
+
+function parseVisualAsset(input: unknown): Result<UiVisualAssetConfig> {
+  const record = asRecord(input, 'UiVisualAsset');
+  if (!record.ok) return record;
+
+  const assetId = readString(record.value, 'assetId');
+  const assetPath = readString(record.value, 'assetPath');
+  const kind = readString(record.value, 'kind');
+  const usage = readString(record.value, 'usage');
+  const packageTag = readString(record.value, 'packageTag');
+  const width = readNumber(record.value, 'width', 1);
+  const height = readNumber(record.value, 'height', 1);
+  const targetMaxBytes = readNumber(record.value, 'targetMaxBytes', 1);
+  if (!assetId.ok || !assetPath.ok || !kind.ok || !usage.ok || !packageTag.ok || !width.ok || !height.ok || !targetMaxBytes.ok) {
+    return validationError<UiVisualAssetConfig>(assetId, assetPath, kind, usage, packageTag, width, height, targetMaxBytes);
+  }
+  if (!VISUAL_ASSET_KINDS.has(kind.value as UiVisualAssetKind)) {
+    return fail(ErrorCode.ConfigInvalid, `Unknown UI visual asset kind ${kind.value}`, record.value);
+  }
+  if (!VISUAL_ASSET_USAGES.has(usage.value as UiVisualAssetUsage)) {
+    return fail(ErrorCode.ConfigInvalid, `Unknown UI visual asset usage ${usage.value}`, record.value);
+  }
+  if (!VISUAL_ASSET_PACKAGE_TAGS.has(packageTag.value as UiVisualAssetPackageTag)) {
+    return fail(ErrorCode.ConfigInvalid, `Unknown UI visual asset package tag ${packageTag.value}`, record.value);
+  }
+  if (!/^assets\/.+\.(png|jpg|jpeg|webp)$/i.test(assetPath.value)) {
+    return fail(ErrorCode.ConfigInvalid, `Invalid UI visual asset path ${assetPath.value}`, record.value);
+  }
+
+  return ok({
+    assetId: assetId.value,
+    assetPath: assetPath.value,
+    kind: kind.value as UiVisualAssetKind,
+    usage: usage.value as UiVisualAssetUsage,
+    packageTag: packageTag.value as UiVisualAssetPackageTag,
+    width: width.value,
+    height: height.value,
+    targetMaxBytes: targetMaxBytes.value,
   });
 }
 

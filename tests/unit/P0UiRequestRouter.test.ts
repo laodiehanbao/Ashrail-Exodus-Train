@@ -2,6 +2,7 @@ import { GameApp } from '../../src/app/GameApp.js';
 import { P0UiRequestRouter } from '../../src/app/P0UiRequestRouter.js';
 import type { PlayerProgressSnapshot } from '../../src/domain/player/PlayerProgress.types.js';
 import { createDefaultProgress } from '../../src/gameplay/save/SaveVersionMigrator.js';
+import { MockAudioPlaybackAdapter } from '../../src/platform/audio/MockAudioPlaybackAdapter.js';
 import { assert, assertEqual, runTest } from './testHarness.js';
 import { loadTestConfigs } from './loadTestConfigs.js';
 
@@ -35,7 +36,8 @@ export async function testP0UiRequestRouter(): Promise<void> {
   });
 
   await runTest('P0UiRequestRouter opens loot boxes upgrades modules and clears granted reward display', async () => {
-    const app = new GameApp(loadTestConfigs(), createProgress(), 17);
+    const audioAdapter = new MockAudioPlaybackAdapter();
+    const app = new GameApp(loadTestConfigs(), createProgress(), 17, audioAdapter);
     const router = new P0UiRequestRouter(app);
 
     const opened = await router.handleRequest({
@@ -61,12 +63,21 @@ export async function testP0UiRequestRouter(): Promise<void> {
     }, 220000);
     assert(upgraded.ok, 'module upgrade should succeed through TrainModuleSystem');
     assert(app.snapshot().power > 20, 'module upgrade should increase app snapshot power');
+    assert(
+      audioAdapter.played.some((request) => request.eventId === 'audio_lootbox_open_mech'),
+      'accepted loot box request should play configured audio event',
+    );
+    assert(
+      audioAdapter.played.some((request) => request.eventId === 'audio_train_module_upgrade'),
+      'accepted module upgrade request should play configured audio event',
+    );
   });
 
   await runTest('P0UiRequestRouter rejects invalid or premature requests', async () => {
     const progress = createProgress();
     progress.resources.coin = 0;
-    const app = new GameApp(loadTestConfigs(), progress, 23);
+    const audioAdapter = new MockAudioPlaybackAdapter();
+    const app = new GameApp(loadTestConfigs(), progress, 23, audioAdapter);
     const router = new P0UiRequestRouter(app);
 
     const rejectedLoot = await router.handleRequest({
@@ -80,6 +91,7 @@ export async function testP0UiRequestRouter(): Promise<void> {
       payload: { placementId: 'ad_reward_stage_clear_double' },
     }, 310000);
     assert(!rejectedAd.ok, 'ad double should reject without pending stage reward');
+    assertEqual(audioAdapter.played.length, 0, 'rejected UI requests should not play audio');
   });
 
   await runTest('P0UiRequestRouter rejects mismatched ad placement for pending stage reward', async () => {

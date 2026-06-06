@@ -62,6 +62,14 @@ Allowed in P0+:
 - Placeholder cues must not be tagged as `main` package assets.
 - Maximum variants per event: `5`.
 
+## Cocos Runtime Integration
+
+- `GameApp` owns `AudioService` and receives an `IAudioPlaybackAdapter` during app composition.
+- CLI/tests use `MockAudioPlaybackAdapter`; Cocos uses `CocosCreatorAudioPlaybackAdapter` under `src/app/cocos`.
+- `P0UiRequestRouter` plays audio only after accepted UI requests. Rejected requests and disabled actions do not trigger sound.
+- `scene_p0_exodus_train_main.scene` registers local `main` and `placeholder` cues as `AudioClip[]` on `CocosCreatorAssetRegistryComponent`.
+- `remote` voice cues remain config-valid and file-backed, but are not registered into the first scene package until a subpackage/remote loading step exists.
+
 ## Resource Research
 
 Preferred future resource routes:

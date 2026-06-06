@@ -6,6 +6,7 @@ import type { PlayerProgressSnapshot } from '../domain/player/PlayerProgress.typ
 import { ResourceWallet } from '../domain/player/ResourceWallet.js';
 import { TrainModel } from '../domain/train/TrainModel.js';
 import { MockAdService } from '../platform/ads/MockAdService.js';
+import { MockAudioPlaybackAdapter } from '../platform/audio/MockAudioPlaybackAdapter.js';
 import { AdLimitService } from '../gameplay/ads/AdLimitService.js';
 import { AdRewardService } from '../gameplay/ads/AdRewardService.js';
 import { CombatResolver } from '../gameplay/combat/CombatResolver.js';
@@ -17,6 +18,9 @@ import { StageProgressService } from '../gameplay/stage/StageProgressService.js'
 import { WaveDirector } from '../gameplay/stage/WaveDirector.js';
 import { TrainModuleRepository } from '../gameplay/train/TrainModuleRepository.js';
 import { TrainModuleSystem } from '../gameplay/train/TrainModuleSystem.js';
+import { AudioMixer } from '../presentation/audio/AudioMixer.js';
+import { AudioService } from '../presentation/audio/AudioService.js';
+import type { IAudioPlaybackAdapter } from '../shared/audio/IAudioPlaybackAdapter.js';
 import type { StageId } from '../shared/ids.types.js';
 
 export interface GameAppSnapshot {
@@ -35,11 +39,13 @@ export class GameApp {
   readonly stageProgressService: StageProgressService;
   readonly trainModuleSystem: TrainModuleSystem;
   readonly adRewardService: AdRewardService;
+  readonly audioService: AudioService;
 
   constructor(
     configRegistry: GameConfigRegistry,
     private readonly progress: PlayerProgressSnapshot,
     seed = 1001,
+    audioPlaybackAdapter: IAudioPlaybackAdapter = new MockAudioPlaybackAdapter(),
   ) {
     this.configs = new ConfigRegistry(configRegistry);
     this.wallet = new ResourceWallet(progress.resources);
@@ -54,6 +60,13 @@ export class GameApp {
     );
 
     const random = new Random(seed);
+    this.audioService = new AudioService(
+      this.configs.audioCues,
+      this.configs.audioEvents,
+      new AudioMixer(this.configs.audioMixer),
+      audioPlaybackAdapter,
+      new Random(seed + 101),
+    );
     const lootGenerator = new LootGenerator(this.configs.lootBoxes, this.configs.lootPools);
     this.lootBoxSystem = new LootBoxSystem(
       this.configs.lootBoxes,

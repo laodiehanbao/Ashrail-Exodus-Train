@@ -30,7 +30,7 @@
 - 建立无 `cc` 的 manifest-to-binding factory：通过 host 接口装配 `P0CocosUiBinding`，缺节点/缺 slot 时返回清晰错误。
 - 建立无 `cc` 的 P0 Cocos UI runtime：装配 `IP0UiPresenter` 与 binding presenter，串行处理点击请求，只渲染 accepted update state。
 - 建立真实 Cocos Creator TypeScript 组件：presentation 只提供 `cc` binding components 和 manifest host，app 层提供 Creator bootstrap 装配。
-- 接入生成式 Cocos Creator scene/node 绑定：`assets/scenes/scene_p0_exodus_train_main.scene` 覆盖五个 P0 screen、所有 manifest path 和 19 个 bootstrap JsonAsset 引用，只渲染 UI state、转发 `ui_request_*`，不得承载业务规则。
+- 接入生成式 Cocos Creator scene/node 绑定：`assets/scenes/scene_p0_exodus_train_main.scene` 覆盖五个 P0 screen、所有 manifest path 和 20 个 bootstrap JsonAsset 引用，只渲染 UI state、转发 `ui_request_*`，不得承载业务规则。
 
 验收：新存档可连续完成 3 个阶段，并能保存后重新加载。
 
@@ -81,7 +81,7 @@
 
 ## 打开问题
 
-- 第一阶段 UI 已完成逻辑测试驱动的 TypeScript state/request 层、Cocos-ready Presenter、无 `cc` node binding manifest、manifest-to-binding factory、P0 Cocos UI runtime、真实 Cocos Creator TS binding components、Creator bootstrap、app request router、Creator 同步脚本和生成式 P0 scene/meta。下一步需要在 Cocos Creator 内刷新 AssetDB、打开并保存 `scene_p0_exodus_train_main.scene`，确认没有 missing script / missing JsonAsset。
+- 第一阶段 UI 已完成逻辑测试驱动的 TypeScript state/request 层、Cocos-ready Presenter、无 `cc` node binding manifest、manifest-to-binding factory、P0 Cocos UI runtime、真实 Cocos Creator TS binding components、Creator bootstrap、app request router、Creator 同步脚本、生成式 P0 scene/meta 和三张 P0 背景 SpriteFrame 接线。下一步需要在 Cocos Creator 内刷新 AssetDB、打开并保存 `scene_p0_exodus_train_main.scene`，确认没有 missing script / missing JsonAsset。
 - 第一批数值表的粒度需要和模拟脚本同步调整。
 - 真实 Douyin 广告点位 ID 暂未确定，先使用稳定内部 placement ID。
 - 正式资源包体预算需要在第一批美术资源进入前补充。

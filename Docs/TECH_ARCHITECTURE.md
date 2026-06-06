@@ -109,11 +109,11 @@ npm run sync:cocos
 
 npm run generate:cocos:p0-scene
   -> writes assets/scenes/scene_p0_exodus_train_main.scene
-  -> binds P0CocosCreatorBootstrap, AssetRegistry, 19 JsonAssets, and all P0 UI node paths
+  -> binds P0CocosCreatorBootstrap, AssetRegistry, 20 JsonAssets, and all P0 UI node paths
   -> fails if a manifest node/template path is missing
 ```
 
-`CocosCreatorAssetRegistryComponent` stores color tokens as `colorTokensJson` in the generated scene instead of custom entry classes, because Creator 3.8 warns on primitive property types inside entry classes. String defaults should be inferred with empty property options, string arrays should use `CCString`, and numeric Inspector fields should use `CCInteger` or `CCFloat`. Sprite frames remain explicit `SpriteFrame[]` plus stable `spriteFrameAssetIds[]` for later runtime art binding.
+`CocosCreatorAssetRegistryComponent` stores color tokens as `colorTokensJson` in the generated scene instead of custom entry classes, because Creator 3.8 warns on primitive property types inside entry classes. String defaults should be inferred with empty property options, string arrays should use `CCString`, and numeric Inspector fields should use `CCInteger` or `CCFloat`. P0 visual assets are declared in `configs/ui/P0VisualAssets.json`; synced Creator mirrors receive stable image `.meta` files, and generated scenes bind sprite frames through explicit `SpriteFrame[]` plus stable `spriteFrameAssetIds[]`. Local P0 audio cues are also registered through explicit `AudioClip[]` plus stable `audioClipCueIds[]`; remote voice cues stay outside the first scene registry until a subpackage/remote loader exists.
 
 Do not copy `library/`, `temp/`, `profiles/`, `.creator/`, or build cache from Cocos Creator back into this repository. After generation, refresh the Cocos Creator asset panel and save the scene once to confirm AssetDB imports the scene without missing script or missing JsonAsset references.
 

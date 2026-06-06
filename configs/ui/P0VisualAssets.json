@@ -1,0 +1,35 @@
+{
+  "assetSetId": "p0_visual_assets_default",
+  "assets": [
+    {
+      "assetId": "tex_bg_stage_wasteland_rail_001",
+      "assetPath": "assets/textures/runtime/tex_bg_stage_wasteland_rail_001.jpg",
+      "kind": "spriteFrame",
+      "usage": "screen_background",
+      "packageTag": "prototype",
+      "width": 720,
+      "height": 1280,
+      "targetMaxBytes": 180000
+    },
+    {
+      "assetId": "tex_bg_lootbox_cargo_bay_001",
+      "assetPath": "assets/textures/runtime/tex_bg_lootbox_cargo_bay_001.jpg",
+      "kind": "spriteFrame",
+      "usage": "screen_background",
+      "packageTag": "prototype",
+      "width": 720,
+      "height": 1280,
+      "targetMaxBytes": 180000
+    },
+    {
+      "assetId": "tex_bg_train_garage_upgrade_001",
+      "assetPath": "assets/textures/runtime/tex_bg_train_garage_upgrade_001.jpg",
+      "kind": "spriteFrame",
+      "usage": "screen_background",
+      "packageTag": "prototype",
+      "width": 720,
+      "height": 1280,
+      "targetMaxBytes": 180000
+    }
+  ]
+}

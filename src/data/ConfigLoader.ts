@@ -32,6 +32,7 @@ export interface RawConfigSources {
   elevenLabsVoiceProfile: unknown;
   uiCopy: unknown;
   uiLayout: unknown;
+  uiVisualAssets: unknown;
   uiNodeBindings: unknown;
 }
 
@@ -57,6 +58,7 @@ export function loadConfigRegistry(sources: RawConfigSources): Result<GameConfig
   const uiConfig = validateUiConfigSources({
     uiCopy: sources.uiCopy,
     uiLayout: sources.uiLayout,
+    uiVisualAssets: sources.uiVisualAssets,
   });
   const uiNodeBindings = uiConfig.ok
     ? validateUiNodeBindingConfig(sources.uiNodeBindings, uiConfig.value.uiLayout)
@@ -149,6 +151,7 @@ export function loadConfigRegistry(sources: RawConfigSources): Result<GameConfig
           },
     uiCopy: uiConfig.ok ? uiConfig.value.uiCopy : { locale: '', entries: [] },
     uiLayout: uiConfig.ok ? uiConfig.value.uiLayout : createEmptyUiLayout(),
+    uiVisualAssets: uiConfig.ok ? uiConfig.value.uiVisualAssets : createEmptyUiVisualAssets(),
     uiNodeBindings: uiNodeBindings.ok ? uiNodeBindings.value : createEmptyUiNodeBindings(),
   });
   if (!referenceCheck.ok) {
@@ -176,6 +179,13 @@ function createEmptyUiNodeBindings(): GameConfigRegistry['uiNodeBindings'] {
     sceneId: '',
     layoutId: '',
     screens: [],
+  };
+}
+
+function createEmptyUiVisualAssets(): GameConfigRegistry['uiVisualAssets'] {
+  return {
+    assetSetId: '',
+    assets: [],
   };
 }
 
@@ -210,6 +220,24 @@ function validateReferences(configs: GameConfigRegistry): Result<GameConfigRegis
 
   const uiCopyCheck = validateUiCopyReferences(configs);
   if (!uiCopyCheck.ok) return uiCopyCheck;
+  const uiVisualAssetCheck = validateUiVisualAssetReferences(configs);
+  if (!uiVisualAssetCheck.ok) return uiVisualAssetCheck;
+
+  return ok(configs);
+}
+
+function validateUiVisualAssetReferences(configs: GameConfigRegistry): Result<GameConfigRegistry> {
+  const spriteFrameIds = new Set(
+    configs.uiVisualAssets.assets
+      .filter((asset) => asset.kind === 'spriteFrame')
+      .map((asset) => asset.assetId),
+  );
+
+  for (const screen of configs.uiLayout.screens) {
+    if (!spriteFrameIds.has(screen.backgroundAssetId)) {
+      return fail(ErrorCode.ConfigMissingReference, `UI screen ${screen.screenId} references unknown background asset ${screen.backgroundAssetId}`, screen);
+    }
+  }
 
   return ok(configs);
 }

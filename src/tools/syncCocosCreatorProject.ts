@@ -10,9 +10,11 @@ import {
   replaceDirectory,
   stableUuid,
   writeDirectoryMeta,
+  writeImageAssetMeta,
   writeJsonAssetMeta,
   writeTypeScriptAssetMeta,
 } from './cocosCreatorAssetUtils.js';
+import type { UiVisualAssetSetConfig } from '../shared/ui/P0Ui.types.js';
 
 const DEFAULT_CREATOR_PROJECT_ROOT = 'C:/Users/zhang/NewProject_1';
 const SOURCE_ROOT = process.cwd();
@@ -40,6 +42,7 @@ export function syncCocosCreatorProject(projectRoot = readProjectRootArg()): Syn
   syncRuntimeAssetDirs(creatorRoot);
   syncScripts(creatorRoot);
   syncConfigs(creatorRoot);
+  syncVisualAssetMetas(creatorRoot);
 
   const scriptsRoot = resolve(creatorRoot, 'assets/scripts/src');
   const configRoot = resolve(creatorRoot, 'assets/configs');
@@ -84,6 +87,24 @@ function syncConfigs(projectRoot: string): void {
   writeMetasForTree(projectRoot, 'assets/configs');
   for (const path of listFiles(target, (filePath) => filePath.endsWith('.json'))) {
     writeJsonAssetMeta(projectRoot, projectAssetPath(projectRoot, path));
+  }
+}
+
+function syncVisualAssetMetas(projectRoot: string): void {
+  const configPath = resolve(projectRoot, 'assets/configs/ui/P0VisualAssets.json');
+  if (!existsSync(configPath)) return;
+  const config = JSON.parse(readFileSync(configPath, 'utf8')) as UiVisualAssetSetConfig;
+  for (const asset of config.assets) {
+    if (asset.kind !== 'spriteFrame') continue;
+    const targetPath = resolve(projectRoot, asset.assetPath);
+    if (!existsSync(targetPath)) {
+      throw new Error(`Missing synced visual asset: ${targetPath}`);
+    }
+    const directoryPath = asset.assetPath.split('/').slice(0, -1).join('/');
+    if (directoryPath) {
+      writeDirectoryMeta(projectRoot, directoryPath);
+    }
+    writeImageAssetMeta(projectRoot, asset.assetPath, asset.width, asset.height);
   }
 }
 

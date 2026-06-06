@@ -2,6 +2,15 @@
 
 本文档记录项目文档和工程约定变更。格式保持简洁，便于后续同步到版本日志。
 
+## 2026-06-06
+
+### Changed
+
+- P0 scene 生成器现在默认隐藏 list item template 占位节点，避免 Creator 打开 scene 时模板文案与真实 UI 文案混在一起；新增 scene builder 回归测试锁定布局坐标与模板 inactive 状态。
+- `npm run generate:cocos:p0-scene` 现在同时回写主仓库 `assets/scenes` 和 Creator 镜像，避免下一次同步把旧 scene 覆盖回 Creator。
+- 新增 `configs/ui/P0VisualAssets.json` 和三张 720x1280 runtime JPG 背景；`sync:cocos` 会为这些图片写入稳定 Cocos image meta，`generate:cocos:p0-scene` 会把 SpriteFrame 填入 `AssetRegistry` 并给全屏 Frame 写入编辑器可见背景。
+- 新增 Cocos `AudioSource` 播放适配器，`GameApp` 装配 `AudioService`，P0 UI 成功请求会播放配置化 audio event；生成的 scene 现在把 main/placeholder `.ogg` 注册为 `AudioClip[]`，远程人声仍不进入首包注册表。
+
 ## 2026-06-05
 
 ### Added
@@ -12,6 +21,7 @@
 
 - 拆分真实 Creator UI binding 组件为一文件一个 `extends Component`，移除旧聚合脚本，规避 Cocos Creator 3.8 的 `Each script can have at most one Component` 导入错误。
 - `CocosCreatorAssetRegistryComponent` 改为用 `colorTokensJson` 序列化颜色 token，并为字符串/数字 Creator 属性显式声明类型，规避 `undefined type to cc property` 警告。
+- P0 scene 生成器现在按 `configs/ui/P0UiLayout.json` 写入 screen/panel/text/list/button 初始坐标，并将五个 P0 screen 纵向错开展示，避免 Creator 打开 scene 时所有字符串重叠在原点。
 
 ### Notes
 

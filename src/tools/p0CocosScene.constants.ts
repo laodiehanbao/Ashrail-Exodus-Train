@@ -28,5 +28,6 @@ export const P0_CONFIG_ASSET_PATHS = [
   'assets/configs/audio/ElevenLabsVoiceProfile.json',
   'assets/configs/ui/P0UiCopy.zh-CN.json',
   'assets/configs/ui/P0UiLayout.json',
+  'assets/configs/ui/P0VisualAssets.json',
   'assets/configs/ui/P0UiNodeBindings.json',
 ] as const;

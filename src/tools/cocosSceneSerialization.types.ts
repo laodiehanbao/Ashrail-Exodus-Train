@@ -28,12 +28,30 @@ export interface UiNodeBindingEntryConfig {
   slotId: string;
   nodePath: string;
   kind: 'frame' | 'text' | 'metricList' | 'action' | 'rewardItemList' | 'moduleCardList';
+  panelId?: string;
   itemTemplatePath?: string;
   emptyStatePath?: string;
 }
 
 export interface UiLayoutConfig {
+  designWidth: number;
+  designHeight: number;
   colorTokens: { token: string; hex: string }[];
+  screens: UiScreenLayoutConfig[];
+}
+
+export interface UiScreenLayoutConfig {
+  screenId: string;
+  backgroundAssetId: string;
+  panels: UiPanelLayoutConfig[];
+}
+
+export interface UiPanelLayoutConfig {
+  panelId: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 }
 
 export function pushObject(context: SceneBuildContext, object: SceneObject): number {

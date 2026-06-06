@@ -121,8 +121,8 @@ The runtime must not:
 `src/app/cocos/P0CocosCreatorBootstrap.ts` provides the current scene entry component. The generated scene assigns:
 
 - `uiRoot`: `Canvas`.
-- `configAssets`: the 19 JSON assets required by the P0 bootstrap.
-- `assetRegistry`: a generated `CocosCreatorAssetRegistryComponent` with P0 color tokens.
+- `configAssets`: the 20 JSON assets required by the P0 bootstrap.
+- `assetRegistry`: a generated `CocosCreatorAssetRegistryComponent` with P0 color tokens, registered P0 background sprite frames, and local P0 audio clips.
 
 The scene is produced by `npm run sync:cocos` plus `npm run generate:cocos:p0-scene`. After generation, refresh the Cocos Creator asset panel and save the scene once so AssetDB can confirm there are no missing scripts or missing JSON references.
 
@@ -135,7 +135,7 @@ The scene is produced by `npm run sync:cocos` plus `npm run generate:cocos:p0-sc
 - P0 binding factory must turn the manifest into `P0CocosUiBinding` through a no-`cc` host and fail clearly when a slot/node is missing.
 - P0 Cocos runtime must mount state, serialize click requests, render accepted updates, expose failures, and stay no-`cc`.
 - Real Cocos Creator components must remain restricted to `src/presentation/ui/cocos/creator` and app composition under `src/app/cocos`.
-- `assets/scenes/scene_p0_exodus_train_main.scene` must contain all paths from `configs/ui/P0UiNodeBindings.json` and 19 bootstrap `JsonAsset` references.
+- `assets/scenes/scene_p0_exodus_train_main.scene` must contain all paths from `configs/ui/P0UiNodeBindings.json` and 20 bootstrap `JsonAsset` references.
 - UI copy must cover screen labels, button labels, resource names, loot box names, equipment names, train module names, and reward fragment text.
 - Presentation views may not grant rewards, spend resources, write saves, call ads, or call Douyin APIs.
 - Presentation views may only emit stable `ui_request_*` action IDs and stable ID payloads.

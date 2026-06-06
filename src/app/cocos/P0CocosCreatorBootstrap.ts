@@ -1,4 +1,4 @@
-import { _decorator, CCInteger, Component, JsonAsset, Node } from 'cc';
+import { _decorator, AudioSource, CCInteger, Component, JsonAsset, Node } from 'cc';
 import { Log } from '../../core/Log.js';
 import { fail, ok, type Result } from '../../core/Result.types.js';
 import type { RawConfigSources } from '../../data/ConfigLoader.js';
@@ -10,6 +10,7 @@ import { CocosCreatorUiBindingHost } from '../../presentation/ui/cocos/creator/C
 import { ErrorCode } from '../../shared/ErrorCodes.js';
 import { createGameAppFromRawConfigs } from '../SceneBootstrap.js';
 import { P0UiRequestRouter } from '../P0UiRequestRouter.js';
+import { CocosCreatorAudioPlaybackAdapter } from './CocosCreatorAudioPlaybackAdapter.js';
 
 const { ccclass, property } = _decorator;
 
@@ -32,6 +33,7 @@ const CONFIG_ASSET_KEYS = [
   'elevenLabsVoiceProfile',
   'uiCopy',
   'uiLayout',
+  'uiVisualAssets',
   'uiNodeBindings',
 ] as const satisfies readonly (keyof RawConfigSources)[];
 
@@ -55,6 +57,7 @@ const CONFIG_ASSET_NAME_TO_KEY = new Map<string, keyof RawConfigSources>([
   ['elevenlabsvoiceprofile', 'elevenLabsVoiceProfile'],
   ['p0uicopyzhcn', 'uiCopy'],
   ['p0uilayout', 'uiLayout'],
+  ['p0visualassets', 'uiVisualAssets'],
   ['p0uinodebindings', 'uiNodeBindings'],
 ]);
 
@@ -81,7 +84,13 @@ export class P0CocosCreatorBootstrap extends Component {
       return;
     }
 
-    const app = createGameAppFromRawConfigs(rawConfigs.value, createDefaultProgress(), this.seed);
+    const audioSource = this.node.getComponent(AudioSource) ?? this.node.addComponent(AudioSource);
+    const app = createGameAppFromRawConfigs(
+      rawConfigs.value,
+      createDefaultProgress(),
+      this.seed,
+      new CocosCreatorAudioPlaybackAdapter(this.assetRegistry, audioSource),
+    );
     const host = new CocosCreatorUiBindingHost(this.uiRoot ?? this.node, this.assetRegistry);
     const binding = createP0CocosUiBindingFromManifest(app.configs.uiNodeBindings, host);
     if (!binding.ok) {

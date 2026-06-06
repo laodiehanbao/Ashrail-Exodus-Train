@@ -23,6 +23,7 @@ export function readJsonConfig(rootDir: string): RawConfigSources {
     elevenLabsVoiceProfile: readJson(rootDir, 'configs/audio/ElevenLabsVoiceProfile.json'),
     uiCopy: readJson(rootDir, 'configs/ui/P0UiCopy.zh-CN.json'),
     uiLayout: readJson(rootDir, 'configs/ui/P0UiLayout.json'),
+    uiVisualAssets: readJson(rootDir, 'configs/ui/P0VisualAssets.json'),
     uiNodeBindings: readJson(rootDir, 'configs/ui/P0UiNodeBindings.json'),
   };
 }

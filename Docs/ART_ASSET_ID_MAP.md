@@ -34,9 +34,9 @@ Do not use generated source filenames, display text, Chinese names, or config di
 | `icon_resource_module_fragment_001` | `assets/icons/resources/sheet_lootboxes_resources_p0_001.png` | `assets/icons/resources/runtime/icon_resource_module_fragment_001.png` | `module_fragment` | reward/upgrade | yes | sheet | select module shard |
 | `tex_enemy_raider_basic_001` | `assets/textures/enemies/sheet_enemies_p0_001.png` | `assets/textures/enemies/runtime/tex_enemy_raider_basic_001.png` | `enemy_raider_basic_001` | combat | yes | sheet | select readable fast/small enemy |
 | `tex_enemy_husk_brute_001` | `assets/textures/enemies/sheet_enemies_p0_001.png` | `assets/textures/enemies/runtime/tex_enemy_husk_brute_001.png` | `enemy_husk_brute_001` | combat | yes | sheet | select heavy blocker |
-| `tex_bg_stage_wasteland_rail_001` | `assets/textures/backgrounds/tex_bg_stage_wasteland_rail_001.png` | `assets/textures/backgrounds/runtime/tex_bg_stage_wasteland_rail_001.webp` | `stage_chapter_01_001` | combat | yes | selected | resize/compress |
-| `tex_bg_train_garage_upgrade_001` | `assets/textures/backgrounds/tex_bg_train_garage_upgrade_001.png` | `assets/textures/backgrounds/runtime/tex_bg_train_garage_upgrade_001.webp` | `screen_train_upgrade` | train upgrade | yes | selected | resize/compress |
-| `tex_bg_lootbox_cargo_bay_001` | `assets/textures/backgrounds/tex_bg_lootbox_cargo_bay_001.png` | `assets/textures/backgrounds/runtime/tex_bg_lootbox_cargo_bay_001.webp` | `screen_lootbox` | loot box | yes | selected | resize/compress |
+| `tex_bg_stage_wasteland_rail_001` | `assets/textures/backgrounds/tex_bg_stage_wasteland_rail_001.png` | `assets/textures/runtime/tex_bg_stage_wasteland_rail_001.jpg` | `stage_chapter_01_001` | combat | yes | integrated | 720x1280, under 180KB target |
+| `tex_bg_train_garage_upgrade_001` | `assets/textures/backgrounds/tex_bg_train_garage_upgrade_001.png` | `assets/textures/runtime/tex_bg_train_garage_upgrade_001.jpg` | `screen_train_upgrade` | train upgrade | yes | integrated | 720x1280, under 180KB target |
+| `tex_bg_lootbox_cargo_bay_001` | `assets/textures/backgrounds/tex_bg_lootbox_cargo_bay_001.png` | `assets/textures/runtime/tex_bg_lootbox_cargo_bay_001.jpg` | `screen_lootbox` | loot box | yes | integrated | 720x1280, under 180KB target |
 
 ## Concept References
 

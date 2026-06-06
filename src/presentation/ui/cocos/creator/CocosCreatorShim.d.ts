@@ -42,6 +42,17 @@ declare module 'cc' {
 
   export class SpriteFrame {}
 
+  export class AudioClip {}
+
+  export class AudioSource extends Component {
+    clip: AudioClip | null;
+    loop: boolean;
+    volume: number;
+    play(): void;
+    playOneShot(clip: AudioClip, volumeScale?: number): void;
+    stop(): void;
+  }
+
   export class UITransform extends Component {
     setContentSize(width: number, height: number): void;
   }
