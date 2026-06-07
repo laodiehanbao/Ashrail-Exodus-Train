@@ -52,6 +52,7 @@ P0 UI code is split into three layers:
 
 - `configs/ui`: copy and layout data.
 - `configs/ui/P0UiNodeBindings.json`: no-`cc` Cocos node binding manifest for P0 screens. It records stable node paths, slot IDs, list item template paths, component skin references, and action IDs.
+- `configs/ui/P0VisualAssets.json` and `configs/ui/P0VisualBindings.json`: runtime SpriteFrame registry plus domain-ID-to-SpriteFrame binding data for resource counters, rewards, loot boxes, equipment, train modules, P0 train parts, and stage enemies.
 - `src/gameplay/*Availability.ts`: pure read-only availability queries for loot box, train module, and ad reward states.
 - `src/presentation/viewmodels`: display-state mapping from config, snapshot, and gameplay availability into renderable UI state.
 - `src/presentation/ui`: thin views that render state and emit `ui_request_*` interaction requests only.
@@ -73,7 +74,7 @@ It must not contain:
 
 - reward amounts, drop weights, upgrade costs, ad multipliers, settlement IDs, save patches, ad watched flags, or platform API details.
 
-Required slots are declared in `src/shared/ui/P0UiNodeBinding.types.ts` and validated by `src/data/schemas/UiNodeBinding.schema.ts`. The manifest covers the five P0 screens and their frame/text/list/action slots, but real Creator node lookup and `cc` component implementation are still deferred.
+Required slots are declared in `src/shared/ui/P0UiNodeBinding.types.ts` and validated by `src/data/schemas/UiNodeBinding.schema.ts`. The manifest covers the five P0 screens and their frame/text/list/combat-preview/action slots.
 
 ## P0 Binding Factory
 
@@ -114,17 +115,21 @@ The runtime must not:
 
 `src/presentation/ui/cocos/creator` provides real Cocos Creator components:
 
-- frame, text, action, metric list, reward list, and train module card list bindings.
+- frame, text, action, metric list, combat preview, reward list, and train module card list bindings.
 - asset registry for stable `assetId` to `SpriteFrame` and color token mapping.
 - manifest host that resolves validated `nodePath` and `itemTemplatePath` values against a real Cocos `Node` tree.
 
 `src/app/cocos/P0CocosCreatorBootstrap.ts` provides the current scene entry component. The generated scene assigns:
 
 - `uiRoot`: `Canvas`.
-- `configAssets`: the 20 JSON assets required by the P0 bootstrap.
-- `assetRegistry`: a generated `CocosCreatorAssetRegistryComponent` with P0 color tokens, registered P0 background sprite frames, and local P0 audio clips.
+- `configAssets`: the 21 JSON assets required by the P0 bootstrap.
+- `assetRegistry`: a generated `CocosCreatorAssetRegistryComponent` with P0 color tokens, registered P0 background sprite frames, registered P0 `ui_skin` sprite frames, and local P0 audio clips.
+- editor-visible SpriteFrames for screen backgrounds, primary/secondary buttons, modal panels, reward-card templates, module-card templates, and the module card upgrade button.
+- MainHud `CombatPreview` nodes for train parts, current stage enemy slots, stage label, power label, and threat count. Runtime values come from `MainHudCombatPreviewState`; editor-visible default SpriteFrames are resolved through `P0VisualBindings.json`.
 
 The scene is produced by `npm run sync:cocos` plus `npm run generate:cocos:p0-scene`. After generation, refresh the Cocos Creator asset panel and save the scene once so AssetDB can confirm there are no missing scripts or missing JSON references.
+
+Creator Scene view may still show a landscape white Game/Canvas preview frame if the editor preview device is left at the blank-project default ratio. The P0 bootstrap sets the runtime design resolution from `P0UiLayout.json` to 720x1280 with fixed-width scaling; use a portrait Game preview/device setting in Creator when inspecting the scene.
 
 ## P0 Engineering Acceptance
 
@@ -135,7 +140,12 @@ The scene is produced by `npm run sync:cocos` plus `npm run generate:cocos:p0-sc
 - P0 binding factory must turn the manifest into `P0CocosUiBinding` through a no-`cc` host and fail clearly when a slot/node is missing.
 - P0 Cocos runtime must mount state, serialize click requests, render accepted updates, expose failures, and stay no-`cc`.
 - Real Cocos Creator components must remain restricted to `src/presentation/ui/cocos/creator` and app composition under `src/app/cocos`.
-- `assets/scenes/scene_p0_exodus_train_main.scene` must contain all paths from `configs/ui/P0UiNodeBindings.json` and 20 bootstrap `JsonAsset` references.
+- `assets/scenes/scene_p0_exodus_train_main.scene` must contain all paths from `configs/ui/P0UiNodeBindings.json` and 21 bootstrap `JsonAsset` references.
+- Every `componentSkins.assetId` in `configs/ui/P0UiLayout.json` must resolve to a `usage: "ui_skin"` SpriteFrame entry in `configs/ui/P0VisualAssets.json`.
+- Every P0 visual binding in `configs/ui/P0VisualBindings.json` must resolve to an existing domain ID and the expected `usage` in `configs/ui/P0VisualAssets.json`.
+- Runtime reward cards, resource metrics, loot-box metrics, and train-module cards must render icon SpriteFrames through `AssetRegistry`, not through hard-coded UI component maps.
+- MainHud combat preview must render current-stage train/enemy SpriteFrames through `AssetRegistry` and `P0VisualBindings.json`, not through static scene-only preview nodes.
+- First-wave train/enemy/icon runtime sprites must be registered in `configs/ui/P0VisualAssets.json` and may enter the scene only as SpriteFrame references, never as direct source-sheet references.
 - UI copy must cover screen labels, button labels, resource names, loot box names, equipment names, train module names, and reward fragment text.
 - Presentation views may not grant rewards, spend resources, write saves, call ads, or call Douyin APIs.
 - Presentation views may only emit stable `ui_request_*` action IDs and stable ID payloads.

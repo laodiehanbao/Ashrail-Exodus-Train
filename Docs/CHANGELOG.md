@@ -2,6 +2,15 @@
 
 本文档记录项目文档和工程约定变更。格式保持简洁，便于后续同步到版本日志。
 
+## 2026-06-07
+
+### Changed
+
+- 新增 `configs/ui/P0VisualBindings.json`，把资源、宝箱、装备、列车模块的稳定业务 ID 映射到 `P0VisualAssets.json` 中的 SpriteFrame assetId；`ConfigLoader` 会校验 domain 引用、asset 存在性和 icon usage。
+- P0 ViewModel 现在为金币资源计数、补给箱计数、奖励项和列车模块卡输出 `iconAssetId`；Cocos Creator list/card binding 组件通过 `AssetRegistry` 在运行时设置 Icon SpriteFrame，不把图标映射硬编码进 UI 组件。
+- P0 scene 生成器现在给 metric item、reward card、module card template 生成 `Icon` Sprite 节点；bootstrap JsonAsset 引用数从 20 个增加到 21 个。
+- `P0VisualBindings.json` 现在也覆盖 P0 列车部件和阶段敌人；MainHud 新增 `combatPreview` ViewModel/binding，按当前 stage/wave 运行时绑定列车、敌人、阶段名、战力和威胁数量，不再依赖静态 preview 节点。
+
 ## 2026-06-06
 
 ### Changed
@@ -10,6 +19,14 @@
 - `npm run generate:cocos:p0-scene` 现在同时回写主仓库 `assets/scenes` 和 Creator 镜像，避免下一次同步把旧 scene 覆盖回 Creator。
 - 新增 `configs/ui/P0VisualAssets.json` 和三张 720x1280 runtime JPG 背景；`sync:cocos` 会为这些图片写入稳定 Cocos image meta，`generate:cocos:p0-scene` 会把 SpriteFrame 填入 `AssetRegistry` 并给全屏 Frame 写入编辑器可见背景。
 - 新增 Cocos `AudioSource` 播放适配器，`GameApp` 装配 `AudioService`，P0 UI 成功请求会播放配置化 audio event；生成的 scene 现在把 main/placeholder `.ogg` 注册为 `AudioClip[]`，远程人声仍不进入首包注册表。
+- 新增 `scripts/generate-p0-ui-skin-assets.ps1`，从 `sheet_ui_core_p0_001.png` 切出 7 个带透明 alpha 的 P0 runtime UI skin PNG，并注册到 `P0VisualAssets.json`。
+- `ConfigLoader` 现在校验 `componentSkins.assetId` 必须引用 `usage: "ui_skin"` 的 SpriteFrame；P0 scene 生成器会把按钮、弹窗、奖励卡、模块槽位和模板内升级按钮接入对应 UI skin SpriteFrame。
+- Cocos image meta 生成器现在会为 PNG/WebP 标记 alpha，避免 UI 切片在 Creator 中被当作不透明图片导入。
+- `npm run sync:cocos` 现在使用 P0 runtime manifest 白名单同步资源：视觉来自 `P0VisualAssets.json`，音频来自非远程/非 deferred `AudioCues.json`，并为音频写入稳定 Cocos `audio-clip` meta。
+- 新增 Cocos 同步白名单回归测试，防止 UI source sheet、concept art、未声明 icon sheet 和远程 ElevenLabs 人声进入 Creator 首包镜像。
+- 新增 `scripts/generate-p0-gameplay-visual-assets.ps1` 和 `npm run generate:visuals:p0`，从 P0 列车、敌人、资源、装备、模块图集中切出 11 个透明 runtime PNG，并注册为 `train_sprite`、`enemy_sprite`、`resource_icon`、`equipment_icon`、`train_module_icon`。
+- P0 scene 生成器现在会在 MainHud 战斗区域生成 editor-visible 的列车和敌人预览 SpriteFrame 节点，方便 Creator 内确认 gameplay 视觉资源已接线；这些节点只做 presentation 展示。
+- `P0CocosCreatorBootstrap` 现在会按 `P0UiLayout.json` 设置 Cocos runtime 设计分辨率为 720x1280 fixed-width，避免 Preview/真机沿用空白项目默认横屏比例。
 
 ## 2026-06-05
 

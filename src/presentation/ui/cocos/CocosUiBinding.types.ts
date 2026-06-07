@@ -1,4 +1,5 @@
 import type { RewardItemViewState } from '../../viewmodels/RewardPanelViewModel.js';
+import type { MainHudCombatPreviewState } from '../../viewmodels/MainHudViewModel.js';
 import type { TrainModuleCardState } from '../../viewmodels/TrainModuleViewModel.js';
 import type { UiActionState, UiInteractionRequest, UiMetricState, UiPanelLayoutConfig } from '../../../shared/ui/P0Ui.types.js';
 
@@ -18,6 +19,10 @@ export interface CocosUiTextBinding {
 
 export interface CocosUiMetricListBinding {
   setItems(items: UiMetricState[]): void;
+}
+
+export interface CocosCombatPreviewBinding {
+  setState(state: MainHudCombatPreviewState): void;
 }
 
 export interface CocosUiActionBinding {
@@ -44,6 +49,7 @@ export interface CocosMainHudBinding {
   title: CocosUiTextBinding;
   status: CocosUiTextBinding;
   metrics: CocosUiMetricListBinding;
+  combatPreview: CocosCombatPreviewBinding;
   primaryAction: CocosUiActionBinding;
 }
 

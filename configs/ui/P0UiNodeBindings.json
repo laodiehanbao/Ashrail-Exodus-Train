@@ -11,6 +11,7 @@
         { "bindingKey": "main_hud_title", "slotId": "mainHud.title", "kind": "text", "panelId": "top_status", "nodePath": "Canvas/P0/MainHud/TopStatus/Title" },
         { "bindingKey": "main_hud_status", "slotId": "mainHud.status", "kind": "text", "panelId": "top_status", "nodePath": "Canvas/P0/MainHud/TopStatus/StatusText" },
         { "bindingKey": "main_hud_metrics", "slotId": "mainHud.metrics", "kind": "metricList", "panelId": "top_status", "nodePath": "Canvas/P0/MainHud/TopStatus/Metrics", "itemTemplatePath": "Canvas/P0/MainHud/TopStatus/Metrics/MetricItemTemplate" },
+        { "bindingKey": "main_hud_combat_preview", "slotId": "mainHud.combatPreview", "kind": "combatPreview", "panelId": "combat_stage", "nodePath": "Canvas/P0/MainHud/CombatPreview" },
         { "bindingKey": "main_hud_primary_action", "slotId": "mainHud.primaryAction", "kind": "action", "panelId": "bottom_actions", "componentId": "primary_button", "actionId": "ui_request_stage_start", "nodePath": "Canvas/P0/MainHud/BottomActions/StartButton" }
       ]
     },

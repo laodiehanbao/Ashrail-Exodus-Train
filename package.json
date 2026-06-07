@@ -12,6 +12,8 @@
     "sim:economy": "tsx tests/simulations/economyFirst30Min.sim.ts",
     "sim:ads": "tsx tests/simulations/adFrequency.sim.ts",
     "validate:configs": "tsx src/tools/validateConfigs.ts",
+    "generate:ui:p0": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/generate-p0-ui-skin-assets.ps1",
+    "generate:visuals:p0": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/generate-p0-gameplay-visual-assets.ps1",
     "generate:audio:p0": "tsx src/tools/generateP0AudioAssets.ts",
     "generate:voice:elevenlabs": "tsx src/tools/generateElevenLabsVoiceAssets.ts",
     "validate:audio": "tsx src/tools/validateAudioAssets.ts",

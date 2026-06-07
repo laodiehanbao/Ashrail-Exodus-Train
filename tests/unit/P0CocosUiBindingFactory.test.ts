@@ -1,4 +1,5 @@
 import type {
+  CocosCombatPreviewBinding,
   CocosRewardItemListBinding,
   CocosTrainModuleCardBindingState,
   CocosTrainModuleCardListBinding,
@@ -13,6 +14,7 @@ import {
 } from '../../src/presentation/ui/cocos/P0CocosUiBindingFactory.js';
 import { P0CocosUiPresenter } from '../../src/presentation/ui/cocos/P0CocosUiPresenter.js';
 import { createP0UiState } from '../../src/presentation/viewmodels/P0UiViewModel.js';
+import type { MainHudCombatPreviewState } from '../../src/presentation/viewmodels/MainHudViewModel.js';
 import type { RewardItemViewState } from '../../src/presentation/viewmodels/RewardPanelViewModel.js';
 import { createDefaultProgress } from '../../src/gameplay/save/SaveVersionMigrator.js';
 import { fail, ok, type Result } from '../../src/core/Result.types.js';
@@ -30,8 +32,9 @@ export async function testP0CocosUiBindingFactory(): Promise<void> {
     const binding = createP0CocosUiBindingFromManifest(configs.uiNodeBindings, host);
     assert(binding.ok, 'factory should create a binding from the valid manifest');
 
-    assertEqual(host.created.length, 26, 'factory should create one adapter per required slot');
+    assertEqual(host.created.length, 27, 'factory should create one adapter per required slot');
     assertEqual(host.created[0], 'frame:mainHud.frame:Canvas/P0/MainHud/Frame', 'factory should pass slot metadata');
+    assertEqual(host.created.includes('combatPreview:mainHud.combatPreview:Canvas/P0/MainHud/CombatPreview'), true, 'factory should bind combat preview slot');
     assertEqual(host.created.includes('action:adReward.skipAction:Canvas/P0/AdReward/ModalFrame/SkipButton'), true, 'factory should bind skip action slot');
 
     const sink = new FakeRequestSink();
@@ -102,6 +105,11 @@ class InspectingHost implements CocosUiBindingHost {
     return this.maybeFail(binding) ?? ok(new MetricListAdapter());
   }
 
+  createCombatPreviewBinding(binding: UiNodeBindingEntryConfig): Result<CocosCombatPreviewBinding> {
+    this.record('combatPreview', binding);
+    return this.maybeFail(binding) ?? ok(new CombatPreviewAdapter());
+  }
+
   createActionBinding(binding: UiNodeBindingEntryConfig): Result<CocosUiActionBinding> {
     this.record('action', binding);
     const failure = this.maybeFail(binding);
@@ -151,6 +159,10 @@ class TextAdapter implements CocosUiTextBinding {
 
 class MetricListAdapter implements CocosUiMetricListBinding {
   setItems(_items: UiMetricState[]): void {}
+}
+
+class CombatPreviewAdapter implements CocosCombatPreviewBinding {
+  setState(_state: MainHudCombatPreviewState): void {}
 }
 
 class ActionAdapter implements CocosUiActionBinding {

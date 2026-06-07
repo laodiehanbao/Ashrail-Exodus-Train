@@ -32,11 +32,93 @@ export async function testP0UiViewModel(): Promise<void> {
     assertEqual(state.mainHud.layout?.screenId, 'main_hud', 'main HUD should attach layout');
     assertEqual(state.lootBox.costText, '煤币 100', 'loot box cost should use resource copy');
     assertEqual(state.lootBox.actions[0].enabled, true, 'default loot box should be openable');
+    assertEqual(state.mainHud.metrics[1].iconAssetId, 'icon_resource_coin_001', 'coin metric should use configured resource icon');
+    assertEqual(state.mainHud.combatPreview.stageName, '灰烬道口', 'combat preview should resolve current stage copy');
+    assertEqual(state.mainHud.combatPreview.statusText, '轨道清理待命', 'combat preview should expose ready status before a run');
+    assertEqual(state.mainHud.combatPreview.combatText, '交火中', 'combat preview should expose configured combat text for animation');
+    assertEqual(state.mainHud.combatPreview.damageText, '-0', 'combat preview should not invent damage before combat result exists');
+    assertEqual(
+      state.mainHud.combatPreview.trainParts[0].spriteAssetId,
+      'tex_train_head_rust_001',
+      'combat preview should bind train head sprite from visual bindings',
+    );
+    assertEqual(
+      state.mainHud.combatPreview.enemies[0].spriteAssetId,
+      'tex_enemy_raider_basic_001',
+      'combat preview should bind current wave enemy sprite from visual bindings',
+    );
+    assertEqual(state.mainHud.combatPreview.enemies[0].count, 3, 'combat preview should expose current wave enemy count');
+    assertEqual(state.lootBox.metrics[0].iconAssetId, 'icon_lootbox_supply_common', 'loot box metric should use configured icon');
     assert(state.rewardPanel !== null, 'reward panel should be created when latest reward is provided');
     assertEqual(state.rewardPanel.items[1].label, '普通补给箱', 'reward panel should resolve loot box display name');
+    assertEqual(state.rewardPanel.items[0].iconAssetId, 'icon_resource_coin_001', 'coin reward should use configured icon');
+    assertEqual(state.rewardPanel.items[1].iconAssetId, 'icon_lootbox_supply_common', 'loot box reward should use configured icon');
     assertEqual(state.trainModule.modules[0].canUpgrade, true, 'default fragments should enable module upgrade');
+    assertEqual(state.trainModule.modules[0].iconAssetId, 'icon_module_cannon_basic_001', 'module card should use configured icon');
     assertEqual(state.adReward.actions[0].enabled, true, 'default ad reward should be available');
     assertEqual(state.adReward.actions[1].enabled, true, 'skip action should always remain available');
+
+    const fragmentState = createP0UiState({
+      configs,
+      snapshot: createSnapshot(createProgress()),
+      nowMs: NOW_MS,
+      latestReward: createRewardBundle(configs, 'reward_module_fragment_cannon_basic'),
+    });
+    assertEqual(
+      fragmentState.rewardPanel?.items[0].iconAssetId,
+      'icon_module_cannon_basic_001',
+      'module fragment rewards should prefer the matching train module icon',
+    );
+
+    const nextStageProgress = createProgress();
+    nextStageProgress.currentStageId = 'stage_chapter_01_002';
+    const nextStageState = createP0UiState({
+      configs,
+      snapshot: createSnapshot(nextStageProgress),
+      nowMs: NOW_MS,
+    });
+    assertEqual(nextStageState.mainHud.combatPreview.stageName, '断轨尸墙', 'combat preview should follow progress current stage');
+    assertEqual(
+      nextStageState.mainHud.combatPreview.enemies[0].spriteAssetId,
+      'tex_enemy_husk_brute_001',
+      'combat preview should swap enemy sprite when stage changes',
+    );
+
+    const resolvingState = createP0UiState({
+      configs,
+      snapshot: createSnapshot(createProgress()),
+      nowMs: NOW_MS,
+      combatRunRevision: 1,
+      combatPreviewMode: 'clear',
+      combatDamageAmount: 42,
+      stageStartLocked: true,
+    });
+    assertEqual(resolvingState.mainHud.combatPreview.statusText, '威胁清除', 'combat run state should expose clear status after revision changes');
+    assertEqual(resolvingState.mainHud.combatPreview.combatRunRevision, 1, 'combat run revision should pass through to Cocos state');
+    assertEqual(resolvingState.mainHud.combatPreview.finishText, '威胁清除', 'combat animation should finish on the configured clear text');
+    assertEqual(resolvingState.mainHud.combatPreview.damageText, '-42', 'combat damage text should come from gameplay result input');
+    assertEqual(resolvingState.mainHud.combatPreview.hideEnemiesOnFinish, true, 'victory combat animation should hide defeated enemies');
+    assertEqual(resolvingState.mainHud.actions[0].enabled, false, 'stage action should lock while combat reward is pending');
+    assertEqual(resolvingState.mainHud.actions[0].label, '清道结算中', 'locked stage action should use configured resolving copy');
+
+    const readyAgainState = createP0UiState({
+      configs,
+      snapshot: createSnapshot(createProgress()),
+      nowMs: NOW_MS,
+      combatRunRevision: 1,
+    });
+    assertEqual(readyAgainState.mainHud.combatPreview.statusText, '轨道清理待命', 'combat revision alone should not keep the next stage marked clear');
+
+    const failedState = createP0UiState({
+      configs,
+      snapshot: createSnapshot(createProgress()),
+      nowMs: NOW_MS,
+      combatRunRevision: 2,
+      combatPreviewMode: 'failed',
+      combatDamageAmount: 12,
+    });
+    assertEqual(failedState.mainHud.combatPreview.statusText, '防线受损', 'failed combat should expose configured failed text');
+    assertEqual(failedState.mainHud.combatPreview.hideEnemiesOnFinish, false, 'failed combat should keep enemies visible');
   });
 
   await runTest('P0 UI maps gameplay availability states into disabled button copy', () => {

@@ -26,7 +26,7 @@ import {
 } from './cocosSceneSerialization.js';
 import { addSceneGlobals } from './cocosSceneGlobals.js';
 import type { AudioCueConfig } from '../shared/audio/AudioCue.types.js';
-import type { UiVisualAssetSetConfig } from '../shared/ui/P0Ui.types.js';
+import type { UiVisualAssetSetConfig, UiVisualBindingConfig, UiVisualBindingDomainType } from '../shared/ui/P0Ui.types.js';
 import type {
   SceneBuildContext,
   UiLayoutConfig,
@@ -47,6 +47,18 @@ interface NodePlacement {
 
 interface LayoutBuildPlan {
   placementsByPath: Map<string, NodePlacement>;
+  skinRefsByComponentId: Map<string, ComponentSkinReference>;
+  spriteFrameUuidByAssetId: Map<string, string>;
+  visualAssetIdByDomain: Map<string, string>;
+}
+
+interface ComponentSkinReference {
+  assetId: string;
+  spriteFrameUuid: string;
+  width: number;
+  height: number;
+  minWidth: number;
+  minHeight: number;
 }
 
 interface SpriteFrameAssetReference {
@@ -66,6 +78,7 @@ export function buildP0CocosScene(
   bindings: UiNodeBindingConfig,
   layout: UiLayoutConfig,
   visualAssets: UiVisualAssetSetConfig,
+  visualBindings: UiVisualBindingConfig,
   audioCues: AudioCueConfig[],
 ): SceneBuildContext {
   const context = createSceneContext();
@@ -121,7 +134,7 @@ export function buildP0CocosScene(
 
   const registryComponentId = createAssetRegistryComponent(context, registryNodeId, layout, spriteFrameAssets, audioClipAssets);
   createBootstrapComponent(context, projectRoot, bootstrapNodeId, canvasId, registryComponentId);
-  createManifestNodes(context, bindings, p0Id, createLayoutBuildPlan(bindings, layout, spriteFrameAssets));
+  createManifestNodes(context, bindings, p0Id, createLayoutBuildPlan(bindings, layout, visualAssets, visualBindings, spriteFrameAssets));
   addSceneGlobals(context, 1);
   return context;
 }
@@ -143,7 +156,10 @@ function createManifestNodes(context: SceneBuildContext, bindings: UiNodeBinding
   for (const screen of bindings.screens) {
     createPathNode(context, p0Id, screen.rootPath, inferNodeKind(screen.rootPath, undefined), plan);
     for (const binding of screen.bindings) {
-      createPathNode(context, p0Id, binding.nodePath, inferNodeKind(binding.nodePath, binding.kind), plan);
+      const nodeId = createPathNode(context, p0Id, binding.nodePath, inferNodeKind(binding.nodePath, binding.kind), plan);
+      if (binding.kind === 'combatPreview') {
+        addCombatPreviewChildren(context, binding.nodePath, nodeId, plan);
+      }
       addTemplateIfNeeded(context, p0Id, binding, plan);
       if (binding.emptyStatePath) createPathNode(context, p0Id, binding.emptyStatePath, 'text', plan);
       if (binding.kind === 'action') addButtonLabelIfMissing(context, binding.nodePath);
@@ -155,31 +171,103 @@ function addTemplateIfNeeded(context: SceneBuildContext, p0Id: number, binding: 
   if (!binding.itemTemplatePath) return;
   const templateId = createPathNode(context, p0Id, binding.itemTemplatePath, 'template', plan);
   if (binding.kind === 'metricList') {
-    addLabelChild(context, binding.itemTemplatePath, templateId, 'Label', 'Metric', { x: -48, y: 0, width: 108, height: 28, fontSize: 20 });
-    addLabelChild(context, binding.itemTemplatePath, templateId, 'Value', '0', { x: 68, y: 0, width: 76, height: 28, fontSize: 20 });
+    addSpriteChild(context, binding.itemTemplatePath, templateId, 'Icon', { x: -120, y: 0, width: 42, height: 42 });
+    addLabelChild(context, binding.itemTemplatePath, templateId, 'Label', 'Metric', { x: -40, y: 0, width: 108, height: 28, fontSize: 20 });
+    addLabelChild(context, binding.itemTemplatePath, templateId, 'Value', '0', { x: 82, y: 0, width: 76, height: 28, fontSize: 20 });
   }
   if (binding.kind === 'rewardItemList') {
-    addLabelChild(context, binding.itemTemplatePath, templateId, 'Label', 'Reward', { x: 0, y: 42, width: 148, height: 28, fontSize: 20 });
-    addLabelChild(context, binding.itemTemplatePath, templateId, 'Amount', 'x1', { x: 0, y: 4, width: 96, height: 28, fontSize: 22 });
-    addLabelChild(context, binding.itemTemplatePath, templateId, 'Type', 'resource', { x: 0, y: -34, width: 124, height: 24, fontSize: 18 });
+    addSpriteChild(context, binding.itemTemplatePath, templateId, 'Icon', { x: 0, y: 34, width: 66, height: 66 });
+    addLabelChild(context, binding.itemTemplatePath, templateId, 'Label', 'Reward', { x: 0, y: -24, width: 156, height: 28, fontSize: 20 });
+    addLabelChild(context, binding.itemTemplatePath, templateId, 'Amount', 'x1', { x: 0, y: -60, width: 96, height: 28, fontSize: 22 });
   }
   if (binding.kind === 'moduleCardList') {
-    addModuleCardTemplateChildren(context, binding.itemTemplatePath, templateId);
+    addModuleCardTemplateChildren(context, binding.itemTemplatePath, templateId, plan.skinRefsByComponentId.get('primary_button')?.spriteFrameUuid);
   }
 }
 
-function addModuleCardTemplateChildren(context: SceneBuildContext, templatePath: string, templateId: number): void {
-  addLabelChild(context, templatePath, templateId, 'Label', 'Train Module', { x: 0, y: 58, width: 172, height: 28, fontSize: 20 });
-  addLabelChild(context, templatePath, templateId, 'Level', 'Lv 1/5', { x: 0, y: 26, width: 132, height: 24, fontSize: 18 });
-  addLabelChild(context, templatePath, templateId, 'Power', '0 -> 0', { x: 0, y: 0, width: 132, height: 24, fontSize: 18 });
-  addLabelChild(context, templatePath, templateId, 'Fragments', '0/0', { x: 0, y: -26, width: 132, height: 24, fontSize: 18 });
-  addLabelChild(context, templatePath, templateId, 'Status', 'Ready', { x: 0, y: -52, width: 132, height: 24, fontSize: 18 });
+function addModuleCardTemplateChildren(
+  context: SceneBuildContext,
+  templatePath: string,
+  templateId: number,
+  upgradeButtonSpriteFrameUuid?: string,
+): void {
+  addSpriteChild(context, templatePath, templateId, 'Icon', { x: -60, y: 50, width: 64, height: 64 });
+  addLabelChild(context, templatePath, templateId, 'Label', 'Train Module', { x: 28, y: 58, width: 120, height: 28, fontSize: 20 });
+  addLabelChild(context, templatePath, templateId, 'Level', 'Lv 1/5', { x: 28, y: 26, width: 120, height: 24, fontSize: 18 });
+  addLabelChild(context, templatePath, templateId, 'Power', '0 -> 0', { x: 28, y: 0, width: 120, height: 24, fontSize: 18 });
+  addLabelChild(context, templatePath, templateId, 'Fragments', '0/0', { x: 28, y: -26, width: 120, height: 24, fontSize: 18 });
+  addLabelChild(context, templatePath, templateId, 'Status', 'Ready', { x: 0, y: -52, width: 150, height: 24, fontSize: 18 });
   const buttonPath = `${templatePath}/UpgradeButton`;
   const buttonId = createNode(context, { name: 'UpgradeButton', parentId: templateId, path: buttonPath, y: -98 });
   createUiTransform(context, buttonId, 160, 56);
-  createSpriteComponent(context, buttonId, color(255, 138, 29, 255));
+  createSpriteComponent(
+    context,
+    buttonId,
+    upgradeButtonSpriteFrameUuid ? color(255, 255, 255, 255) : color(255, 138, 29, 255),
+    upgradeButtonSpriteFrameUuid,
+  );
   createButtonComponent(context, buttonId);
   addLabelChild(context, buttonPath, buttonId, 'Label', 'Upgrade');
+}
+
+function addCombatPreviewChildren(
+  context: SceneBuildContext,
+  previewPath: string,
+  previewId: number,
+  plan: LayoutBuildPlan,
+): void {
+  addLabelChild(context, previewPath, previewId, 'StageLabel', 'Stage', { x: 0, y: 238, width: 360, height: 34, fontSize: 24 });
+  addLabelChild(context, previewPath, previewId, 'StatusLabel', 'Ready', { x: 0, y: 198, width: 300, height: 30, fontSize: 22 });
+  addLabelChild(context, previewPath, previewId, 'PowerLabel', 'Power 0/0', { x: -168, y: 166, width: 220, height: 28, fontSize: 20 });
+  addLabelChild(context, previewPath, previewId, 'ThreatLabel', 'Threat x0', { x: 168, y: 166, width: 220, height: 28, fontSize: 20 });
+
+  addSpriteChild(context, previewPath, previewId, 'TrainHead', {
+    x: -162,
+    y: -76,
+    width: 230,
+    height: 182,
+    spriteFrameUuid: resolveVisualBindingSpriteFrame(plan, 'train_part', 'train_head'),
+  });
+  addSpriteChild(context, previewPath, previewId, 'CombatCarriage', {
+    x: 8,
+    y: -66,
+    width: 188,
+    height: 182,
+    spriteFrameUuid: resolveVisualBindingSpriteFrame(plan, 'train_part', 'train_carriage_combat'),
+  });
+  addSpriteChild(context, previewPath, previewId, 'SupplyCarriage', {
+    x: 158,
+    y: -56,
+    width: 188,
+    height: 126,
+    spriteFrameUuid: resolveVisualBindingSpriteFrame(plan, 'train_part', 'train_carriage_supply'),
+  });
+  addSpriteChild(context, previewPath, previewId, 'EnemyPrimary', {
+    x: 220,
+    y: 86,
+    width: 98,
+    height: 154,
+    spriteFrameUuid: resolveVisualBindingSpriteFrame(plan, 'enemy', 'enemy_raider_basic_001'),
+  });
+  addLabelChild(context, previewPath, previewId, 'DamageLabel', '-0', { x: 226, y: 138, width: 100, height: 34, fontSize: 26, active: false });
+  addLabelChild(context, previewPath, previewId, 'EnemyPrimaryCount', 'x0', { x: 220, y: -8, width: 70, height: 26, fontSize: 20 });
+  addSpriteChild(context, previewPath, previewId, 'EnemySecondary', {
+    x: 306,
+    y: 74,
+    width: 118,
+    height: 140,
+    spriteFrameUuid: resolveVisualBindingSpriteFrame(plan, 'enemy', 'enemy_husk_brute_001'),
+  });
+  addLabelChild(context, previewPath, previewId, 'EnemySecondaryCount', 'x0', { x: 306, y: -8, width: 70, height: 26, fontSize: 20 });
+}
+
+function resolveVisualBindingSpriteFrame(
+  plan: LayoutBuildPlan,
+  domainType: UiVisualBindingDomainType,
+  domainId: string,
+): string | undefined {
+  const assetId = plan.visualAssetIdByDomain.get(visualBindingKey(domainType, domainId));
+  return assetId ? plan.spriteFrameUuidByAssetId.get(assetId) : undefined;
 }
 
 function createPathNode(context: SceneBuildContext, p0Id: number, fullPath: string, kind: string, plan: LayoutBuildPlan): number {
@@ -223,6 +311,9 @@ function createPathNode(context: SceneBuildContext, p0Id: number, fullPath: stri
 }
 
 function addVisualComponents(context: SceneBuildContext, nodeId: number, name: string, kind: string, placement?: NodePlacement): void {
+  if (isPanelBackdropName(name)) {
+    createSpriteComponent(context, nodeId, color(16, 14, 12, 150));
+  }
   if (kind === 'frame' || kind === 'template' || kind === 'action' || name.endsWith('Button')) {
     createSpriteComponent(
       context,
@@ -238,6 +329,18 @@ function addVisualComponents(context: SceneBuildContext, nodeId: number, name: s
   }
 }
 
+function isPanelBackdropName(name: string): boolean {
+  return [
+    'TopStatus',
+    'CombatPreview',
+    'BottomActions',
+    'Focus',
+    'Actions',
+    'ModuleSlots',
+    'ModuleDetail',
+  ].includes(name);
+}
+
 function addLabelChild(
   context: SceneBuildContext,
   parentPath: string,
@@ -249,9 +352,25 @@ function addLabelChild(
   const path = `${parentPath}/${name}`;
   const existing = context.nodeIdsByPath.get(path);
   if (existing !== undefined) return existing;
-  const nodeId = createNode(context, { name, parentId, path, x: placement.x, y: placement.y });
+  const nodeId = createNode(context, { name, parentId, path, x: placement.x, y: placement.y, active: placement.active });
   createUiTransform(context, nodeId, placement.width ?? 180, placement.height ?? 32);
   createLabelComponent(context, nodeId, text, placement.fontSize ?? 24);
+  return nodeId;
+}
+
+function addSpriteChild(
+  context: SceneBuildContext,
+  parentPath: string,
+  parentId: number,
+  name: string,
+  placement: Partial<NodePlacement> = {},
+): number {
+  const path = `${parentPath}/${name}`;
+  const existing = context.nodeIdsByPath.get(path);
+  if (existing !== undefined) return existing;
+  const nodeId = createNode(context, { name, parentId, path, x: placement.x, y: placement.y });
+  createUiTransform(context, nodeId, placement.width ?? 64, placement.height ?? 64);
+  createSpriteComponent(context, nodeId, color(255, 255, 255, 255), placement.spriteFrameUuid);
   return nodeId;
 }
 
@@ -288,6 +407,8 @@ function createAssetRegistryComponent(
 function createLayoutBuildPlan(
   bindings: UiNodeBindingConfig,
   layout: UiLayoutConfig,
+  visualAssets: UiVisualAssetSetConfig,
+  visualBindings: UiVisualBindingConfig,
   spriteFrameAssets: SpriteFrameAssetReference[],
 ): LayoutBuildPlan {
   const placementsByPath = new Map<string, NodePlacement>();
@@ -295,6 +416,10 @@ function createLayoutBuildPlan(
   const designHeight = layout.designHeight || P0_DESIGN_HEIGHT;
   const previewGap = 160;
   const spriteFrameUuidByAssetId = new Map(spriteFrameAssets.map((asset) => [asset.assetId, asset.uuid]));
+  const visualAssetIdByDomain = new Map(
+    visualBindings.entries.map((entry) => [visualBindingKey(entry.domainType, entry.domainId), entry.assetId]),
+  );
+  const skinRefsByComponentId = createComponentSkinRefs(layout, visualAssets, spriteFrameUuidByAssetId);
 
   bindings.screens.forEach((screen, screenIndex) => {
     const screenLayout = layout.screens.find((entry) => entry.screenId === screen.screenId);
@@ -321,10 +446,42 @@ function createLayoutBuildPlan(
     for (const [panelPath, panel] of panelPaths) {
       placementsByPath.set(panelPath, panelToPlacement(panel));
     }
-    applyBindingPlacements(placementsByPath, screen.rootPath, screen.bindings, screenLayout, panelPaths, designWidth, designHeight);
+    applyBindingPlacements(
+      placementsByPath,
+      screen.rootPath,
+      screen.bindings,
+      screenLayout,
+      panelPaths,
+      skinRefsByComponentId,
+      designWidth,
+      designHeight,
+    );
   });
 
-  return { placementsByPath };
+  return { placementsByPath, skinRefsByComponentId, spriteFrameUuidByAssetId, visualAssetIdByDomain };
+}
+
+function createComponentSkinRefs(
+  layout: UiLayoutConfig,
+  visualAssets: UiVisualAssetSetConfig,
+  spriteFrameUuidByAssetId: Map<string, string>,
+): Map<string, ComponentSkinReference> {
+  const assetsById = new Map(visualAssets.assets.map((asset) => [asset.assetId, asset]));
+  const refsByComponentId = new Map<string, ComponentSkinReference>();
+  for (const skin of layout.componentSkins) {
+    const asset = assetsById.get(skin.assetId);
+    const spriteFrameUuid = spriteFrameUuidByAssetId.get(skin.assetId);
+    if (!asset || !spriteFrameUuid) continue;
+    refsByComponentId.set(skin.componentId, {
+      assetId: skin.assetId,
+      spriteFrameUuid,
+      width: asset.width,
+      height: asset.height,
+      minWidth: skin.minWidth,
+      minHeight: skin.minHeight,
+    });
+  }
+  return refsByComponentId;
 }
 
 function createSpriteFrameAssetReferences(
@@ -372,6 +529,7 @@ function applyBindingPlacements(
   bindings: UiNodeBindingEntryConfig[],
   screenLayout: UiScreenLayoutConfig,
   panelPaths: Map<string, UiPanelLayoutConfig>,
+  skinRefsByComponentId: Map<string, ComponentSkinReference>,
   designWidth: number,
   designHeight: number,
 ): void {
@@ -388,19 +546,21 @@ function applyBindingPlacements(
   }
 
   for (const [panelPath, entry] of panelEntryByPath) {
-    placeBindingsInPanel(placementsByPath, panelPath, entry.panel, entry.bindings);
+    placeBindingsInPanel(placementsByPath, panelPath, entry.panel, entry.bindings, skinRefsByComponentId);
   }
-  placeBindingsInPanel(placementsByPath, screenRootPath, fallbackPanel, fallbackEntry.bindings);
+  placeBindingsInPanel(placementsByPath, screenRootPath, fallbackPanel, fallbackEntry.bindings, skinRefsByComponentId);
 
   for (const binding of bindings) {
     if (binding.itemTemplatePath) {
       const listPlacement = placementsByPath.get(binding.nodePath);
+      const skin = binding.componentId ? skinRefsByComponentId.get(binding.componentId) : undefined;
       placementsByPath.set(binding.itemTemplatePath, {
         x: 0,
         y: 0,
-        width: Math.min(listPlacement?.width ?? 180, inferWidth('Template', 'template')),
-        height: inferHeight('Template', 'template'),
+        width: skin ? Math.max(skin.width, skin.minWidth) : Math.min(listPlacement?.width ?? 180, inferWidth('Template', 'template')),
+        height: skin ? Math.max(skin.height, skin.minHeight) : inferHeight('Template', 'template'),
         active: false,
+        spriteFrameUuid: skin?.spriteFrameUuid,
       });
     }
     if (binding.emptyStatePath) {
@@ -414,9 +574,11 @@ function placeBindingsInPanel(
   panelPath: string,
   panel: UiPanelLayoutConfig,
   bindings: UiNodeBindingEntryConfig[],
+  skinRefsByComponentId: Map<string, ComponentSkinReference>,
 ): void {
   const texts = bindings.filter((binding) => binding.kind === 'text');
   const lists = bindings.filter((binding) => binding.kind === 'metricList' || binding.kind === 'rewardItemList' || binding.kind === 'moduleCardList');
+  const combatPreviews = bindings.filter((binding) => binding.kind === 'combatPreview');
   const actions = bindings.filter((binding) => binding.kind === 'action');
 
   texts.forEach((binding, index) => {
@@ -439,20 +601,40 @@ function placeBindingsInPanel(
     });
   });
 
+  combatPreviews.forEach((binding) => {
+    placementsByPath.set(
+      binding.nodePath,
+      binding.nodePath === panelPath
+        ? panelToPlacement(panel)
+        : {
+            x: 0,
+            y: 0,
+            width: panel.width,
+            height: panel.height,
+          },
+    );
+  });
+
   actions.forEach((binding, index) => {
     const spacing = 252;
     const startX = -((actions.length - 1) * spacing) / 2;
+    const skin = binding.componentId ? skinRefsByComponentId.get(binding.componentId) : undefined;
     placementsByPath.set(binding.nodePath, {
       x: startX + index * spacing,
       y: -panel.height / 2 + 52,
-      width: inferWidth(pathName(binding.nodePath), binding.kind),
-      height: inferHeight(pathName(binding.nodePath), binding.kind),
+      width: Math.max(inferWidth(pathName(binding.nodePath), binding.kind), skin?.minWidth ?? 0),
+      height: Math.max(inferHeight(pathName(binding.nodePath), binding.kind), skin?.minHeight ?? 0),
+      spriteFrameUuid: skin?.spriteFrameUuid,
     });
   });
 
   for (const binding of bindings.filter((item) => item.kind === 'frame')) {
     if (binding.nodePath === panelPath) {
-      placementsByPath.set(binding.nodePath, panelToPlacement(panel));
+      const skin = binding.componentId ? skinRefsByComponentId.get(binding.componentId) : undefined;
+      placementsByPath.set(binding.nodePath, {
+        ...panelToPlacement(panel),
+        spriteFrameUuid: skin?.spriteFrameUuid,
+      });
     }
   }
 }
@@ -507,13 +689,38 @@ function pathName(path: string): string {
   return path.split('/').at(-1) ?? path;
 }
 
+function visualBindingKey(domainType: UiVisualBindingDomainType, domainId: string): string {
+  return `${domainType}:${domainId}`;
+}
+
 function isTextLikeName(name: string): boolean {
-  return ['Title', 'StatusText', 'LootBoxName', 'CountText', 'CostText', 'EmptyState', 'Label', 'Value', 'Amount', 'Type', 'Level', 'Power', 'Fragments', 'Status', 'Name'].includes(name);
+  return [
+    'Title',
+    'StatusText',
+    'LootBoxName',
+    'CountText',
+    'CostText',
+    'EmptyState',
+    'Label',
+    'Value',
+    'Amount',
+    'Level',
+    'Power',
+    'Fragments',
+    'Status',
+    'Name',
+    'StageLabel',
+    'PowerLabel',
+    'ThreatLabel',
+    'EnemyPrimaryCount',
+    'EnemySecondaryCount',
+  ].includes(name);
 }
 
 function inferWidth(name: string, kind: string): number {
   if (name === 'P0') return P0_DESIGN_WIDTH;
   if (kind === 'action' || name.endsWith('Button')) return 240;
+  if (kind === 'combatPreview') return 520;
   if (kind === 'template') return 180;
   if (kind === 'text') return 420;
   if (kind.includes('List') || ['Metrics', 'RewardList', 'CardList'].includes(name)) return 520;
@@ -523,6 +730,7 @@ function inferWidth(name: string, kind: string): number {
 function inferHeight(name: string, kind: string): number {
   if (name === 'P0') return P0_DESIGN_HEIGHT;
   if (kind === 'action' || name.endsWith('Button')) return 72;
+  if (kind === 'combatPreview') return 420;
   if (kind === 'template') return 112;
   if (kind === 'text') return 42;
   if (kind.includes('List') || ['Metrics', 'RewardList', 'CardList'].includes(name)) return 220;

@@ -129,11 +129,30 @@ export function writeTypeScriptAssetMeta(projectRoot: string, assetRelativePath:
   } satisfies CocosMeta);
 }
 
+export function writeAudioClipAssetMeta(projectRoot: string, assetRelativePath: string): string {
+  const uuid = stableUuid(`cocos-audio:${assetRelativePath}`);
+  const extension = assetRelativePath.split('.').at(-1) ?? 'ogg';
+  const metaPath = join(projectRoot, assetRelativePath.replaceAll('/', '\\')) + '.meta';
+  writeJsonFile(metaPath, {
+    ver: '1.0.0',
+    importer: 'audio-clip',
+    imported: true,
+    uuid,
+    files: ['.json', `.${extension}`],
+    subMetas: {},
+    userData: {
+      downloadMode: 0,
+    },
+  } satisfies CocosMeta);
+  return uuid;
+}
+
 export function writeImageAssetMeta(projectRoot: string, assetRelativePath: string, width: number, height: number): void {
   const uuid = stableUuid(`cocos-image:${assetRelativePath}`);
   const textureUuid = `${uuid}@6c48a`;
   const spriteFrameUuid = `${uuid}@f9941`;
   const metaPath = join(projectRoot, assetRelativePath.replaceAll('/', '\\')) + '.meta';
+  const hasAlpha = /\.(png|webp)$/i.test(assetRelativePath);
   writeJsonFile(metaPath, {
     ver: '1.0.27',
     importer: 'image',
@@ -178,8 +197,8 @@ export function writeImageAssetMeta(projectRoot: string, assetRelativePath: stri
     },
     userData: {
       type: 'sprite-frame',
-      fixAlphaTransparencyArtifacts: false,
-      hasAlpha: false,
+      fixAlphaTransparencyArtifacts: hasAlpha,
+      hasAlpha,
       redirect: textureUuid,
     },
   } satisfies CocosMeta);

@@ -7,6 +7,7 @@
     { "key": "ui.screen.trainModule.title", "text": "车体模块" },
     { "key": "ui.screen.adReward.title", "text": "补给加倍" },
     { "key": "ui.button.stage.start", "text": "继续巡航" },
+    { "key": "ui.button.stage.resolving", "text": "清道结算中" },
     { "key": "ui.button.lootbox.open", "text": "开启" },
     { "key": "ui.button.lootbox.locked", "text": "货箱不足" },
     { "key": "ui.button.reward.claim", "text": "入库" },
@@ -18,10 +19,12 @@
     { "key": "ui.label.power", "text": "战力" },
     { "key": "ui.label.coin", "text": "煤币" },
     { "key": "ui.label.stage", "text": "阶段" },
+    { "key": "ui.label.threat", "text": "威胁" },
     { "key": "ui.label.wave", "text": "波次" },
     { "key": "ui.label.hp", "text": "车体" },
     { "key": "ui.label.module.fragment", "text": "模块碎片" },
     { "key": "ui.status.stage.ready", "text": "轨道清理待命" },
+    { "key": "ui.status.stage.combat", "text": "交火中" },
     { "key": "ui.status.stage.clear", "text": "威胁清除" },
     { "key": "ui.status.stage.failed", "text": "防线受损" },
     { "key": "ui.status.ad.available", "text": "可请求补给加倍" },
@@ -35,6 +38,8 @@
     { "key": "equipment.cogwheel.reinforced.name", "text": "加固齿轮" },
     { "key": "resource.coin.name", "text": "煤币" },
     { "key": "resource.fuel.name", "text": "燃料" },
-    { "key": "reward.module_fragment.name", "text": "模块碎片" }
+    { "key": "reward.module_fragment.name", "text": "模块碎片" },
+    { "key": "stage.chapter01.001.name", "text": "灰烬道口" },
+    { "key": "stage.chapter01.002.name", "text": "断轨尸墙" }
   ]
 }

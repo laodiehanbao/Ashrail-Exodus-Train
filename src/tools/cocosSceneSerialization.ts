@@ -172,7 +172,7 @@ export function audioClipRef(uuid: string): SceneObject {
 }
 
 export function createLabelComponent(context: SceneBuildContext, nodeId: number, text: string, fontSize = 28): number {
-  return addNodeComponent(context, nodeId, {
+  const labelId = addNodeComponent(context, nodeId, {
     __type__: 'cc.Label',
     _name: '',
     _objFlags: 0,
@@ -202,6 +202,22 @@ export function createLabelComponent(context: SceneBuildContext, nodeId: number,
     _underlineHeight: 2,
     _cacheMode: 0,
     _id: shortId(`component:label:${nodeId}`),
+  });
+  createLabelOutlineComponent(context, nodeId);
+  return labelId;
+}
+
+export function createLabelOutlineComponent(context: SceneBuildContext, nodeId: number): number {
+  return addNodeComponent(context, nodeId, {
+    __type__: 'cc.LabelOutline',
+    _name: '',
+    _objFlags: 0,
+    node: { __id__: nodeId },
+    _enabled: true,
+    __prefab: null,
+    _color: color(20, 17, 14, 235),
+    _width: 2,
+    _id: shortId(`component:labelOutline:${nodeId}`),
   });
 }
 

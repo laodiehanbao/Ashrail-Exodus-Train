@@ -2,7 +2,7 @@ import { _decorator, Component, Node } from 'cc';
 import type { UiMetricState } from '../../../../shared/ui/P0Ui.types.js';
 import type { CocosUiMetricListBinding } from '../CocosUiBinding.types.js';
 import { CocosCreatorAssetRegistryComponent } from './CocosCreatorAssetRegistryComponent.js';
-import { applyAccent, renderList, setTextByNames } from './CocosCreatorUiBindingUtils.js';
+import { applyAccent, renderList, setSpriteByNames, setTextByNames } from './CocosCreatorUiBindingUtils.js';
 
 const { ccclass, property } = _decorator;
 
@@ -26,6 +26,7 @@ export class CocosCreatorMetricListBindingComponent extends Component implements
     renderList(this.contentRoot ?? this.node, this.itemTemplate, items, (node, item) => {
       setTextByNames(node, ['Label', 'Name', 'Title'], item.label);
       setTextByNames(node, ['Value', 'Amount', 'Count'], item.value);
+      setSpriteByNames(node, ['Icon'], item.iconAssetId ? this.assetRegistry?.resolveSpriteFrame(item.iconAssetId) : null);
       applyAccent(node, this.assetRegistry?.resolveColor(item.accentToken));
     });
   }

@@ -1,4 +1,4 @@
-import { Color, instantiate, Label, Node, Sprite, UITransform } from 'cc';
+import { Color, instantiate, Label, LabelOutline, Node, Sprite, SpriteFrame, UITransform } from 'cc';
 import type { UiPanelLayoutConfig } from '../../../../shared/ui/P0Ui.types.js';
 
 export const GENERATED_ITEM_PREFIX = '__p0_runtime_item_';
@@ -24,10 +24,28 @@ export function renderList<T>(root: Node, template: Node | null, items: T[], ren
 export function setTextByNames(root: Node, names: string[], text: string): void {
   const label = findDescendantLabel(root, names) ?? root.getComponent(Label) ?? root.addComponent(Label);
   label.string = text;
+  applyReadableLabelStyle(label);
+}
+
+export function setSpriteByNames(root: Node, names: string[], spriteFrame: SpriteFrame | null | undefined): void {
+  const node = names.map((name) => findDescendantByName(root, name)).find((candidate) => candidate !== null);
+  if (!node) return;
+  node.active = Boolean(spriteFrame);
+  const sprite = node.getComponent(Sprite) ?? node.addComponent(Sprite);
+  sprite.spriteFrame = spriteFrame ?? null;
 }
 
 export function getOrAddLabel(node: Node, preferred: Label | null): Label {
-  return preferred ?? node.getComponent(Label) ?? node.addComponent(Label);
+  const label = preferred ?? node.getComponent(Label) ?? node.addComponent(Label);
+  applyReadableLabelStyle(label);
+  return label;
+}
+
+export function applyReadableLabelStyle(label: Label): void {
+  label.color = new Color(239, 234, 224, 255);
+  const outline = label.node.getComponent(LabelOutline) ?? label.node.addComponent(LabelOutline);
+  outline.color = new Color(20, 17, 14, 235);
+  outline.width = 2;
 }
 
 export function findDescendantLabel(root: Node, names: string[]): Label | null {

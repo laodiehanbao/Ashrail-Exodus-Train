@@ -34,6 +34,7 @@ export class P0CocosUiPresenter {
     this.binding.mainHud.title.setText(hud.title);
     this.binding.mainHud.status.setText(hud.statusText);
     this.binding.mainHud.metrics.setItems(hud.metrics);
+    this.binding.mainHud.combatPreview.setState(hud.combatPreview);
     bindAction(this.binding.mainHud.primaryAction, findAction(hud.actions, 'ui_request_stage_start'), this.requestSink, {
       actionId: 'ui_request_stage_start',
     }, () => this.isCurrentRevision(revision));

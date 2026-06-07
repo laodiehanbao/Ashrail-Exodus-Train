@@ -14,7 +14,15 @@ export async function testP0UiRequestRouter(): Promise<void> {
     const stage = await router.handleRequest({ actionId: 'ui_request_stage_start' }, 100000);
     assert(stage.ok, 'stage start should succeed');
     if (!stage.ok) return;
-    assert(stage.value.state.rewardPanel !== null, 'stage reward should be previewed before grant');
+    assertEqual(stage.value.refreshAfterMs, 850, 'stage start should schedule reward reveal after combat feedback');
+    assertEqual(stage.value.state.rewardPanel, null, 'stage reward should stay hidden until combat feedback finishes');
+    assertEqual(stage.value.state.mainHud.combatPreview.combatRunRevision, 1, 'stage start should trigger combat presentation revision');
+    assertEqual(stage.value.state.mainHud.combatPreview.statusText, '威胁清除', 'stage start state should expose visible combat clear status');
+    assertEqual(stage.value.state.mainHud.combatPreview.damageText, '-240', 'stage start should expose combat result damage text');
+    assertEqual(stage.value.state.mainHud.actions[0].enabled, false, 'stage start action should lock while reward reveal is pending');
+
+    const revealed = router.getState(100850);
+    assert(revealed.rewardPanel !== null, 'stage reward should be previewed after combat feedback finishes');
 
     const doubled = await router.handleRequest({
       actionId: 'ui_request_ad_reward_double',
@@ -33,6 +41,11 @@ export async function testP0UiRequestRouter(): Promise<void> {
     const snapshot = app.snapshot();
     assertEqual(snapshot.progress.currentStageId, 'stage_chapter_01_002', 'claim should advance to next stage');
     assert(snapshot.progress.settledRewardIds.length >= 1, 'claim should settle reward through RewardService');
+    assertEqual(
+      claimed.value.state.mainHud.combatPreview.statusText,
+      '轨道清理待命',
+      'claim should reset combat preview status for the next stage',
+    );
   });
 
   await runTest('P0UiRequestRouter opens loot boxes upgrades modules and clears granted reward display', async () => {

@@ -27,6 +27,12 @@ export class CocosCreatorFrameBindingComponent extends Component implements Coco
 
   setVisible(visible: boolean): void {
     this.node.active = visible;
+    if (this.layoutRoot?.name === 'RewardPanel') {
+      this.layoutRoot.active = visible;
+      if (visible) {
+        this.layoutRoot.setPosition(0, 0, 0);
+      }
+    }
   }
 
   setBackgroundAsset(assetId: string): void {

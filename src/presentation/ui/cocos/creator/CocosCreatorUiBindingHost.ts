@@ -3,6 +3,7 @@ import { fail, ok, type Result } from '../../../../core/Result.types.js';
 import { ErrorCode } from '../../../../shared/ErrorCodes.js';
 import type { UiNodeBindingEntryConfig } from '../../../../shared/ui/P0UiNodeBinding.types.js';
 import type {
+  CocosCombatPreviewBinding,
   CocosRewardItemListBinding,
   CocosTrainModuleCardListBinding,
   CocosUiActionBinding,
@@ -13,6 +14,7 @@ import type {
 import type { CocosUiBindingHost } from '../P0CocosUiBindingFactory.js';
 import { CocosCreatorAssetRegistryComponent } from './CocosCreatorAssetRegistryComponent.js';
 import { CocosCreatorActionBindingComponent } from './CocosCreatorActionBindingComponent.js';
+import { CocosCreatorCombatPreviewBindingComponent } from './CocosCreatorCombatPreviewBindingComponent.js';
 import { CocosCreatorFrameBindingComponent } from './CocosCreatorFrameBindingComponent.js';
 import { CocosCreatorMetricListBindingComponent } from './CocosCreatorMetricListBindingComponent.js';
 import { CocosCreatorRewardItemListBindingComponent } from './CocosCreatorRewardItemListBindingComponent.js';
@@ -49,6 +51,14 @@ export class CocosCreatorUiBindingHost implements CocosUiBindingHost {
     return ok(component);
   }
 
+  createCombatPreviewBinding(binding: UiNodeBindingEntryConfig): Result<CocosCombatPreviewBinding> {
+    const node = this.requireNode(binding);
+    if (!node.ok) return node;
+    const component = getOrAddComponent(node.value, CocosCreatorCombatPreviewBindingComponent);
+    component.configure(this.assetRegistry);
+    return ok(component);
+  }
+
   createActionBinding(binding: UiNodeBindingEntryConfig): Result<CocosUiActionBinding> {
     const node = this.requireNode(binding);
     if (!node.ok) return node;
@@ -71,7 +81,7 @@ export class CocosCreatorUiBindingHost implements CocosUiBindingHost {
     const template = this.requireTemplate(binding);
     if (!template.ok) return template;
     const component = getOrAddComponent(node.value, CocosCreatorTrainModuleCardListBindingComponent);
-    component.configure(template.value);
+    component.configure(template.value, this.assetRegistry);
     return ok(component);
   }
 

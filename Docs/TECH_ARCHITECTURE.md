@@ -95,6 +95,7 @@ Rules:
 - `src/presentation/ui/cocos/creator` is the only presentation subfolder allowed to import Cocos Creator `cc`. It contains real Creator binding components and a manifest host, but still must not import app, gameplay, platform, or save implementations.
 - Creator 3.8 requires every script file in `src/presentation/ui/cocos/creator` to define at most one `extends Component` class. Shared helpers must stay in non-Component utility files, and barrel files must not re-export multiple Creator Component classes into the Cocos mirror.
 - `src/app/cocos/P0CocosCreatorBootstrap.ts` is the current Creator scene composition component. It reads assigned `JsonAsset` configs, creates `GameApp`, routes requests through `P0UiRequestRouter`, and mounts the real Cocos UI runtime.
+- MainHud combat visuals use the same one-way flow: current stage/wave config is mapped into `MainHudCombatPreviewState`, then `CocosCreatorCombatPreviewBindingComponent` resolves SpriteFrames through `AssetRegistry`. It must not run combat settlement or mutate progress.
 
 ## Cocos Creator Asset Flow
 
@@ -109,11 +110,11 @@ npm run sync:cocos
 
 npm run generate:cocos:p0-scene
   -> writes assets/scenes/scene_p0_exodus_train_main.scene
-  -> binds P0CocosCreatorBootstrap, AssetRegistry, 20 JsonAssets, and all P0 UI node paths
+  -> binds P0CocosCreatorBootstrap, AssetRegistry, 21 JsonAssets, and all P0 UI node paths
   -> fails if a manifest node/template path is missing
 ```
 
-`CocosCreatorAssetRegistryComponent` stores color tokens as `colorTokensJson` in the generated scene instead of custom entry classes, because Creator 3.8 warns on primitive property types inside entry classes. String defaults should be inferred with empty property options, string arrays should use `CCString`, and numeric Inspector fields should use `CCInteger` or `CCFloat`. P0 visual assets are declared in `configs/ui/P0VisualAssets.json`; synced Creator mirrors receive stable image `.meta` files, and generated scenes bind sprite frames through explicit `SpriteFrame[]` plus stable `spriteFrameAssetIds[]`. Local P0 audio cues are also registered through explicit `AudioClip[]` plus stable `audioClipCueIds[]`; remote voice cues stay outside the first scene registry until a subpackage/remote loader exists.
+`CocosCreatorAssetRegistryComponent` stores color tokens as `colorTokensJson` in the generated scene instead of custom entry classes, because Creator 3.8 warns on primitive property types inside entry classes. String defaults should be inferred with empty property options, string arrays should use `CCString`, and numeric Inspector fields should use `CCInteger` or `CCFloat`. P0 visual assets are declared in `configs/ui/P0VisualAssets.json`; domain ID to SpriteFrame mappings are declared in `configs/ui/P0VisualBindings.json` and validated by `ConfigLoader`. Synced Creator mirrors receive stable image `.meta` files, and generated scenes bind sprite frames through explicit `SpriteFrame[]` plus stable `spriteFrameAssetIds[]`. Local P0 audio cues are also registered through explicit `AudioClip[]` plus stable `audioClipCueIds[]`; remote voice cues stay outside the first scene registry until a subpackage/remote loader exists.
 
 Do not copy `library/`, `temp/`, `profiles/`, `.creator/`, or build cache from Cocos Creator back into this repository. After generation, refresh the Cocos Creator asset panel and save the scene once to confirm AssetDB imports the scene without missing script or missing JsonAsset references.
 
@@ -181,7 +182,7 @@ IAnalyticsService
 - `configs/stages`：章节、关卡、波次、目标。
 - `configs/ads`：广告点位、倍率、限制、兜底奖励。
 - `configs/themes`：主题文案、颜色、资源引用。
-- `configs/ui`：P0 文案、布局、无 `cc` 节点绑定 manifest。
+- `configs/ui`：P0 文案、布局、视觉资产、视觉绑定、无 `cc` 节点绑定 manifest。
 
 每类配置必须具备：
 

@@ -15,7 +15,12 @@ import type {
   AudioVoiceLineConfig,
   ElevenLabsVoiceProfileConfig,
 } from '../shared/audio/AudioCue.types.js';
-import type { UiCopyConfig, UiLayoutConfig, UiVisualAssetSetConfig } from '../shared/ui/P0Ui.types.js';
+import type {
+  UiCopyConfig,
+  UiLayoutConfig,
+  UiVisualAssetSetConfig,
+  UiVisualBindingConfig,
+} from '../shared/ui/P0Ui.types.js';
 
 export interface GameConfigRegistry {
   lootBoxes: LootBoxConfig[];
@@ -37,6 +42,7 @@ export interface GameConfigRegistry {
   uiCopy: UiCopyConfig;
   uiLayout: UiLayoutConfig;
   uiVisualAssets: UiVisualAssetSetConfig;
+  uiVisualBindings: UiVisualBindingConfig;
   uiNodeBindings: UiNodeBindingConfig;
 }
 
@@ -117,6 +123,10 @@ export class ConfigRegistry {
 
   get uiVisualAssets(): UiVisualAssetSetConfig {
     return this.configs.uiVisualAssets;
+  }
+
+  get uiVisualBindings(): UiVisualBindingConfig {
+    return this.configs.uiVisualBindings;
   }
 
   get uiNodeBindings(): UiNodeBindingConfig {

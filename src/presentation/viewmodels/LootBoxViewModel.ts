@@ -5,7 +5,12 @@ import {
   type LootBoxOpenBlockReason,
 } from '../../gameplay/loot/LootBoxAvailability.js';
 import type { LootBoxConfig } from '../../gameplay/loot/LootBox.types.js';
-import type { UiActionState, UiMetricState, UiScreenLayoutConfig } from '../../shared/ui/P0Ui.types.js';
+import type {
+  UiActionState,
+  UiMetricState,
+  UiScreenLayoutConfig,
+  UiVisualAssetResolver,
+} from '../../shared/ui/P0Ui.types.js';
 import type { UiTextService } from './UiTextService.js';
 
 export interface LootBoxButtonState {
@@ -20,6 +25,7 @@ export interface LootBoxScreenState {
   lootBoxName: string;
   count: number;
   costText: string;
+  lootBoxIconAssetId?: string;
   metrics: UiMetricState[];
   actions: UiActionState[];
   layout?: UiScreenLayoutConfig;
@@ -40,6 +46,7 @@ export function createLootBoxScreenState(
   lootBox: LootBoxConfig,
   text?: UiTextService,
   layout?: UiScreenLayoutConfig,
+  resolveVisualAsset?: UiVisualAssetResolver,
 ): LootBoxScreenState {
   const availability = createLootBoxAvailabilityState(inventory, resources, lootBox);
   const disabledReasonKey = getDisabledReasonKey(availability.blockReason);
@@ -53,12 +60,14 @@ export function createLootBoxScreenState(
     lootBoxName: getText(text, lootBox.displayNameKey),
     count: availability.count,
     costText,
+    lootBoxIconAssetId: resolveVisualAsset?.('loot_box', lootBox.id),
     metrics: [
       {
         labelKey: lootBox.displayNameKey,
         label: getText(text, lootBox.displayNameKey),
         value: String(availability.count),
         accentToken: availability.canOpen ? 'ember_orange' : 'ash_gray',
+        iconAssetId: resolveVisualAsset?.('loot_box', lootBox.id),
       },
     ],
     actions: [

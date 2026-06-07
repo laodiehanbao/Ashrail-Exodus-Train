@@ -5,6 +5,7 @@ import type { P0UiState } from '../viewmodels/P0UiViewModel.js';
 export interface P0UiPresenterUpdate {
   acceptedRequest: UiInteractionRequest['actionId'];
   state: P0UiState;
+  refreshAfterMs?: number;
 }
 
 export interface IP0UiPresenter {

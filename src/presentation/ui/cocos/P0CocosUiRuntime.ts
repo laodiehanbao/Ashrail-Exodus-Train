@@ -9,15 +9,21 @@ export interface P0CocosUiRuntimeClock {
   nowMs(): number;
 }
 
+export interface P0CocosUiRuntimeScheduler {
+  scheduleOnce(callback: () => void, delaySeconds: number): void;
+}
+
 export interface P0CocosUiRuntimeOptions {
   presenter: IP0UiPresenter;
   binding: P0CocosUiBinding;
   clock: P0CocosUiRuntimeClock;
+  scheduler?: P0CocosUiRuntimeScheduler;
 }
 
 export class P0CocosUiRuntime implements CocosUiRequestSink {
   private readonly presenter: IP0UiPresenter;
   private readonly clock: P0CocosUiRuntimeClock;
+  private readonly scheduler?: P0CocosUiRuntimeScheduler;
   private readonly cocosPresenter: P0CocosUiPresenter;
   private pending: Promise<Result<P0UiPresenterUpdate> | null> = Promise.resolve(null);
   private latestResult: Result<P0UiPresenterUpdate> | null = null;
@@ -25,6 +31,7 @@ export class P0CocosUiRuntime implements CocosUiRequestSink {
   constructor(options: P0CocosUiRuntimeOptions) {
     this.presenter = options.presenter;
     this.clock = options.clock;
+    this.scheduler = options.scheduler;
     this.cocosPresenter = new P0CocosUiPresenter(options.binding, this);
   }
 
@@ -87,6 +94,7 @@ export class P0CocosUiRuntime implements CocosUiRequestSink {
     if (!result.ok) return result;
     try {
       this.cocosPresenter.render(result.value.state);
+      this.scheduleRefresh(result.value.refreshAfterMs);
       return result;
     } catch (error) {
       return fail(ErrorCode.UiRequestRejected, 'P0 UI render failed after accepted request', {
@@ -94,5 +102,10 @@ export class P0CocosUiRuntime implements CocosUiRequestSink {
         error,
       });
     }
+  }
+
+  private scheduleRefresh(refreshAfterMs: number | undefined): void {
+    if (!refreshAfterMs || refreshAfterMs <= 0 || !this.scheduler) return;
+    this.scheduler.scheduleOnce(() => this.renderCurrentState(), refreshAfterMs / 1000);
   }
 }

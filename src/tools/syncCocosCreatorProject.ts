@@ -1,19 +1,23 @@
-import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, relative, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import {
-  copyDirectoryContents,
   ensureDirectory,
   listFiles,
   projectAssetPath,
   replaceDirectory,
   stableUuid,
+  writeAudioClipAssetMeta,
   writeDirectoryMeta,
   writeImageAssetMeta,
   writeJsonAssetMeta,
   writeTypeScriptAssetMeta,
 } from './cocosCreatorAssetUtils.js';
+import { loadConfigRegistry } from '../data/ConfigLoader.js';
+import { readJsonConfig } from './readJsonConfig.js';
+import { P0_SCENE_ASSET_PATH } from './p0CocosScene.constants.js';
+import type { AudioCueConfig } from '../shared/audio/AudioCue.types.js';
 import type { UiVisualAssetSetConfig } from '../shared/ui/P0Ui.types.js';
 
 const DEFAULT_CREATOR_PROJECT_ROOT = 'C:/Users/zhang/NewProject_1';
@@ -30,6 +34,7 @@ const RUNTIME_ASSET_DIRS = ['audio', 'effects', 'fonts', 'icons', 'prefabs', 'sc
 
 interface SyncSummary {
   projectRoot: string;
+  syncedRuntimeAssetFiles: number;
   syncedTsFiles: number;
   syncedJsonFiles: number;
   remainingJsSpecifiers: number;
@@ -39,26 +44,86 @@ export function syncCocosCreatorProject(projectRoot = readProjectRootArg()): Syn
   const creatorRoot = resolve(projectRoot);
   assertCreatorProjectRoot(creatorRoot);
 
-  syncRuntimeAssetDirs(creatorRoot);
+  const syncedRuntimeAssetFiles = syncRuntimeAssets(creatorRoot);
   syncScripts(creatorRoot);
   syncConfigs(creatorRoot);
   syncVisualAssetMetas(creatorRoot);
+  syncAudioAssetMetas(creatorRoot);
 
   const scriptsRoot = resolve(creatorRoot, 'assets/scripts/src');
   const configRoot = resolve(creatorRoot, 'assets/configs');
   const syncedTsFiles = listFiles(scriptsRoot, (path) => path.endsWith('.ts')).length;
   const syncedJsonFiles = listFiles(configRoot, (path) => path.endsWith('.json')).length;
   const remainingJsSpecifiers = countRemainingJsSpecifiers(scriptsRoot);
-  return { projectRoot: creatorRoot, syncedTsFiles, syncedJsonFiles, remainingJsSpecifiers };
+  return { projectRoot: creatorRoot, syncedRuntimeAssetFiles, syncedTsFiles, syncedJsonFiles, remainingJsSpecifiers };
 }
 
-function syncRuntimeAssetDirs(projectRoot: string): void {
+function syncRuntimeAssets(projectRoot: string): number {
+  const assetPaths = collectRuntimeAssetPaths();
+  clearRuntimeAssetDirs(projectRoot);
+  for (const assetPath of assetPaths) {
+    copyRuntimeAsset(projectRoot, assetPath);
+  }
+  writeRuntimeAssetDirectoryMetas(projectRoot, assetPaths);
+  return assetPaths.length;
+}
+
+function clearRuntimeAssetDirs(projectRoot: string): void {
   for (const name of RUNTIME_ASSET_DIRS) {
-    const source = resolve(SOURCE_ROOT, 'assets', name);
-    if (!existsSync(source)) continue;
-    copyDirectoryContents(source, resolve(projectRoot, 'assets', name), {
-      exclude: (path) => path.endsWith('.meta'),
-    });
+    const target = resolve(projectRoot, 'assets', name);
+    assertSafeAssetTarget(projectRoot, target);
+    if (existsSync(target)) {
+      rmSync(target, { recursive: true, force: true });
+    }
+  }
+}
+
+function collectRuntimeAssetPaths(): string[] {
+  const registry = loadConfigRegistry(readJsonConfig(SOURCE_ROOT));
+  if (!registry.ok) {
+    throw new Error(`Cannot sync runtime assets from invalid config: ${registry.error.message}`);
+  }
+
+  const assetPaths = new Set<string>();
+  for (const asset of registry.value.uiVisualAssets.assets) {
+    if (asset.packageTag !== 'remote') {
+      assetPaths.add(asset.assetPath);
+    }
+  }
+  for (const cue of collectLocalAudioCues(registry.value.audioCues)) {
+    assetPaths.add(cue.assetPath);
+  }
+  if (existsSync(resolve(SOURCE_ROOT, P0_SCENE_ASSET_PATH))) {
+    assetPaths.add(P0_SCENE_ASSET_PATH);
+  }
+  return [...assetPaths].sort();
+}
+
+function collectLocalAudioCues(audioCues: AudioCueConfig[]): AudioCueConfig[] {
+  return audioCues.filter((cue) => cue.status !== 'deferred' && cue.packageTag !== 'remote');
+}
+
+function copyRuntimeAsset(projectRoot: string, assetPath: string): void {
+  const source = resolve(SOURCE_ROOT, assetPath);
+  if (!existsSync(source)) {
+    throw new Error(`Missing runtime asset source: ${source}`);
+  }
+  const target = resolve(projectRoot, assetPath);
+  assertSafeAssetTarget(projectRoot, target);
+  ensureDirectory(dirname(target));
+  copyFileSync(source, target);
+}
+
+function writeRuntimeAssetDirectoryMetas(projectRoot: string, assetPaths: string[]): void {
+  const directories = new Set<string>();
+  for (const assetPath of assetPaths) {
+    const segments = assetPath.split('/').slice(0, -1);
+    for (let index = 1; index <= segments.length; index += 1) {
+      directories.add(segments.slice(0, index).join('/'));
+    }
+  }
+  for (const directory of [...directories].filter(Boolean).sort()) {
+    writeDirectoryMeta(projectRoot, directory);
   }
 }
 
@@ -87,6 +152,20 @@ function syncConfigs(projectRoot: string): void {
   writeMetasForTree(projectRoot, 'assets/configs');
   for (const path of listFiles(target, (filePath) => filePath.endsWith('.json'))) {
     writeJsonAssetMeta(projectRoot, projectAssetPath(projectRoot, path));
+  }
+}
+
+function syncAudioAssetMetas(projectRoot: string): void {
+  const registry = loadConfigRegistry(readJsonConfig(SOURCE_ROOT));
+  if (!registry.ok) {
+    throw new Error(`Cannot write audio metas from invalid config: ${registry.error.message}`);
+  }
+  for (const cue of collectLocalAudioCues(registry.value.audioCues)) {
+    const targetPath = resolve(projectRoot, cue.assetPath);
+    if (!existsSync(targetPath)) {
+      throw new Error(`Missing synced audio asset: ${targetPath}`);
+    }
+    writeAudioClipAssetMeta(projectRoot, cue.assetPath);
   }
 }
 

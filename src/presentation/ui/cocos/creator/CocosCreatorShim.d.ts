@@ -6,6 +6,8 @@ declare module 'cc' {
 
   export class Component {
     node: Node;
+    scheduleOnce(callback: () => void, delay?: number): void;
+    unscheduleAllCallbacks(): void;
   }
 
   export class Node {
@@ -28,6 +30,11 @@ declare module 'cc' {
   export class Label extends Component {
     color: Color;
     string: string;
+  }
+
+  export class LabelOutline extends Component {
+    color: Color;
+    width: number;
   }
 
   export class Button extends Component {
@@ -69,6 +76,14 @@ declare module 'cc' {
     json: unknown;
     name: string;
   }
+
+  export const ResolutionPolicy: {
+    FIXED_WIDTH: number;
+  };
+
+  export const view: {
+    setDesignResolutionSize(width: number, height: number, resolutionPolicy: number): void;
+  };
 
   export function instantiate<T extends Node>(original: T): T;
 }

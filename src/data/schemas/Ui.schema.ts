@@ -15,39 +15,65 @@ import type {
   UiVisualAssetPackageTag,
   UiVisualAssetSetConfig,
   UiVisualAssetUsage,
+  UiVisualBindingConfig,
+  UiVisualBindingDomainType,
+  UiVisualBindingEntryConfig,
 } from '../../shared/ui/P0Ui.types.js';
 import { P0_UI_SCREEN_IDS } from '../../shared/ui/P0Ui.types.js';
 import { asArray, asRecord, readArray, readNumber, readString, validationError } from './commonValidation.js';
 
 const SCREEN_IDS: readonly P0UiScreenId[] = P0_UI_SCREEN_IDS;
 const VISUAL_ASSET_KINDS = new Set<UiVisualAssetKind>(['spriteFrame']);
-const VISUAL_ASSET_USAGES = new Set<UiVisualAssetUsage>(['screen_background', 'ui_skin', 'actor_sheet', 'concept']);
+const VISUAL_ASSET_USAGES = new Set<UiVisualAssetUsage>([
+  'screen_background',
+  'ui_skin',
+  'train_sprite',
+  'enemy_sprite',
+  'resource_icon',
+  'equipment_icon',
+  'train_module_icon',
+  'actor_sheet',
+  'concept',
+]);
 const VISUAL_ASSET_PACKAGE_TAGS = new Set<UiVisualAssetPackageTag>(['main', 'subpackage', 'remote', 'prototype']);
+const VISUAL_BINDING_DOMAIN_TYPES = new Set<UiVisualBindingDomainType>([
+  'resource',
+  'loot_box',
+  'equipment',
+  'train_module',
+  'train_part',
+  'enemy',
+]);
 
 export interface UiConfigSources {
   uiCopy: unknown;
   uiLayout: unknown;
   uiVisualAssets: unknown;
+  uiVisualBindings: unknown;
 }
 
 export interface UiConfigRegistry {
   uiCopy: UiCopyConfig;
   uiLayout: UiLayoutConfig;
   uiVisualAssets: UiVisualAssetSetConfig;
+  uiVisualBindings: UiVisualBindingConfig;
 }
 
 export function validateUiConfigSources(sources: UiConfigSources): Result<UiConfigRegistry> {
   const uiCopy = validateUiCopy(sources.uiCopy);
   const uiLayout = validateUiLayout(sources.uiLayout);
   const uiVisualAssets = validateUiVisualAssets(sources.uiVisualAssets);
+  const uiVisualBindings = validateUiVisualBindings(sources.uiVisualBindings);
   if (!uiCopy.ok) return uiCopy;
   if (!uiLayout.ok) return uiLayout;
   if (!uiVisualAssets.ok) return uiVisualAssets;
+  if (!uiVisualBindings.ok) return uiVisualBindings;
 
   return ok({
     uiCopy: uiCopy.value,
     uiLayout: uiLayout.value,
     uiVisualAssets: uiVisualAssets.value,
+    uiVisualBindings: uiVisualBindings.value,
   });
 }
 
@@ -143,6 +169,38 @@ export function validateUiVisualAssets(input: unknown): Result<UiVisualAssetSetC
   return ok({ assetSetId: assetSetId.value, assets: parsed });
 }
 
+export function validateUiVisualBindings(input: unknown): Result<UiVisualBindingConfig> {
+  const record = asRecord(input, 'UiVisualBindings');
+  if (!record.ok) return record;
+
+  const bindingSetId = readString(record.value, 'bindingSetId');
+  const entries = readArray(record.value, 'entries');
+  if (!bindingSetId.ok || !entries.ok) {
+    return validationError<UiVisualBindingConfig>(bindingSetId, entries);
+  }
+
+  const bindingIds = new Set<string>();
+  const domainKeys = new Set<string>();
+  const parsed: UiVisualBindingEntryConfig[] = [];
+  for (const item of entries.value) {
+    const entry = parseVisualBinding(item);
+    if (!entry.ok) return entry;
+
+    if (bindingIds.has(entry.value.bindingId)) {
+      return fail(ErrorCode.ConfigInvalid, `Duplicate UI visual binding ${entry.value.bindingId}`, item);
+    }
+    const domainKey = `${entry.value.domainType}:${entry.value.domainId}`;
+    if (domainKeys.has(domainKey)) {
+      return fail(ErrorCode.ConfigInvalid, `Duplicate UI visual binding domain ${domainKey}`, item);
+    }
+    bindingIds.add(entry.value.bindingId);
+    domainKeys.add(domainKey);
+    parsed.push(entry.value);
+  }
+
+  return ok({ bindingSetId: bindingSetId.value, entries: parsed });
+}
+
 function parseVisualAsset(input: unknown): Result<UiVisualAssetConfig> {
   const record = asRecord(input, 'UiVisualAsset');
   if (!record.ok) return record;
@@ -180,6 +238,29 @@ function parseVisualAsset(input: unknown): Result<UiVisualAssetConfig> {
     width: width.value,
     height: height.value,
     targetMaxBytes: targetMaxBytes.value,
+  });
+}
+
+function parseVisualBinding(input: unknown): Result<UiVisualBindingEntryConfig> {
+  const record = asRecord(input, 'UiVisualBinding');
+  if (!record.ok) return record;
+
+  const bindingId = readString(record.value, 'bindingId');
+  const domainType = readString(record.value, 'domainType');
+  const domainId = readString(record.value, 'domainId');
+  const assetId = readString(record.value, 'assetId');
+  if (!bindingId.ok || !domainType.ok || !domainId.ok || !assetId.ok) {
+    return validationError<UiVisualBindingEntryConfig>(bindingId, domainType, domainId, assetId);
+  }
+  if (!VISUAL_BINDING_DOMAIN_TYPES.has(domainType.value as UiVisualBindingDomainType)) {
+    return fail(ErrorCode.ConfigInvalid, `Unknown UI visual binding domain type ${domainType.value}`, record.value);
+  }
+
+  return ok({
+    bindingId: bindingId.value,
+    domainType: domainType.value as UiVisualBindingDomainType,
+    domainId: domainId.value,
+    assetId: assetId.value,
   });
 }
 

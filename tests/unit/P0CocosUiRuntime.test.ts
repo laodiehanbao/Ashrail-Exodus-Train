@@ -50,6 +50,33 @@ export async function testP0CocosUiRuntime(): Promise<void> {
     assert(!JSON.stringify(presenter.requests).includes('amount'), 'runtime requests should not contain reward amounts');
   });
 
+  await runTest('P0 Cocos runtime schedules delayed presenter refreshes from accepted updates', async () => {
+    const binding = createFakeP0Binding();
+    const presenter = new FakeP0UiPresenter(createState(20));
+    const clock = new MutableClock(250000);
+    const scheduler = new FakeScheduler();
+    const runtime = new P0CocosUiRuntime({ presenter, binding, clock, scheduler });
+    presenter.enqueue(ok({ acceptedRequest: 'ui_request_stage_start', state: createState(45), refreshAfterMs: 500 }));
+
+    runtime.mount();
+    binding.mainHud.primaryAction.press();
+    const result = await runtime.flushPending();
+
+    assert(result?.ok, 'accepted request should complete before delayed refresh');
+    assertEqual(scheduler.scheduled[0]?.delaySeconds, 0.5, 'runtime should convert refresh delay to seconds');
+
+    presenter.setState(createState(60));
+    clock.value = 250500;
+    scheduler.runFirst();
+
+    assertEqual(
+      presenter.getStateCalls[presenter.getStateCalls.length - 1],
+      250500,
+      'scheduled refresh should pull state at current clock time',
+    );
+    assertEqual(binding.mainHud.metrics.items[0].value, '60', 'scheduled refresh should rerender current presenter state');
+  });
+
   await runTest('P0 Cocos runtime keeps rendered state unchanged when a request is rejected', async () => {
     const binding = createFakeP0Binding();
     const presenter = new FakeP0UiPresenter(createState(20));
@@ -117,6 +144,19 @@ class MutableClock {
 
   nowMs(): number {
     return this.value;
+  }
+}
+
+class FakeScheduler {
+  readonly scheduled: Array<{ callback: () => void; delaySeconds: number }> = [];
+
+  scheduleOnce(callback: () => void, delaySeconds: number): void {
+    this.scheduled.push({ callback, delaySeconds });
+  }
+
+  runFirst(): void {
+    const next = this.scheduled.shift();
+    next?.callback();
   }
 }
 

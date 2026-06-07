@@ -1,4 +1,4 @@
-import { _decorator, AudioSource, CCInteger, Component, JsonAsset, Node } from 'cc';
+import { _decorator, AudioSource, CCInteger, Component, JsonAsset, Node, ResolutionPolicy, view } from 'cc';
 import { Log } from '../../core/Log.js';
 import { fail, ok, type Result } from '../../core/Result.types.js';
 import type { RawConfigSources } from '../../data/ConfigLoader.js';
@@ -34,6 +34,7 @@ const CONFIG_ASSET_KEYS = [
   'uiCopy',
   'uiLayout',
   'uiVisualAssets',
+  'uiVisualBindings',
   'uiNodeBindings',
 ] as const satisfies readonly (keyof RawConfigSources)[];
 
@@ -58,6 +59,7 @@ const CONFIG_ASSET_NAME_TO_KEY = new Map<string, keyof RawConfigSources>([
   ['p0uicopyzhcn', 'uiCopy'],
   ['p0uilayout', 'uiLayout'],
   ['p0visualassets', 'uiVisualAssets'],
+  ['p0visualbindings', 'uiVisualBindings'],
   ['p0uinodebindings', 'uiNodeBindings'],
 ]);
 
@@ -91,6 +93,8 @@ export class P0CocosCreatorBootstrap extends Component {
       this.seed,
       new CocosCreatorAudioPlaybackAdapter(this.assetRegistry, audioSource),
     );
+    view.setDesignResolutionSize(app.configs.uiLayout.designWidth, app.configs.uiLayout.designHeight, ResolutionPolicy.FIXED_WIDTH);
+
     const host = new CocosCreatorUiBindingHost(this.uiRoot ?? this.node, this.assetRegistry);
     const binding = createP0CocosUiBindingFromManifest(app.configs.uiNodeBindings, host);
     if (!binding.ok) {
@@ -102,6 +106,7 @@ export class P0CocosCreatorBootstrap extends Component {
       presenter: new P0UiRequestRouter(app),
       binding: binding.value,
       clock: { nowMs: () => Date.now() },
+      scheduler: { scheduleOnce: (callback, delaySeconds) => this.scheduleOnce(callback, delaySeconds) },
     });
     this.runtime.mount();
   }

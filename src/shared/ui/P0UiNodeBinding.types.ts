@@ -8,6 +8,7 @@ export type P0UiBindingSlotId =
   | 'mainHud.title'
   | 'mainHud.status'
   | 'mainHud.metrics'
+  | 'mainHud.combatPreview'
   | 'mainHud.primaryAction'
   | 'lootBox.frame'
   | 'lootBox.title'
@@ -31,7 +32,14 @@ export type P0UiBindingSlotId =
   | 'adReward.doubleAction'
   | 'adReward.skipAction';
 
-export type UiNodeBindingKind = 'frame' | 'text' | 'metricList' | 'action' | 'rewardItemList' | 'moduleCardList';
+export type UiNodeBindingKind =
+  | 'frame'
+  | 'text'
+  | 'metricList'
+  | 'combatPreview'
+  | 'action'
+  | 'rewardItemList'
+  | 'moduleCardList';
 
 export interface UiNodeBindingEntryConfig {
   bindingKey: string;
@@ -71,6 +79,7 @@ export const P0_UI_NODE_BINDING_SLOT_SPECS = [
   { screenId: 'main_hud', slotId: 'mainHud.title', kind: 'text' },
   { screenId: 'main_hud', slotId: 'mainHud.status', kind: 'text' },
   { screenId: 'main_hud', slotId: 'mainHud.metrics', kind: 'metricList', requiresItemTemplate: true },
+  { screenId: 'main_hud', slotId: 'mainHud.combatPreview', kind: 'combatPreview' },
   {
     screenId: 'main_hud',
     slotId: 'mainHud.primaryAction',

@@ -1,0 +1,71 @@
+{
+  "bindingSetId": "p0_visual_bindings_default",
+  "entries": [
+    {
+      "bindingId": "visual_resource_coin",
+      "domainType": "resource",
+      "domainId": "coin",
+      "assetId": "icon_resource_coin_001"
+    },
+    {
+      "bindingId": "visual_resource_module_fragment",
+      "domainType": "resource",
+      "domainId": "module_fragment",
+      "assetId": "icon_resource_module_fragment_001"
+    },
+    {
+      "bindingId": "visual_lootbox_supply_common",
+      "domainType": "loot_box",
+      "domainId": "lootbox_supply_common",
+      "assetId": "icon_lootbox_supply_common"
+    },
+    {
+      "bindingId": "visual_equipment_rifle_rusty_001",
+      "domainType": "equipment",
+      "domainId": "equipment_rifle_rusty_001",
+      "assetId": "icon_equipment_rifle_rusty_001"
+    },
+    {
+      "bindingId": "visual_equipment_cogwheel_reinforced_001",
+      "domainType": "equipment",
+      "domainId": "equipment_cogwheel_reinforced_001",
+      "assetId": "icon_equipment_engine_core_001"
+    },
+    {
+      "bindingId": "visual_train_module_cannon_basic_001",
+      "domainType": "train_module",
+      "domainId": "module_cannon_basic_001",
+      "assetId": "icon_module_cannon_basic_001"
+    },
+    {
+      "bindingId": "visual_train_part_head",
+      "domainType": "train_part",
+      "domainId": "train_head",
+      "assetId": "tex_train_head_rust_001"
+    },
+    {
+      "bindingId": "visual_train_part_combat_carriage",
+      "domainType": "train_part",
+      "domainId": "train_carriage_combat",
+      "assetId": "tex_train_carriage_combat_001"
+    },
+    {
+      "bindingId": "visual_train_part_supply_carriage",
+      "domainType": "train_part",
+      "domainId": "train_carriage_supply",
+      "assetId": "tex_train_carriage_supply_001"
+    },
+    {
+      "bindingId": "visual_enemy_raider_basic_001",
+      "domainType": "enemy",
+      "domainId": "enemy_raider_basic_001",
+      "assetId": "tex_enemy_raider_basic_001"
+    },
+    {
+      "bindingId": "visual_enemy_husk_brute_001",
+      "domainType": "enemy",
+      "domainId": "enemy_husk_brute_001",
+      "assetId": "tex_enemy_husk_brute_001"
+    }
+  ]
+}

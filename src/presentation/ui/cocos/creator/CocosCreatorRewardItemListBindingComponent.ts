@@ -2,7 +2,7 @@ import { _decorator, Component, Node } from 'cc';
 import type { RewardItemViewState } from '../../../viewmodels/RewardPanelViewModel.js';
 import type { CocosRewardItemListBinding } from '../CocosUiBinding.types.js';
 import { CocosCreatorAssetRegistryComponent } from './CocosCreatorAssetRegistryComponent.js';
-import { applyAccent, renderList, setTextByNames } from './CocosCreatorUiBindingUtils.js';
+import { applyAccent, renderList, setSpriteByNames, setTextByNames } from './CocosCreatorUiBindingUtils.js';
 
 const { ccclass, property } = _decorator;
 
@@ -26,7 +26,7 @@ export class CocosCreatorRewardItemListBindingComponent extends Component implem
     renderList(this.contentRoot ?? this.node, this.itemTemplate, items, (node, item) => {
       setTextByNames(node, ['Label', 'Name', 'Title'], item.label);
       setTextByNames(node, ['Amount', 'Value', 'Count'], `x${item.amount}`);
-      setTextByNames(node, ['Type'], item.type);
+      setSpriteByNames(node, ['Icon'], item.iconAssetId ? this.assetRegistry?.resolveSpriteFrame(item.iconAssetId) : null);
       applyAccent(node, this.assetRegistry?.resolveColor(item.accentToken));
     });
   }

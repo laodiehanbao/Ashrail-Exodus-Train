@@ -4,12 +4,18 @@ import {
   createTrainModuleUpgradeAvailabilityState,
   type TrainModuleUpgradeBlockReason,
 } from '../../gameplay/train/TrainModuleUpgradeAvailability.js';
-import type { UiActionState, UiMetricState, UiScreenLayoutConfig } from '../../shared/ui/P0Ui.types.js';
+import type {
+  UiActionState,
+  UiMetricState,
+  UiScreenLayoutConfig,
+  UiVisualAssetResolver,
+} from '../../shared/ui/P0Ui.types.js';
 import type { UiTextService } from './UiTextService.js';
 
 export interface TrainModuleCardState {
   moduleId: string;
   displayName: string;
+  iconAssetId?: string;
   slot: string;
   level: number;
   maxLevel: number;
@@ -35,8 +41,9 @@ export function createTrainModulePanelState(
   modules: TrainModuleConfig[],
   text?: UiTextService,
   layout?: UiScreenLayoutConfig,
+  resolveVisualAsset?: UiVisualAssetResolver,
 ): TrainModulePanelState {
-  const cards = modules.map((moduleConfig) => createModuleCard(train, inventory, moduleConfig, text));
+  const cards = modules.map((moduleConfig) => createModuleCard(train, inventory, moduleConfig, text, resolveVisualAsset));
   const totalPower = cards.reduce((sum, card) => sum + card.currentPower, 0);
 
   return {
@@ -59,6 +66,7 @@ function createModuleCard(
   inventory: InventorySnapshot,
   moduleConfig: TrainModuleConfig,
   text?: UiTextService,
+  resolveVisualAsset?: UiVisualAssetResolver,
 ): TrainModuleCardState {
   const availability = createTrainModuleUpgradeAvailabilityState(train, inventory, moduleConfig);
   const disabledReasonKey = getDisabledReasonKey(availability.blockReason);
@@ -66,6 +74,7 @@ function createModuleCard(
   return {
     moduleId: moduleConfig.id,
     displayName: getText(text, moduleConfig.displayNameKey),
+    iconAssetId: resolveVisualAsset?.('train_module', moduleConfig.id),
     slot: moduleConfig.slot,
     level: availability.level,
     maxLevel: moduleConfig.maxLevel,

@@ -3,6 +3,9 @@ import type { AdPlacementId, LootBoxId, TrainModuleId } from '../ids.types.js';
 export const P0_UI_SCREEN_IDS = ['main_hud', 'loot_box', 'reward_panel', 'train_module', 'ad_reward'] as const;
 export type P0UiScreenId = (typeof P0_UI_SCREEN_IDS)[number];
 
+export const P0_DEFAULT_LOOT_BOX_ID: LootBoxId = 'lootbox_supply_common';
+export const P0_DEFAULT_AD_PLACEMENT_ID: AdPlacementId = 'ad_reward_stage_clear_double';
+
 export const P0_UI_ACTION_IDS = [
   'ui_request_stage_start',
   'ui_request_lootbox_open',
@@ -43,7 +46,16 @@ export interface UiComponentSkinConfig {
 }
 
 export type UiVisualAssetKind = 'spriteFrame';
-export type UiVisualAssetUsage = 'screen_background' | 'ui_skin' | 'actor_sheet' | 'concept';
+export type UiVisualAssetUsage =
+  | 'screen_background'
+  | 'ui_skin'
+  | 'train_sprite'
+  | 'enemy_sprite'
+  | 'resource_icon'
+  | 'equipment_icon'
+  | 'train_module_icon'
+  | 'actor_sheet'
+  | 'concept';
 export type UiVisualAssetPackageTag = 'main' | 'subpackage' | 'remote' | 'prototype';
 
 export interface UiVisualAssetConfig {
@@ -61,6 +73,36 @@ export interface UiVisualAssetSetConfig {
   assetSetId: string;
   assets: UiVisualAssetConfig[];
 }
+
+export const P0_COMBAT_TRAIN_PART_IDS = [
+  'train_head',
+  'train_carriage_combat',
+  'train_carriage_supply',
+] as const;
+
+export type P0CombatTrainPartId = (typeof P0_COMBAT_TRAIN_PART_IDS)[number];
+
+export type UiVisualBindingDomainType =
+  | 'resource'
+  | 'loot_box'
+  | 'equipment'
+  | 'train_module'
+  | 'train_part'
+  | 'enemy';
+
+export interface UiVisualBindingEntryConfig {
+  bindingId: string;
+  domainType: UiVisualBindingDomainType;
+  domainId: string;
+  assetId: string;
+}
+
+export interface UiVisualBindingConfig {
+  bindingSetId: string;
+  entries: UiVisualBindingEntryConfig[];
+}
+
+export type UiVisualAssetResolver = (domainType: UiVisualBindingDomainType, domainId: string) => string | undefined;
 
 export interface UiPanelLayoutConfig {
   panelId: string;
@@ -100,6 +142,7 @@ export interface UiMetricState {
   label: string;
   value: string;
   accentToken?: string;
+  iconAssetId?: string;
 }
 
 export type UiInteractionRequest =

@@ -1,5 +1,6 @@
 import type {
   CocosRewardItemListBinding,
+  CocosCombatPreviewBinding,
   CocosTrainModuleCardBindingState,
   CocosTrainModuleCardListBinding,
   CocosUiActionBinding,
@@ -10,6 +11,7 @@ import type {
   P0CocosUiBinding,
 } from '../../../src/presentation/ui/cocos/CocosUiBinding.types.js';
 import type { RewardItemViewState } from '../../../src/presentation/viewmodels/RewardPanelViewModel.js';
+import type { MainHudCombatPreviewState } from '../../../src/presentation/viewmodels/MainHudViewModel.js';
 import type { UiMetricState, UiPanelLayoutConfig } from '../../../src/shared/ui/P0Ui.types.js';
 import type { UiInteractionRequest } from '../../../src/shared/ui/P0Ui.types.js';
 
@@ -52,6 +54,14 @@ class FakeMetricListBinding implements CocosUiMetricListBinding {
 
   setItems(items: UiMetricState[]): void {
     this.items = items;
+  }
+}
+
+class FakeCombatPreviewBinding implements CocosCombatPreviewBinding {
+  state: MainHudCombatPreviewState | null = null;
+
+  setState(state: MainHudCombatPreviewState): void {
+    this.state = state;
   }
 }
 
@@ -105,6 +115,7 @@ export function createFakeP0Binding() {
       title: new FakeTextBinding(),
       status: new FakeTextBinding(),
       metrics: new FakeMetricListBinding(),
+      combatPreview: new FakeCombatPreviewBinding(),
       primaryAction: new FakeActionBinding(),
     },
     lootBox: {

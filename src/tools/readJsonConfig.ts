@@ -24,6 +24,7 @@ export function readJsonConfig(rootDir: string): RawConfigSources {
     uiCopy: readJson(rootDir, 'configs/ui/P0UiCopy.zh-CN.json'),
     uiLayout: readJson(rootDir, 'configs/ui/P0UiLayout.json'),
     uiVisualAssets: readJson(rootDir, 'configs/ui/P0VisualAssets.json'),
+    uiVisualBindings: readJson(rootDir, 'configs/ui/P0VisualBindings.json'),
     uiNodeBindings: readJson(rootDir, 'configs/ui/P0UiNodeBindings.json'),
   };
 }

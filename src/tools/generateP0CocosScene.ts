@@ -16,7 +16,7 @@ import {
 } from './p0CocosScene.constants.js';
 import { buildP0CocosScene, collectP0ManifestPaths } from './p0CocosSceneBuilder.js';
 import type { UiLayoutConfig, UiNodeBindingConfig } from './cocosSceneSerialization.types.js';
-import type { UiVisualAssetSetConfig } from '../shared/ui/P0Ui.types.js';
+import type { UiVisualAssetSetConfig, UiVisualBindingConfig } from '../shared/ui/P0Ui.types.js';
 import type { AudioCueConfig } from '../shared/audio/AudioCue.types.js';
 
 export interface GenerateP0CocosSceneSummary {
@@ -36,8 +36,9 @@ export function generateP0CocosScene(projectRoot = readProjectRootArg()): Genera
   const bindings = readJsonFile<UiNodeBindingConfig>(resolve(creatorRoot, 'assets/configs/ui/P0UiNodeBindings.json'));
   const layout = readJsonFile<UiLayoutConfig>(resolve(creatorRoot, 'assets/configs/ui/P0UiLayout.json'));
   const visualAssets = readJsonFile<UiVisualAssetSetConfig>(resolve(creatorRoot, 'assets/configs/ui/P0VisualAssets.json'));
+  const visualBindings = readJsonFile<UiVisualBindingConfig>(resolve(creatorRoot, 'assets/configs/ui/P0VisualBindings.json'));
   const audioCues = readJsonFile<AudioCueConfig[]>(resolve(creatorRoot, 'assets/configs/audio/AudioCues.json'));
-  const scene = buildP0CocosScene(creatorRoot, bindings, layout, visualAssets, audioCues);
+  const scene = buildP0CocosScene(creatorRoot, bindings, layout, visualAssets, visualBindings, audioCues);
   const scenePath = resolve(creatorRoot, P0_SCENE_ASSET_PATH);
   const sourceScenePath = resolve(process.cwd(), P0_SCENE_ASSET_PATH);
   ensureDirectory(dirname(scenePath));

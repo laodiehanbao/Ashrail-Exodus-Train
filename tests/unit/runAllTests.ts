@@ -1,6 +1,7 @@
 import { testAdRewardService } from './AdRewardService.test.js';
 import { testAudioService } from './AudioService.test.js';
 import { testCombatResolver } from './CombatResolver.test.js';
+import { testCocosCreatorSync } from './CocosCreatorSync.test.js';
 import { testLootGenerator } from './LootGenerator.test.js';
 import { testLayerBoundary } from './LayerBoundary.test.js';
 import { testP0CocosUiBindingFactory } from './P0CocosUiBindingFactory.test.js';
@@ -32,6 +33,7 @@ await testP0UiViewModel();
 await testP0CocosUiPresenter();
 await testP0CocosUiRuntime();
 await testP0CocosSceneBuilder();
+await testCocosCreatorSync();
 await testP0UiNodeBindingCoverage();
 await testP0CocosUiBindingFactory();
 await testP0UiRequestRouter();

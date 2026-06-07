@@ -25,6 +25,12 @@ export async function testP0CocosUiPresenter(): Promise<void> {
     assertEqual(binding.mainHud.title.text, '废轨巡航', 'main HUD title should bind to text node');
     assertEqual(binding.mainHud.frame.backgroundAssetId, 'tex_bg_stage_wasteland_rail_001', 'HUD background should bind');
     assertEqual(binding.mainHud.frame.panels.length, 3, 'HUD panel layouts should bind');
+    assertEqual(binding.mainHud.combatPreview.state?.stageName, '灰烬道口', 'HUD combat preview should bind current stage state');
+    assertEqual(
+      binding.mainHud.combatPreview.state?.enemies[0].spriteAssetId,
+      'tex_enemy_raider_basic_001',
+      'HUD combat preview should bind current enemy sprite asset',
+    );
     assertEqual(binding.lootBox.cost.text, '煤币 100', 'loot box cost should bind');
     assertEqual(binding.rewardPanel.frame.visible, true, 'reward panel should be visible with reward state');
     assertEqual(binding.rewardPanel.items.items[0].label, '煤币', 'reward item label should bind');

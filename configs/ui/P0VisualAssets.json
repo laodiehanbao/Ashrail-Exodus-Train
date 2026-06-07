@@ -30,6 +30,186 @@
       "width": 720,
       "height": 1280,
       "targetMaxBytes": 180000
+    },
+    {
+      "assetId": "tex_train_head_rust_001",
+      "assetPath": "assets/textures/trains/runtime/tex_train_head_rust_001.png",
+      "kind": "spriteFrame",
+      "usage": "train_sprite",
+      "packageTag": "main",
+      "width": 384,
+      "height": 304,
+      "targetMaxBytes": 260000
+    },
+    {
+      "assetId": "tex_train_carriage_combat_001",
+      "assetPath": "assets/textures/trains/runtime/tex_train_carriage_combat_001.png",
+      "kind": "spriteFrame",
+      "usage": "train_sprite",
+      "packageTag": "main",
+      "width": 265,
+      "height": 256,
+      "targetMaxBytes": 220000
+    },
+    {
+      "assetId": "tex_train_carriage_supply_001",
+      "assetPath": "assets/textures/trains/runtime/tex_train_carriage_supply_001.png",
+      "kind": "spriteFrame",
+      "usage": "train_sprite",
+      "packageTag": "main",
+      "width": 326,
+      "height": 218,
+      "targetMaxBytes": 220000
+    },
+    {
+      "assetId": "tex_enemy_raider_basic_001",
+      "assetPath": "assets/textures/enemies/runtime/tex_enemy_raider_basic_001.png",
+      "kind": "spriteFrame",
+      "usage": "enemy_sprite",
+      "packageTag": "main",
+      "width": 163,
+      "height": 256,
+      "targetMaxBytes": 160000
+    },
+    {
+      "assetId": "tex_enemy_husk_brute_001",
+      "assetPath": "assets/textures/enemies/runtime/tex_enemy_husk_brute_001.png",
+      "kind": "spriteFrame",
+      "usage": "enemy_sprite",
+      "packageTag": "main",
+      "width": 215,
+      "height": 256,
+      "targetMaxBytes": 160000
+    },
+    {
+      "assetId": "icon_lootbox_supply_common",
+      "assetPath": "assets/icons/resources/runtime/icon_lootbox_supply_common.png",
+      "kind": "spriteFrame",
+      "usage": "resource_icon",
+      "packageTag": "main",
+      "width": 128,
+      "height": 111,
+      "targetMaxBytes": 60000
+    },
+    {
+      "assetId": "icon_resource_coin_001",
+      "assetPath": "assets/icons/resources/runtime/icon_resource_coin_001.png",
+      "kind": "spriteFrame",
+      "usage": "resource_icon",
+      "packageTag": "main",
+      "width": 128,
+      "height": 108,
+      "targetMaxBytes": 60000
+    },
+    {
+      "assetId": "icon_resource_module_fragment_001",
+      "assetPath": "assets/icons/resources/runtime/icon_resource_module_fragment_001.png",
+      "kind": "spriteFrame",
+      "usage": "resource_icon",
+      "packageTag": "main",
+      "width": 128,
+      "height": 90,
+      "targetMaxBytes": 60000
+    },
+    {
+      "assetId": "icon_equipment_rifle_rusty_001",
+      "assetPath": "assets/icons/equipment/runtime/icon_equipment_rifle_rusty_001.png",
+      "kind": "spriteFrame",
+      "usage": "equipment_icon",
+      "packageTag": "main",
+      "width": 128,
+      "height": 88,
+      "targetMaxBytes": 60000
+    },
+    {
+      "assetId": "icon_equipment_engine_core_001",
+      "assetPath": "assets/icons/equipment/runtime/icon_equipment_engine_core_001.png",
+      "kind": "spriteFrame",
+      "usage": "equipment_icon",
+      "packageTag": "main",
+      "width": 128,
+      "height": 119,
+      "targetMaxBytes": 60000
+    },
+    {
+      "assetId": "icon_module_cannon_basic_001",
+      "assetPath": "assets/icons/train_modules/runtime/icon_module_cannon_basic_001.png",
+      "kind": "spriteFrame",
+      "usage": "train_module_icon",
+      "packageTag": "main",
+      "width": 128,
+      "height": 116,
+      "targetMaxBytes": 60000
+    },
+    {
+      "assetId": "ui_primary_button_ember",
+      "assetPath": "assets/ui/runtime/ui_primary_button_ember.png",
+      "kind": "spriteFrame",
+      "usage": "ui_skin",
+      "packageTag": "main",
+      "width": 272,
+      "height": 104,
+      "targetMaxBytes": 110000
+    },
+    {
+      "assetId": "ui_secondary_button_iron",
+      "assetPath": "assets/ui/runtime/ui_secondary_button_iron.png",
+      "kind": "spriteFrame",
+      "usage": "ui_skin",
+      "packageTag": "main",
+      "width": 202,
+      "height": 100,
+      "targetMaxBytes": 70000
+    },
+    {
+      "assetId": "ui_icon_button_square",
+      "assetPath": "assets/ui/runtime/ui_icon_button_square.png",
+      "kind": "spriteFrame",
+      "usage": "ui_skin",
+      "packageTag": "main",
+      "width": 66,
+      "height": 70,
+      "targetMaxBytes": 20000
+    },
+    {
+      "assetId": "ui_modal_panel_iron",
+      "assetPath": "assets/ui/runtime/ui_modal_panel_iron.png",
+      "kind": "spriteFrame",
+      "usage": "ui_skin",
+      "packageTag": "main",
+      "width": 482,
+      "height": 230,
+      "targetMaxBytes": 260000
+    },
+    {
+      "assetId": "ui_reward_card_common",
+      "assetPath": "assets/ui/runtime/ui_reward_card_common.png",
+      "kind": "spriteFrame",
+      "usage": "ui_skin",
+      "packageTag": "main",
+      "width": 210,
+      "height": 178,
+      "targetMaxBytes": 110000
+    },
+    {
+      "assetId": "ui_progress_bar_ember",
+      "assetPath": "assets/ui/runtime/ui_progress_bar_ember.png",
+      "kind": "spriteFrame",
+      "usage": "ui_skin",
+      "packageTag": "main",
+      "width": 528,
+      "height": 57,
+      "targetMaxBytes": 90000
+    },
+    {
+      "assetId": "ui_module_slot_iron",
+      "assetPath": "assets/ui/runtime/ui_module_slot_iron.png",
+      "kind": "spriteFrame",
+      "usage": "ui_skin",
+      "packageTag": "main",
+      "width": 208,
+      "height": 280,
+      "targetMaxBytes": 160000
     }
   ]
 }

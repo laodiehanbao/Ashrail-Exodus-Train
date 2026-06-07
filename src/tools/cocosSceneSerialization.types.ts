@@ -27,8 +27,9 @@ export interface UiScreenNodeBindingConfig {
 export interface UiNodeBindingEntryConfig {
   slotId: string;
   nodePath: string;
-  kind: 'frame' | 'text' | 'metricList' | 'action' | 'rewardItemList' | 'moduleCardList';
+  kind: 'frame' | 'text' | 'metricList' | 'combatPreview' | 'action' | 'rewardItemList' | 'moduleCardList';
   panelId?: string;
+  componentId?: string;
   itemTemplatePath?: string;
   emptyStatePath?: string;
 }
@@ -37,7 +38,15 @@ export interface UiLayoutConfig {
   designWidth: number;
   designHeight: number;
   colorTokens: { token: string; hex: string }[];
+  componentSkins: UiComponentSkinConfig[];
   screens: UiScreenLayoutConfig[];
+}
+
+export interface UiComponentSkinConfig {
+  componentId: string;
+  assetId: string;
+  minWidth: number;
+  minHeight: number;
 }
 
 export interface UiScreenLayoutConfig {

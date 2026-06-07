@@ -1,4 +1,5 @@
 import type {
+  CocosCombatPreviewBinding,
   CocosRewardItemListBinding,
   CocosTrainModuleCardListBinding,
   CocosUiActionBinding,
@@ -22,6 +23,7 @@ export interface CocosUiBindingHost {
   createFrameBinding(binding: UiNodeBindingEntryConfig): Result<CocosUiFrameBinding>;
   createTextBinding(binding: UiNodeBindingEntryConfig): Result<CocosUiTextBinding>;
   createMetricListBinding(binding: UiNodeBindingEntryConfig): Result<CocosUiMetricListBinding>;
+  createCombatPreviewBinding(binding: UiNodeBindingEntryConfig): Result<CocosCombatPreviewBinding>;
   createActionBinding(binding: UiNodeBindingEntryConfig): Result<CocosUiActionBinding>;
   createRewardItemListBinding(binding: UiNodeBindingEntryConfig): Result<CocosRewardItemListBinding>;
   createTrainModuleCardListBinding(binding: UiNodeBindingEntryConfig): Result<CocosTrainModuleCardListBinding>;
@@ -38,6 +40,7 @@ export function createP0CocosUiBindingFromManifest(
   const mainHudTitle = createText(slots.value, host, 'mainHud.title');
   const mainHudStatus = createText(slots.value, host, 'mainHud.status');
   const mainHudMetrics = createMetricList(slots.value, host, 'mainHud.metrics');
+  const mainHudCombatPreview = createCombatPreview(slots.value, host, 'mainHud.combatPreview');
   const mainHudPrimaryAction = createAction(slots.value, host, 'mainHud.primaryAction');
   const lootBoxFrame = createFrame(slots.value, host, 'lootBox.frame');
   const lootBoxTitle = createText(slots.value, host, 'lootBox.title');
@@ -64,6 +67,7 @@ export function createP0CocosUiBindingFromManifest(
   if (!mainHudTitle.ok) return mainHudTitle;
   if (!mainHudStatus.ok) return mainHudStatus;
   if (!mainHudMetrics.ok) return mainHudMetrics;
+  if (!mainHudCombatPreview.ok) return mainHudCombatPreview;
   if (!mainHudPrimaryAction.ok) return mainHudPrimaryAction;
   if (!lootBoxFrame.ok) return lootBoxFrame;
   if (!lootBoxTitle.ok) return lootBoxTitle;
@@ -93,6 +97,7 @@ export function createP0CocosUiBindingFromManifest(
       title: mainHudTitle.value,
       status: mainHudStatus.value,
       metrics: mainHudMetrics.value,
+      combatPreview: mainHudCombatPreview.value,
       primaryAction: mainHudPrimaryAction.value,
     },
     lootBox: {
@@ -165,6 +170,15 @@ function createMetricList(
 ): Result<CocosUiMetricListBinding> {
   const slot = requireSlot(slots, slotId, 'metricList');
   return slot.ok ? host.createMetricListBinding(slot.value) : slot;
+}
+
+function createCombatPreview(
+  slots: Map<P0UiBindingSlotId, UiNodeBindingEntryConfig>,
+  host: CocosUiBindingHost,
+  slotId: P0UiBindingSlotId,
+): Result<CocosCombatPreviewBinding> {
+  const slot = requireSlot(slots, slotId, 'combatPreview');
+  return slot.ok ? host.createCombatPreviewBinding(slot.value) : slot;
 }
 
 function createAction(
