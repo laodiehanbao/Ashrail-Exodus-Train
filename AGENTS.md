@@ -1053,3 +1053,11 @@ If it only "looks usable" but cannot be maintained later, it is not complete.
 
 ## 修改安全规则
 - 修改任何正在使用的东西，必须先备份原文件，或者新建文件修改；不得直接覆盖正在使用的配置、数据、脚本、文档或运行中资源。
+
+## Agent Safety Lesson: App-Specific Settings Only
+
+- When the user asks to change one specific app, modify only that app's own settings, files, or supported configuration surface.
+- Do not change OS-wide settings, registry keys, shell defaults, browser defaults, shared IDE settings, or other global state as a substitute unless the user explicitly approves that wider impact first.
+- If the target app does not support the requested per-app change, state the limitation plainly instead of approximating with a global workaround.
+- Before any setting change outside the named app/project, explain the affected scope and wait for explicit confirmation.
+- If a global setting is changed by mistake, restore it immediately and report exactly what was touched.
