@@ -1053,3 +1053,14 @@ UI 不越权
 
 ## 修改安全规则
 - 修改任何正在使用的东西，必须先备份原文件，或者新建文件修改；不得直接覆盖正在使用的配置、数据、脚本、文档或运行中资源。
+
+---
+
+## Agent Rule: Full-Scope Work And Recoverable Batching
+
+- Do not use conservative partial progress, small-sample execution, or "do a few first" as a substitute for the user's requested full scope.
+- If the user asks for all items, all candidates, full search, full review, or complete coverage, the default scope is the full set.
+- Batching is allowed only as an execution mechanism, not as scope reduction. Before batching, create or update a durable plan that lists every batch, every item range, status fields, completion criteria, and the resume entry point.
+- Do not rely on chat history as the only state. Persist progress in project files such as CSV ledgers, manifests, TODO/checkpoint docs, or per-item notes so another agent can resume after context compaction.
+- A subset is not complete unless the durable plan explicitly says it is the requested scope, or the user explicitly asked for that subset.
+- Platform/search result pages are not final source verification. For assets, dependencies, data, or citations, verify item-level source, license/terms, author/rightsholder, format, and evidence before marking an item usable or final.

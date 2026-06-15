@@ -1061,3 +1061,14 @@ If it only "looks usable" but cannot be maintained later, it is not complete.
 - If the target app does not support the requested per-app change, state the limitation plainly instead of approximating with a global workaround.
 - Before any setting change outside the named app/project, explain the affected scope and wait for explicit confirmation.
 - If a global setting is changed by mistake, restore it immediately and report exactly what was touched.
+
+---
+
+## Agent Rule: Full-Scope Work And Recoverable Batching
+
+- Do not use conservative partial progress, small-sample execution, or "do a few first" as a substitute for the user's requested full scope.
+- If the user asks for all items, all candidates, full search, full review, or complete coverage, the default scope is the full set.
+- Batching is allowed only as an execution mechanism, not as scope reduction. Before batching, create or update a durable plan that lists every batch, every item range, status fields, completion criteria, and the resume entry point.
+- Do not rely on chat history as the only state. Persist progress in project files such as CSV ledgers, manifests, TODO/checkpoint docs, or per-item notes so another agent can resume after context compaction.
+- A subset is not complete unless the durable plan explicitly says it is the requested scope, or the user explicitly asked for that subset.
+- Platform/search result pages are not final source verification. For assets, dependencies, data, or citations, verify item-level source, license/terms, author/rightsholder, format, and evidence before marking an item usable or final.
